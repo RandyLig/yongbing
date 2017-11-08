@@ -1,0 +1,25 @@
+@font-face{
+    font-family: 'hanyiquantang';
+    src : url('./component/logo/myfont.ttf');
+}
+
+body{
+    font-family: 'hanyiquantang';
+}
+
+/* avatarSelector 请选择头像 */
+.am-list-header {
+    /* text-align: center !important; */
+    /* vertical-align: middle !important; */
+    /* height: 24px !important; */
+    height: 48px;
+}
+
+.am-list-header img {
+    vertical-align: middle;
+}
+
+.am-list-header span {
+    vertical-align: middle;
+}
+
