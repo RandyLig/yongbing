@@ -14,6 +14,15 @@ const models = {
         'desc':{'type':String},
         'age':{'type':String},
         'sex':{'type':String},
+        'home':{'type':String},
+        //个人简介
+        'resume':{'type':String},
+        //特长
+        'specialities':{'type':String},
+        //任务目标
+        'taskname':{'type':String},
+        //任务详情
+        'desc':{'type':String},
     },
     //聊天
     chat: {}

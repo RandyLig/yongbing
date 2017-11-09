@@ -21,7 +21,8 @@ class YongbingInfo extends React.Component {
             age: '',
             home: '',
             //特长
-            specialities: ''
+            specialities: '',
+            resume: ''
         }
     }
     handleChange(key, val) {
@@ -45,6 +46,7 @@ class YongbingInfo extends React.Component {
             <InputItem onChange={v => this.handleChange('age', v)}>年龄</InputItem>
             <TextareaItem rows={2} autoHeight onChange={v => this.handleChange('home', v)} title='家乡'></TextareaItem>
             <InputItem onChange={v => this.handleChange('specialities', v)}>特长</InputItem>
+            <TextareaItem rows={3} autoHeight onChange={v => this.handleChange('resume', v)} title='个人简介'></TextareaItem>
             <WhiteSpace />
             <WhiteSpace />
             <WhiteSpace />

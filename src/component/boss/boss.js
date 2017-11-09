@@ -22,16 +22,17 @@ class Boss extends React.Component {
         console.log(datas)
         return <div>
             <WingBlank>
-                
+                <WhiteSpace/>
+                <WhiteSpace/>
                     {datas.map(v => (
-                        <Card>
+                        <Card key={v._id}>
                             <Card.Header
                                 title={v.user}
                                 thumb={require(`../img/${v.avatar}.png`)}
-                                extra={<span>this is extra</span>}
+                                extra={v.home}
                             />
                             <Card.Body>
-                                {v.age}
+                                {v.resume}
                             </Card.Body>
                         </Card>
                     ))}
