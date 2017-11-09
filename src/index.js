@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import thunk from 'redux-thunk'
 import { Provider } from 'react-redux'
-import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom'
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import { createStore, applyMiddleware, compose } from 'redux'
 
 import reducers from './reducer'
@@ -13,6 +13,8 @@ import AuthRoute from './component/authroute/authroute.js'
 import AddTask from './component/addtask/addtask.js'
 import BossInfo from './container/bossinfo/bossinfo.js'
 import YongbingInfo from './container/yongbinginfo/yongbinginfo.js'
+import DashBoard from './component/dashboard/dashboard.js'
+
 
 const store = createStore(reducers, compose(
     applyMiddleware(thunk),
@@ -23,11 +25,14 @@ ReactDOM.render(
         <BrowserRouter>
             <div>
                 <AuthRoute></AuthRoute>
-                <Route path='/bossinfo' component={BossInfo} />
-                <Route path='/yongbinginfo' component={YongbingInfo} />
-                <Route path='/login' component={Login} />
-                <Route path='/register' component={Register} />
-                <Route path='/addtask' component={AddTask} />
+                <Switch>
+                    <Route path='/bossinfo' component={BossInfo} />
+                    <Route path='/yongbinginfo' component={YongbingInfo} />
+                    <Route path='/login' component={Login} />
+                    <Route path='/register' component={Register} />
+                    <Route path='/addtask' component={AddTask} />
+                    <Route component={DashBoard} />
+                </Switch>
             </div>
         </BrowserRouter>
     </Provider>,

@@ -23,3 +23,14 @@ body{
     vertical-align: middle;
 }
 
+
+/*  底部导航栏  */
+
+.am-tab-bar-bar {
+    position: fixed !important;
+    bottom: 0;
+}
+
+.am-tab-bar-tab-title {
+    font-size: 12px !important;
+}

@@ -2,32 +2,26 @@ import axios from 'axios'
 import { getRedirectUrl } from '../util.js'
 
 
-const REGISTER_SUCESS = 'REGISTER_SUCESS'
+
 const ERROR_MSG = 'ERROR_MSG'
-const LOGIN_SUCESS = 'LOGIN_SUCESS'
+const AUTH_SUCCESS = 'AUTH_SUCCESS'
 const LOGIN_DATA = 'LOGIN_DATA'
 const initstate = {
-    isAuth: false,
     msg: '',
     user: '',
-
     type: ''
 }
 
 
 export function user(state = initstate, action) {
     switch (action.type) {
-        case LOGIN_SUCESS:
+        case AUTH_SUCCESS:
             return {
-                ...state, msg: '', isAuth: true, redirectTo: getRedirectUrl(action.payload), ...action.payload
-            }
-        case REGISTER_SUCESS:
-            return {
-                ...state, msg: '', isAuth: true, redirectTo: getRedirectUrl(action.payload), ...action.payload
+                ...state, msg: '', redirectTo: getRedirectUrl(action.payload), ...action.payload
             }
         case ERROR_MSG:
             return {
-                ...state, msg: '', isAuth: false, msg: action.msg
+                ...state, msg: '', msg: action.msg
             }
         case LOGIN_DATA: return {
             ...state, ...action.payload
@@ -35,11 +29,14 @@ export function user(state = initstate, action) {
         default: return state
     }
 }
-function registerSucess(data) {
-    return { payload: data, type: REGISTER_SUCESS }
-}
-function loginSucess(data) {
-    return { payload: data, type: LOGIN_SUCESS }
+// function registerSucess(data) {
+//     return { payload: data, type: REGISTER_SUCESS }
+// }
+// function loginSucess(data) {
+//     return { payload: data, type: LOGIN_SUCESS }
+// }
+function authSuccess(data) {
+    return { payload: data, type: AUTH_SUCCESS }
 }
 function errorMsg(msg) {
     return { msg, type: ERROR_MSG }
@@ -48,7 +45,19 @@ export function loadData(data) {
     return { type: LOGIN_DATA, payload: data }
 }
 
-
+export function update(data) {
+    return dispatch => {
+        axios.post('/user/update', data).then(
+            res => {
+                if (res.status === 200 && res.data.code === 0) {
+                    dispatch(authSuccess(res.data.data))
+                } else {
+                    dispatch(errorMsg(res.data.msg))
+                }
+            }
+        )
+    }
+}
 
 
 //登录注册方法
@@ -61,7 +70,7 @@ export function login({ user, pwd, repwd, type }) {
         axios.post('/user/login', { user, pwd }).then(
             res => {
                 if (res.status === 200 && res.data.code === 0) {
-                    dispatch(loginSucess(res.data.data))
+                    dispatch(authSuccess(res.data.data))
                 } else {
                     dispatch(errorMsg(res.data.msg))
                 }
@@ -83,7 +92,7 @@ export function register({ user, pwd, repwd, type }) {
         axios.post('/user/register', { user, pwd, type }).then(
             res => {
                 if (res.status === 200 && res.data.code === 0) {
-                    dispatch(registerSucess({ user, pwd, type }))
+                    dispatch(authSuccess({ user, pwd, type }))
                 } else {
                     dispatch(errorMsg(res.data.msg))
                 }

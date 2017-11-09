@@ -1,5 +1,5 @@
 import React from 'react'
-import { NavBar, InputItem, List, Icon } from 'antd-mobile'
+import { NavBar, InputItem, Icon } from 'antd-mobile'
 
 class AddTask extends React.Component {
     constructor(props) {

@@ -1,6 +1,15 @@
 import React from 'react'
 import { NavBar, InputItem, Button, TextareaItem, WhiteSpace } from 'antd-mobile'
 import AvatarSelector from '../../component/avatarSelector/avatarSelector.js'
+import { connect } from 'react-redux'
+import { update } from '../../redux/user.redux'
+import { Redirect } from 'react-router-dom'
+
+
+@connect(
+    state => state.user,
+    { update }
+)
 
 
 class YongbingInfo extends React.Component {
@@ -21,7 +30,10 @@ class YongbingInfo extends React.Component {
         })
     }
     render() {
+        const path = this.props.location.pathname
+        const re = this.props.redirectTo
         return <div>
+            {re && re !== path ? <Redirect to={re} /> : null}
             <NavBar mode="dark">佣兵信息完善</NavBar>
             <AvatarSelector selectAvatar={imgname => {
                 this.setState({
@@ -36,7 +48,9 @@ class YongbingInfo extends React.Component {
             <WhiteSpace />
             <WhiteSpace />
             <WhiteSpace />
-            <Button type="primary">出发</Button>
+            <Button type="primary" onClick={() => {
+                this.props.update(this.state)
+            }}>出发</Button>
         </div>
     }
 }
