@@ -9,23 +9,16 @@ import Cards from '../card/card'
     { getUserList }
 )
 
-class Boss extends React.Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            data: []
-        }
-    }
+class Yongbing extends React.Component {
     componentDidMount() {
-        //获取佣兵的数据
-        this.props.getUserList('yongbing')
+        //获取boss的数据
+        this.props.getUserList('boss')
     }
     render() {
         // const datas = this.props.userlist
-        // console.log(this.props.userlist)
         return <div>
             <Cards userlist={this.props.userlist}></Cards>
         </div>
     }
 }
-export default Boss
+export default Yongbing

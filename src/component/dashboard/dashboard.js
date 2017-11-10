@@ -4,17 +4,14 @@ import { withRouter, Switch, Route } from 'react-router-dom'
 import { NavBar } from 'antd-mobile'
 import NavLink from '../navLink/navLink'
 import Boss from '../boss/boss'
+import Yongbing from '../yongbing/yongbing'
+import Me from '../me/me'
 
 
 function Msg() {
     return <h1>Msg</h1>
 }
-function Yongbing() {
-    return <h1>Yongbing</h1>
-}
-function Me() {
-    return <h1>Me</h1>
-}
+
 @withRouter
 @connect(
     state => state

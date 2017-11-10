@@ -6,7 +6,9 @@ import { getRedirectUrl } from '../util.js'
 const ERROR_MSG = 'ERROR_MSG'
 const AUTH_SUCCESS = 'AUTH_SUCCESS'
 const LOGIN_DATA = 'LOGIN_DATA'
+const LOGO_OUT = 'LOGO_OUT'
 const initstate = {
+    rredirectTo: '',
     msg: '',
     user: '',
     type: ''
@@ -26,6 +28,9 @@ export function user(state = initstate, action) {
         case LOGIN_DATA: return {
             ...state, ...action.payload
         }
+        case LOGO_OUT: return {
+            ...initstate, redirectTo: '/login'
+        }
         default: return state
     }
 }
@@ -43,6 +48,10 @@ function errorMsg(msg) {
 }
 export function loadData(data) {
     return { type: LOGIN_DATA, payload: data }
+}
+
+export function logout() {
+    return { type: LOGO_OUT }
 }
 
 export function update(data) {
