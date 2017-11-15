@@ -2,6 +2,7 @@ const express = require('express')
 const Router = express.Router()
 const model = require('./model.js')
 const User = model.getModel('user')
+const Chat = model.getModel('chat')
 const util = require('utility')
 const _filter = {
     pwd: 0,
@@ -17,6 +18,18 @@ Router.get('/list', function (req, res) {
         return res.json({ code: 0, data: doc })
     })
 })
+//huoqu chat xinxi
+Router.get('/getMsglist', function (req, res) {
+    //huoqu user
+    const user = req.cookies.user
+    // { '$or': [{ from: user, to: user }] }
+    Chat.find({}, function (err, doc) {
+        if (!err) {
+            return res.json({ code: 0, msgs: doc })
+        }
+    })
+})
+
 //登录
 Router.post('/login', function (req, res) {
     //获取请求的数据

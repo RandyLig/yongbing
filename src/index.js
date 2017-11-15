@@ -14,7 +14,7 @@ import AddTask from './component/addtask/addtask.js'
 import BossInfo from './container/bossinfo/bossinfo.js'
 import YongbingInfo from './container/yongbinginfo/yongbinginfo.js'
 import DashBoard from './component/dashboard/dashboard.js'
-
+import Chat from './component/chat/chat'
 
 const store = createStore(reducers, compose(
     applyMiddleware(thunk),
@@ -31,6 +31,7 @@ ReactDOM.render(
                     <Route path='/login' component={Login} />
                     <Route path='/register' component={Register} />
                     <Route path='/addtask' component={AddTask} />
+                    <Route path='/chat/:user' component={Chat} />
                     <Route component={DashBoard} />
                 </Switch>
             </div>

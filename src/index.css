@@ -34,3 +34,12 @@ body{
 .am-tab-bar-tab-title {
     font-size: 12px !important;
 }
+
+
+/* // chat组件 */
+.submitMsg {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    /* border: none; */
+}

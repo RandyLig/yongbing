@@ -5,35 +5,42 @@ mongoose.connect(DB_URL)
 
 const models = {
     user: {
-        'user':{'type':String, require:true},
-        'pwd':{'type':String, require:true},
-        'type':{'type':String, require:true},
+        'user': { 'type': String, require: true },
+        'pwd': { 'type': String, require: true },
+        'type': { 'type': String, require: true },
         //头像
-        'avatar':{'type':String},
+        'avatar': { 'type': String },
         //个人简介
-        'desc':{'type':String},
-        'age':{'type':String},
-        'sex':{'type':String},
-        'home':{'type':String},
+        'desc': { 'type': String },
+        'age': { 'type': String },
+        'sex': { 'type': String },
+        'home': { 'type': String },
         //个人简介
-        'resume':{'type':String},
+        'resume': { 'type': String },
         //特长
-        'specialities':{'type':String},
+        'specialities': { 'type': String },
         //任务目标
-        'taskname':{'type':String},
+        'taskname': { 'type': String },
         //任务详情
-        'desc':{'type':String},
+        'desc': { 'type': String },
     },
     //聊天
-    chat: {}
-} 
+    chat: {
+        'chatid': { 'type': String, require: true },
+        'from': { 'type': String, require: true },
+        'to': { 'type': String, require: true },
+        'content': { 'type': String, require: true, default: '' },
+        'creat_time': { 'type': Number, default: new Date().getTime() },
+        'read': { 'type': Boolean, default: false }
+    }
+}
 
 for (let m in models) {
     mongoose.model(m, new mongoose.Schema(models[m]))
 }
 
 module.exports = {
-    getModel:function(name) {
+    getModel: function (name) {
         return mongoose.model(name)
     }
 }
