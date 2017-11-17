@@ -8,8 +8,10 @@ const _filter = {
     pwd: 0,
     __v: 0
 }
+//清空聊天数据
+// Chat.remove({}, function (e, d) {
 
-
+// })
 Router.get('/list', function (req, res) {
     // 清空list下所有数据
     // User.remove({}, function (e, d) {})
@@ -20,14 +22,21 @@ Router.get('/list', function (req, res) {
 })
 //huoqu chat xinxi
 Router.get('/getMsglist', function (req, res) {
-    //huoqu user
-    const user = req.cookies.user
-    // { '$or': [{ from: user, to: user }] }
-    Chat.find({}, function (err, doc) {
-        if (!err) {
-            return res.json({ code: 0, msgs: doc })
-        }
+    //获取 userid
+    const user = req.cookies.userid
+    User.find({}, function (e, d) {
+        let users = {}
+        d.forEach(v => {
+            users[v._id] = { name: v.user, avatar: v.avatar }
+        })
+        // { '$or': [{ from: user, to: user }] }
+        Chat.find({ '$or': [{ from: user }, { to: user }] }, function (err, doc) {
+            if (!err) {
+                return res.json({ code: 0, msgs: doc, users: users })
+            }
+        })
     })
+
 })
 
 //登录

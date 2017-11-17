@@ -43,3 +43,12 @@ body{
     width: 100%;
     /* border: none; */
 }
+.chat .chat_listItem .am-list-content {
+    text-align: right !important;
+    padding-left: 15px;
+}
+
+.chat .chat_listItem .am-list-extra {
+    flex-basis: 10% !important;
+    
+}

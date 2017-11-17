@@ -7,6 +7,7 @@ import Boss from '../boss/boss'
 import Yongbing from '../yongbing/yongbing'
 import Me from '../me/me'
 
+import { getMsgList, reciveMsg } from '../../redux/chat.redux'
 
 function Msg() {
     return <h1>Msg</h1>
@@ -17,9 +18,19 @@ function Msg() {
     state => state
 )
 
-
+@connect(
+    state => state,
+    { getMsgList, reciveMsg }
+)
 
 class DashBoard extends React.Component {
+    componentDidMount() {
+        if (!this.props.chat.chatMsg.length) {
+            this.props.getMsgList()
+            this.props.reciveMsg()
+        }
+
+    }
     render() {
         const { pathname } = this.props.location
         const user = this.props.user
@@ -50,6 +61,7 @@ class DashBoard extends React.Component {
             text: '个人',
             component: Me,
         }]
+
         return <div>
             <NavBar mode="dark">{NavList.find(v => v.path === pathname).title}</NavBar>
             <div>
