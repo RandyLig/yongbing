@@ -52,3 +52,11 @@ body{
     flex-basis: 10% !important;
     
 }
+
+.chat .am-grid-icon {
+    display: none;
+}
+.chat .am-grid-text {
+    margin-top: 0 !important;
+    font-size: 16px !important;
+}
