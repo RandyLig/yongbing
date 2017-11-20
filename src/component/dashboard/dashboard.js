@@ -6,12 +6,8 @@ import NavLink from '../navLink/navLink'
 import Boss from '../boss/boss'
 import Yongbing from '../yongbing/yongbing'
 import Me from '../me/me'
-
+import Msg from '../msg/msg'
 import { getMsgList, reciveMsg } from '../../redux/chat.redux'
-
-function Msg() {
-    return <h1>Msg</h1>
-}
 
 @withRouter
 @connect(

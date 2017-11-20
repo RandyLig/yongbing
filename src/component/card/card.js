@@ -17,8 +17,9 @@ class Cards extends React.Component {
             <WingBlank>
                 <WhiteSpace />
                 <WhiteSpace />
-                {this.props.userlist.map(v => (
-                    <div>
+                {this.props.userlist.map(v => {
+                    // console.log(v._id)
+                    return (<div>
                         <WhiteSpace />
                         <Card key={v._id} onClick={() => this.handleChange(v)}>
                             <Card.Header
@@ -30,8 +31,8 @@ class Cards extends React.Component {
                                 {v.resume}
                             </Card.Body>
                         </Card>
-                    </div>
-                ))}
+                    </div>)
+                })}
 
             </WingBlank>)
     }
