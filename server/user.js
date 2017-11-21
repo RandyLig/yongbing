@@ -107,4 +107,21 @@ Router.post('/update', function (req, res) {
     })
 })
 
+// 标记已读 
+Router.post('/hadread', function (req, res) {
+    //获取请求的数据
+    const userid = req.cookies.userid
+    const { from } = req.body
+    Chat.update({ from, to: userid }
+        , { '$set': { read: true } }
+        , { 'multi': true }
+        , function (err, doc) {
+            if (!err) {
+                return res.json({ code: 0, num: doc.nModified })
+            }
+            return res.json({ code: 1, msg: '修改失败' })
+        })
+})
+
+
 module.exports = Router

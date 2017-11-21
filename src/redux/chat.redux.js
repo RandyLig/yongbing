@@ -8,7 +8,7 @@ const MSG_LIST = 'MSG_LIST'
 //获取聊天消息
 const MSG_RECIVE = 'MSG_RECIVE'
 //获取是否已读
-// const MSG_READ = 'MSG_READ'
+const MSG_READ = 'MSG_READ'
 
 const initstate = {
     chatMsg: [],
@@ -28,10 +28,14 @@ export function chat(state = initstate, action) {
             return {
                 ...state, chatMsg: [...state.chatMsg, action.payload.msg], unread: state.unread + n
             }
-        // case MSG_READ:
-        //     return {
-        //         ...state, userlist: action.payload
-        //     }
+        case MSG_READ:
+            const { from } = action.payload
+            return {
+                ...state, unread: state.unread - action.payload.num, chatMsg: state.chatMsg.map(v => ({
+                    ...v,
+                    read: v.from === from ? true : v.read
+                }))
+            }
         default: return state
     }
 }
@@ -43,6 +47,9 @@ function reviceMsgs(msg, userid) {
     return { type: 'MSG_RECIVE', payload: { msg, userid } }
 }
 
+function hadReadMsg({ from, userid, num }) {
+    return { type: 'MSG_READ', payload: { from, userid, num } }
+}
 export function sendMsg({ from, to, msg }) {
     //把数据放入socket
     return dispatch => { socket.emit('sendMsg', { from, to, msg }) }
@@ -68,6 +75,21 @@ export function getMsgList() {
                     // console.log(getState())
                     const userid = getState().user._id
                     dispatch(msgList(res.data.msgs, res.data.users, userid))
+                }
+            }
+        )
+    }
+}
+// 查看后设置取消badge   已读函数
+export function hadread(from) {
+    return (dispatch, getState) => {
+        axios.post('/user/hadread', { from }).then(
+            res => {
+                if (res.status === 200 && res.data.code === 0) {
+                    // console.log(getState())
+                    const userid = getState().user._id
+                    //分别是当前与之聊天的用户，登录的用户，未读消息数
+                    dispatch(hadReadMsg({ from, userid, num: res.data.num }))
                 }
             }
         )
