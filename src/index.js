@@ -15,12 +15,15 @@ import BossInfo from './container/bossinfo/bossinfo.js'
 import YongbingInfo from './container/yongbinginfo/yongbinginfo.js'
 import DashBoard from './component/dashboard/dashboard.js'
 import Chat from './component/chat/chat'
-
+import Info from './component/info/info'
+import Published from './component/published/published'
 const store = createStore(reducers, compose(
     applyMiddleware(thunk),
     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 ))
 ReactDOM.render(
+    // 可以用componentDidCatch(){}来处理出错
+    
     <Provider store={store}>
         <BrowserRouter>
             <div>
@@ -32,6 +35,8 @@ ReactDOM.render(
                     <Route path='/register' component={Register} />
                     <Route path='/addtask' component={AddTask} />
                     <Route path='/chat/:user' component={Chat} />
+                    <Route path='/info'  component={Info}/>
+                    <Route path='/published'  component={Published}/>
                     <Route component={DashBoard} />
                 </Switch>
             </div>

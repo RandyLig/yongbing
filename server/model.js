@@ -12,6 +12,7 @@ const models = {
         'avatar': { 'type': String },
         //个人简介
         'desc': { 'type': String },
+        'nickname': { 'type': String },
         'age': { 'type': String },
         'sex': { 'type': String },
         'home': { 'type': String },
@@ -32,6 +33,13 @@ const models = {
         'content': { 'type': String, require: true, default: '' },
         'create_time': { 'type': Number, default: new Date().getTime() },
         'read': { 'type': Boolean, default: false }
+    },
+    task: {
+        'title': { 'type': String, require: true },
+        'detail': { 'type': String, require: true, default: '暂无描述' },
+        'bossid': { 'type': String, require: true },
+        'yingbingid': { 'type': String},
+        'create_time': { 'type': Number, default: new Date().getTime() },
     }
 }
 

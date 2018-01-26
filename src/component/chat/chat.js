@@ -1,5 +1,5 @@
 import React from 'react'
-import io from 'socket.io-client'
+import QueueAnim from 'rc-queue-anim';
 import { List, InputItem, NavBar, Icon, Grid } from 'antd-mobile'
 import { connect } from 'react-redux'
 import { getMsgList, sendMsg, reciveMsg, hadread } from '../../redux/chat.redux'
@@ -76,6 +76,7 @@ class Chat extends React.Component {
                         icon={<Icon type="left" />}
                         onLeftClick={() => this.props.history.goBack()}
                     >{users[user].name}</NavBar>
+                    <QueueAnim>
                     {chatMsg.map(v => {
                         const avatar = require(`../img/${users[v.from].avatar}.png`)
                         return user === v.from ?
@@ -94,6 +95,7 @@ class Chat extends React.Component {
                                 </List.Item>
                             </List>)
                     })}
+                    </QueueAnim>
                 </div>
                 <div className='submitMsg'>
                     <List>

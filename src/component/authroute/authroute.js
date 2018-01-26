@@ -12,7 +12,7 @@ import { connect } from 'react-redux'
 class AuthRoute extends React.Component {
     componentDidMount() {
         // console.log(this.props)
-        const publicList = ['/login', '/register']
+        const publicList = ['/login', '/register','/msg']
         const pathname = this.props.location.pathname
         if (publicList.indexOf(pathname) > -1) {
             return null

@@ -3,6 +3,7 @@ const Router = express.Router()
 const model = require('./model.js')
 const User = model.getModel('user')
 const Chat = model.getModel('chat')
+const Task = model.getModel('task')
 const util = require('utility')
 const _filter = {
     pwd: 0,
@@ -17,6 +18,15 @@ Router.get('/list', function (req, res) {
     // User.remove({}, function (e, d) {})
     const { type } = req.query
     User.find({ type }, function (err, doc) {
+        return res.json({ code: 0, data: doc })
+    })
+})
+
+Router.get('/tasklist', function (req, res) {
+    // 清空tasklist下所有数据
+    // User.remove({}, function (e, d) {})
+
+    User.find(function (err, doc) {
         return res.json({ code: 0, data: doc })
     })
 })
@@ -121,6 +131,30 @@ Router.post('/hadread', function (req, res) {
             }
             return res.json({ code: 1, msg: '修改失败' })
         })
+})
+
+//发布任务
+Router.post('/addTask', function (req, res) {
+    const userid = req.cookies.userid
+    const { taskname, detail, time, reward } = req.body
+    Task.findOne({ taskname }, function (err, doc) {
+        if (doc) {
+            return res.json({ code: 1, msg: '该任务已存在' })
+        }
+        //用save方法是为了获得_id,用creat方法取不到_id
+        const TaskModel = new Task({ taskname, detail, time, reward })
+        TaskModel.save(function (e, d) {
+            if (e) {
+                return res.json({ code: 1, msg: '后台出错啦' })
+            }
+            const { taskname, detail, time, reward, _id, type } = d
+            // 重要，注册cookie
+            // res.cookie('userid', _id)
+            return res.json({
+                code: 0, data: { taskname, detail, time, reward, _id, type }
+            })
+        })
+    })
 })
 
 

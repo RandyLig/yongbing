@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 import { withRouter } from 'react-router-dom'
 
 @withRouter
-class Cards extends React.Component {
+class Published extends React.Component {
     static PropTypes = {
         userlist: PropTypes.array.isRequired
     }
@@ -42,4 +42,4 @@ class Cards extends React.Component {
     }
 }
 
-export default Cards
+export default Published

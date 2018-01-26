@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { List, Badge } from 'antd-mobile'
-
+import QueueAnim from 'rc-queue-anim';
 @connect(
     state => state
 )
@@ -28,6 +28,7 @@ class Msg extends React.Component {
         const userid = this.props.user._id
         const user = this.props.chat.users
         return <div>
+
             <List>
                 {chatList.map(v => {
                     const targetid = v[0].from === userid ? v[0].to : v[0].from
@@ -42,21 +43,25 @@ class Msg extends React.Component {
 
                     //读取未读消息数
                     const unread = v.filter(v => !v.read && v.to === userid).length
-                    return (<Item
-                        //当未读消息为0时过滤一下
-                        extra={<Badge text={unread ? unread : ''}></Badge>}
-                        key={chatItem._id}
-                        thumb={require(`../img/${user[targetid].avatar}.png`)}
-                        arrow='horizontal'
-                        onClick={() =>
-                            this.props.history.push(`/chat/${targetid}`)
-                        }
-                    >
-                        {chatItem.content}
-                        <Item.Brief>
-                            {user[targetid].name}
-                        </Item.Brief>
-                    </Item>)
+                    return (
+                        <QueueAnim type='bottom' key={chatItem._id}>
+                            <Item
+                                //当未读消息为0时过滤一下
+                                extra={<Badge text={unread ? unread : ''}></Badge>}
+                                key={chatItem._id + 'item'}
+                                thumb={require(`../img/${user[targetid].avatar}.png`)}
+                                arrow='horizontal'
+                                onClick={() =>
+                                    this.props.history.push(`/chat/${targetid}`)
+                                }
+                            >
+                                {chatItem.content}
+                                <Item.Brief>
+                                    {user[targetid].name}
+                                </Item.Brief>
+                            </Item>
+                        </QueueAnim>
+                    )
                 })}
             </List>
         </div>
