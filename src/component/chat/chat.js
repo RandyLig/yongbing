@@ -26,20 +26,19 @@ class Chat extends React.Component {
             this.props.getMsgList()
             this.props.reciveMsg()
         }
-        const from = this.props.match.params.user
-        // console.log('from', from)
-        this.props.hadread(from)
-        // socket.on('reciveMsg', (data) => {
-        //     this.setState({
-        //         msg: [...this.state.msg, data.text]
-        //     })
-        // })
+        // const to = this.props.match.params.user
+        // // console.log('from', from)
+        // this.props.hadread(to)
+        // // socket.on('reciveMsg', (data) => {
+        // //     this.setState({
+        // //         msg: [...this.state.msg, data.text]
+        // //     })
+        // // })
     }
     //退出聊天时执行
     componentWillUnmount() {
-        const from = this.props.match.params.user
-        // 
-        this.props.hadread(from)
+        const to = this.props.match.params.user
+        this.props.hadread(to)
     }
     fixCarousel() {
         setTimeout(function () {

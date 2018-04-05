@@ -4,13 +4,14 @@ import { connect } from 'react-redux'
 import { WhiteSpace, List, Button, Modal } from 'antd-mobile';
 import browserCookie from 'browser-cookies'
 import { logout } from '../../redux/user.redux'
+import { getTaskList } from '../../redux/task.redux'
 import { Redirect } from 'react-router-dom'
 const alert = Modal.alert;
 const Item = List.Item;
 const Brief = Item.Brief;
 @connect(
     state => state.user,
-    { logout }
+    { logout,getTaskList }
 )
 
 
@@ -83,7 +84,10 @@ class Me extends React.Component {
                         {this.props.type === 'boss' ? (<List.Item
                             multipleLine
                             thumb="https://zos.alipayobjects.com/rmsportal/dNuvNrtqUztHCwM.png"
-                            onClick={() => { this.props.history.push('/published') }}
+                            onClick={() => { 
+                                this.props.history.push('/published') 
+                                this.props.getTaskList()
+                        }}
                             arrow="horizontal"
                         >
                             已发布的任务

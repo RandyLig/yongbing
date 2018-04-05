@@ -34,11 +34,16 @@ const models = {
         'create_time': { 'type': Number, default: new Date().getTime() },
         'read': { 'type': Boolean, default: false }
     },
+    //任务
     task: {
         'title': { 'type': String, require: true },
         'detail': { 'type': String, require: true, default: '暂无描述' },
+        //确定发起任务的人
         'bossid': { 'type': String, require: true },
-        'yingbingid': { 'type': String},
+        'yingbingid': { 'type': String },
+        'reward': { 'type': String },
+        'type': { 'type': String },
+        'done': { 'type': Boolean, default: false },
         'create_time': { 'type': Number, default: new Date().getTime() },
     }
 }

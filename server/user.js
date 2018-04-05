@@ -26,7 +26,7 @@ Router.get('/tasklist', function (req, res) {
     // 清空tasklist下所有数据
     // User.remove({}, function (e, d) {})
 
-    User.find(function (err, doc) {
+    Task.find({}, function (err, doc) {
         return res.json({ code: 0, data: doc })
     })
 })
@@ -123,10 +123,11 @@ Router.post('/hadread', function (req, res) {
     const userid = req.cookies.userid
     const { from } = req.body
     Chat.update({ from, to: userid }
-        , { '$set': { read: true } }
+        , { read: true }
         , { 'multi': true }
         , function (err, doc) {
             if (!err) {
+              
                 return res.json({ code: 0, num: doc.nModified })
             }
             return res.json({ code: 1, msg: '修改失败' })
@@ -136,6 +137,8 @@ Router.post('/hadread', function (req, res) {
 //发布任务
 Router.post('/addTask', function (req, res) {
     const userid = req.cookies.userid
+    //确定发起任务boss 的id
+    const bossid = userid
     const { taskname, detail, time, reward } = req.body
     Task.findOne({ taskname }, function (err, doc) {
         if (doc) {
@@ -147,11 +150,11 @@ Router.post('/addTask', function (req, res) {
             if (e) {
                 return res.json({ code: 1, msg: '后台出错啦' })
             }
-            const { taskname, detail, time, reward, _id, type } = d
+            const { taskname, detail, time, reward, _id, type, bossid } = d
             // 重要，注册cookie
-            // res.cookie('userid', _id)
+            // res.cookie('taskid', _id)
             return res.json({
-                code: 0, data: { taskname, detail, time, reward, _id, type }
+                code: 0, data: { taskname, detail, time, reward, _id, type, bossid }
             })
         })
     })

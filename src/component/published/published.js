@@ -1,13 +1,20 @@
 import React from 'react'
 import QueueAnim from 'rc-queue-anim';
-import { Card, WingBlank, WhiteSpace } from 'antd-mobile'
+import { Button, Card, WingBlank, WhiteSpace, NavBar } from 'antd-mobile'
 import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 
+
 @withRouter
+@connect(
+    state => state,
+    {}
+)
+
 class Published extends React.Component {
     static PropTypes = {
-        userlist: PropTypes.array.isRequired
+        tasklist: PropTypes.array.isRequired
     }
 
     handleChange(v) {
@@ -15,29 +22,34 @@ class Published extends React.Component {
     }
     render() {
         return (
+            <div>
+                <NavBar
+                    mode="light"
+                    leftContent="返回"
+                    onLeftClick={() => this.props.history.go(-1)}>已发布任务</NavBar>
+                <WingBlank>
+                    <WhiteSpace />
+                    <WhiteSpace />
+                    {this.props.task.tasklist.map(v => {
+                        return (<div key={v._id}>
+                            <WhiteSpace />
+                            <QueueAnim>
+                                <Card key={v.taskname}>
+                                    <Card.Header
+                                        title={v.taskname}
+                                        // thumb={require(`../img/${v.avatar}.png`)}
+                                        extra={<a onClick={() => { console.log('完成') }} size="small" type="ghost">完成</a>}
+                                    />
+                                    <Card.Body>
+                                        {v.detail}
+                                    </Card.Body>
+                                </Card>
+                            </QueueAnim>
+                        </div>)
+                    })}
 
-            <WingBlank>
-                <WhiteSpace />
-                <WhiteSpace />
-                {this.props.userlist.map(v => {
-                    return (<div key={v._id}>
-                        <WhiteSpace />
-                        <QueueAnim>
-                            <Card key={v._id} onClick={() => this.handleChange(v)}>
-                                <Card.Header
-                                    title={v.nickname}
-                                    thumb={require(`../img/${v.avatar}.png`)}
-                                    extra={v.home}
-                                />
-                                <Card.Body>
-                                    {v.resume}
-                                </Card.Body>
-                            </Card>
-                        </QueueAnim>
-                    </div>)
-                })}
-
-            </WingBlank>
+                </WingBlank>
+            </div>
         )
     }
 }

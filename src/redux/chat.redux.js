@@ -85,9 +85,10 @@ export function hadread(from) {
     return (dispatch, getState) => {
         axios.post('/user/hadread', { from }).then(
             res => {
+                const userid = getState().user._id
                 if (res.status === 200 && res.data.code === 0) {
                     // console.log(getState())
-                    const userid = getState().user._id
+
                     //分别是当前与之聊天的用户，登录的用户，未读消息数
                     dispatch(hadReadMsg({ from, userid, num: res.data.num }))
                 }

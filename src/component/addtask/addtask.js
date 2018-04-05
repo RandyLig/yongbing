@@ -13,7 +13,7 @@ const data = [{
 }];
 
 @connect(
-    state => state.task,
+    state => state,
     { addTask }
 )
 
@@ -27,6 +27,7 @@ class AddTask extends React.Component {
             time: new Date(),
             reward: ''
         }
+        this.Submit = this.Submit.bind(this)
     }
     onChange = (files, type, index) => {
         console.log(files, type, index);
@@ -39,6 +40,11 @@ class AddTask extends React.Component {
         this.setState({
             [key]: val
         })
+    }
+    Submit() {
+        const from = this.props.user._id
+        this.props.addTask({ ...this.state, from })
+        this.props.history.push('/msg')
     }
     render() {
         const { files } = this.state;
@@ -68,10 +74,7 @@ class AddTask extends React.Component {
             <QueueAnim type='bottom' className='confirm'>
                 <WingBlank key={'confirmButton'}>
                     <Button type="warning"
-                        onClick={() => {
-                            this.props.addTask(this.state)
-                            this.props.history.push('/msg')
-                        }}
+                        onClick={this.Submit}
                         key={'button'} className='confirmButton'
                         size='small'
                         inline={true}

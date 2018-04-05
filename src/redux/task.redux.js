@@ -13,11 +13,11 @@ export function task(state = initstate, action) {
     switch (action.type) {
         case TASK_LIST:
             return {
-                ...state, tasklist: [...state.tasklist, action.payload]
+                ...state, tasklist: state.tasklist
             }
         case PUBLISH_SUCCESS:
             return {
-                ...state, ...action.payload
+                ...state, tasklist: [...state.tasklist, action.payload]
             }
         case ERROR_MSG:
             return {
@@ -38,7 +38,7 @@ export function taskList(data) {
     return { type: TASK_LIST, payload: data }
 }
 
-export function getTaskList(type) {
+export function getTaskList() {
     return dispatch => {
         axios.get('/user/tasklist').then(
             res => {
@@ -50,15 +50,15 @@ export function getTaskList(type) {
     }
 }
 
-export function addTask({ taskname, detail, time, reward }) {
+export function addTask({ taskname, detail, time, reward, from }) {
     if (!taskname) {
         return errorMsg('必须输入标题')
     }
     return dispatch => {
-        axios.post('/user/addTask', { taskname, detail, time, reward }).then(
+        axios.post('/user/addTask', { taskname, detail, time, reward, from }).then(
             res => {
                 if (res.status === 200 && res.data.code === 0) {
-                    dispatch(taskList({ taskname, detail, time, reward }))
+                    dispatch(publishSuccess({ taskname, detail, time, reward, from }))
                 } else {
                     dispatch(errorMsg(res.data.msg))
                 }
