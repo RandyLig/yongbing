@@ -25,7 +25,9 @@ class AddTask extends React.Component {
             taskname: '',
             detail: '',
             time: new Date(),
-            reward: ''
+            reward: '',
+            done: false,
+            to: ''
         }
         this.Submit = this.Submit.bind(this)
     }

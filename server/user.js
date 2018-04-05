@@ -127,7 +127,23 @@ Router.post('/hadread', function (req, res) {
         , { 'multi': true }
         , function (err, doc) {
             if (!err) {
-              
+
+                return res.json({ code: 0, num: doc.nModified })
+            }
+            return res.json({ code: 1, msg: '修改失败' })
+        })
+})
+//标记任务完成
+Router.post('/haddone', function (req, res) {
+    //获取请求的数据
+    const userid = req.cookies.userid
+    const { from } = req.body
+    Task.update({ from, to: userid }
+        , { read: true }
+        , { 'multi': true }
+        , function (err, doc) {
+            if (!err) {
+
                 return res.json({ code: 0, num: doc.nModified })
             }
             return res.json({ code: 1, msg: '修改失败' })
@@ -139,13 +155,13 @@ Router.post('/addTask', function (req, res) {
     const userid = req.cookies.userid
     //确定发起任务boss 的id
     const bossid = userid
-    const { taskname, detail, time, reward } = req.body
+    const { taskname, detail, time, reward, _id } = req.body
     Task.findOne({ taskname }, function (err, doc) {
         if (doc) {
             return res.json({ code: 1, msg: '该任务已存在' })
         }
         //用save方法是为了获得_id,用creat方法取不到_id
-        const TaskModel = new Task({ taskname, detail, time, reward })
+        const TaskModel = new Task({ taskname, detail, time, reward, bossid, _id })
         TaskModel.save(function (e, d) {
             if (e) {
                 return res.json({ code: 1, msg: '后台出错啦' })

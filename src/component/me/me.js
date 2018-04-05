@@ -11,7 +11,7 @@ const Item = List.Item;
 const Brief = Item.Brief;
 @connect(
     state => state.user,
-    { logout,getTaskList }
+    { logout, getTaskList }
 )
 
 
@@ -84,18 +84,43 @@ class Me extends React.Component {
                         {this.props.type === 'boss' ? (<List.Item
                             multipleLine
                             thumb="https://zos.alipayobjects.com/rmsportal/dNuvNrtqUztHCwM.png"
-                            onClick={() => { 
-                                this.props.history.push('/published') 
+                            onClick={() => {
+                                this.props.history.push('/published')
                                 this.props.getTaskList()
-                        }}
+                            }}
                             arrow="horizontal"
                         >
                             已发布的任务
                     </List.Item>) : null}
                         <List.Item
                             multipleLine
+                            // thumb="https://zos.alipayobjects.com/rmsportal/UmbJMbWOejVOpxe.png"
+                            onClick={() => {
+                                this.props.history.push('/published')
+                                this.props.getTaskList()
+                            }}
+                            arrow="horizontal">
+
+                            查看任务
+                </List.Item>
+                        <List.Item
+                            multipleLine
                             thumb="https://zos.alipayobjects.com/rmsportal/UmbJMbWOejVOpxe.png"
-                            onClick={() => { console.log('跳转已完成任务页面') }}
+                            onClick={() => {
+                                this.props.history.push('/published')
+                                this.props.getTaskList()
+                            }}
+                            arrow="horizontal">
+
+                            正在进行的任务
+                </List.Item>
+                        <List.Item
+                            multipleLine
+                            thumb="https://zos.alipayobjects.com/rmsportal/UmbJMbWOejVOpxe.png"
+                            onClick={() => {
+                                this.props.history.push('/done')
+                                this.props.getTaskList()
+                            }}
                             arrow="horizontal">
 
                             已完成的任务
