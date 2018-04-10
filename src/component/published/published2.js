@@ -12,7 +12,7 @@ import { haddone } from '../../redux/task.redux'
     { haddone }
 )
 
-class Published extends React.Component {
+class Published2 extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -43,16 +43,16 @@ class Published extends React.Component {
                 <WingBlank>
                     <WhiteSpace />
                     <WhiteSpace />
-                    {tasklist.map(v => {
+                    {this.props.task.tasklist.map(v => {
                         return v.done ? '' : (<div key={v.time}>
                             <WhiteSpace />
                             <QueueAnim>
                                 <Card key={v.taskname}>
-                                        {/* //显示boss */}
+                                        {/* //显示yongbing */}
                                         <Card.Header
                                             title={v.taskname}
                                             // thumb={require(`../img/${v.avatar}.png`)}
-                                            extra={<a onClick={this.Submit} size="small" type="ghost">完成</a>}
+                                            extra={<a onClick={this.Submit} size="small" type="ghost">接受</a>}
                                         />
                                     <Card.Body>
                                         {v.detail}
@@ -72,4 +72,4 @@ class Published extends React.Component {
     }
 }
 
-export default Published
+export default Published2

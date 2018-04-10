@@ -92,18 +92,18 @@ class Me extends React.Component {
                         >
                             已发布的任务
                     </List.Item>) : null}
-                        <List.Item
+                        {this.props.type === 'yongbing' ? (<List.Item
                             multipleLine
                             // thumb="https://zos.alipayobjects.com/rmsportal/UmbJMbWOejVOpxe.png"
                             onClick={() => {
-                                this.props.history.push('/published')
+                                this.props.history.push('/published2')
                                 this.props.getTaskList()
                             }}
                             arrow="horizontal">
 
                             查看任务
-                </List.Item>
-                        <List.Item
+                </List.Item>) : null}
+                        {this.props.type === 'yongbing' ? (<List.Item
                             multipleLine
                             thumb="https://zos.alipayobjects.com/rmsportal/UmbJMbWOejVOpxe.png"
                             onClick={() => {
@@ -113,7 +113,7 @@ class Me extends React.Component {
                             arrow="horizontal">
 
                             正在进行的任务
-                </List.Item>
+                </List.Item>) : null}
                         <List.Item
                             multipleLine
                             thumb="https://zos.alipayobjects.com/rmsportal/UmbJMbWOejVOpxe.png"

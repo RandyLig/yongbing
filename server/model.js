@@ -36,12 +36,12 @@ const models = {
     },
     //任务
     task: {
-        'title': { 'type': String, require: true },
+        'taskname': { 'type': String, require: true },
         'detail': { 'type': String, require: true, default: '暂无描述' },
         //确定发起任务的人
         'bossid': { 'type': String, require: true },
         //确定完成任务的人
-        'yingbingid': { 'type': String },
+        'yongbingid': { 'type': String },
         'reward': { 'type': String },
         'type': { 'type': String },
         'done': { 'type': Boolean, default: false, require: true },

@@ -30,6 +30,9 @@ class Done extends React.Component {
         this.props.history.push(`/chat/${v._id}`)
     }
     render() {
+        // 過濾其他用戶發佈的任務
+        const userid = this.props.user._id
+        const tasklist = this.props.task.tasklist.filter(v => v.bossid === userid)
         return (
             <div>
                 <NavBar
@@ -39,7 +42,7 @@ class Done extends React.Component {
                 <WingBlank>
                     <WhiteSpace />
                     <WhiteSpace />
-                    {this.props.task.tasklist.map(v => {
+                    {tasklist.map(v => {
                         return v.done ? (<div key={v._id}>
                             <WhiteSpace />
                             <QueueAnim>

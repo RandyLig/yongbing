@@ -24,8 +24,7 @@ Router.get('/list', function (req, res) {
 
 Router.get('/tasklist', function (req, res) {
     // 清空tasklist下所有数据
-    // User.remove({}, function (e, d) {})
-
+    // Task.remove({}, function (e, d) {})
     Task.find({}, function (err, doc) {
         return res.json({ code: 0, data: doc })
     })
@@ -137,13 +136,13 @@ Router.post('/hadread', function (req, res) {
 Router.post('/haddone', function (req, res) {
     //获取请求的数据
     const userid = req.cookies.userid
-    const { from } = req.body
-    Task.update({ from, to: userid }
-        , { read: true }
-        , { 'multi': true }
+    // const { from } = req.body
+    const { bossid } = userid
+    Task.update({}
+        , { done: true }
+        // , { 'multi': true }
         , function (err, doc) {
             if (!err) {
-
                 return res.json({ code: 0, num: doc.nModified })
             }
             return res.json({ code: 1, msg: '修改失败' })
@@ -155,22 +154,22 @@ Router.post('/addTask', function (req, res) {
     const userid = req.cookies.userid
     //确定发起任务boss 的id
     const bossid = userid
-    const { taskname, detail, time, reward, _id } = req.body
+    const { taskname, detail, time, reward, _id, yongbingid } = req.body
     Task.findOne({ taskname }, function (err, doc) {
         if (doc) {
             return res.json({ code: 1, msg: '该任务已存在' })
         }
         //用save方法是为了获得_id,用creat方法取不到_id
-        const TaskModel = new Task({ taskname, detail, time, reward, bossid, _id })
+        const TaskModel = new Task({ taskname, detail, time, reward, bossid, _id, yongbingid })
         TaskModel.save(function (e, d) {
             if (e) {
                 return res.json({ code: 1, msg: '后台出错啦' })
             }
-            const { taskname, detail, time, reward, _id, type, bossid } = d
+            const { taskname, detail, time, reward, _id, type, bossid, yongbingid } = d
             // 重要，注册cookie
             // res.cookie('taskid', _id)
             return res.json({
-                code: 0, data: { taskname, detail, time, reward, _id, type, bossid }
+                code: 0, data: { taskname, detail, time, reward, _id, type, bossid, yongbingid }
             })
         })
     })

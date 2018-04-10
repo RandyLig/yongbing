@@ -24,10 +24,8 @@ class AddTask extends React.Component {
             files: data,
             taskname: '',
             detail: '',
-            time: new Date(),
             reward: '',
-            done: false,
-            to: ''
+            yongbingid: ''
         }
         this.Submit = this.Submit.bind(this)
     }

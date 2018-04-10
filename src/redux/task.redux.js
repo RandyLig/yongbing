@@ -5,6 +5,7 @@ const TASK_LIST = 'TASK_LIST'
 const ERROR_MSG = 'ERROR_MSG'
 const TASK_DONE = 'TASK_DONE'
 const PUBLISH_SUCCESS = 'PUBLISH_SUCCESS'
+const ACCEPT_TASK = 'ACCEPT_TASK'
 const initstate = {
     tasklist: []
 }
@@ -14,7 +15,7 @@ export function task(state = initstate, action) {
     switch (action.type) {
         case TASK_LIST:
             return {
-                ...state, tasklist: state.tasklist
+                ...state, tasklist: action.payload
             }
         case PUBLISH_SUCCESS:
             return {
@@ -27,10 +28,7 @@ export function task(state = initstate, action) {
         case TASK_DONE:
             const { from } = action.payload
             return {
-                ...state, tasklist: state.tasklist.map(v => ({
-                    ...v,
-                    done: v.from === from ? v.done : true
-                }))
+                ...state, tasklist: state.tasklist
             }
         default: return state
     }
@@ -61,15 +59,15 @@ export function getTaskList() {
     }
 }
 
-export function addTask({ taskname, detail, time, reward, from, done, to }) {
+export function addTask({ taskname, detail, reward, from, yongbingid }) {
     if (!taskname) {
         return errorMsg('必须输入标题')
     }
     return dispatch => {
-        axios.post('/user/addTask', { taskname, detail, time, reward, from, done, to }).then(
+        axios.post('/user/addTask', { taskname, detail, reward, from, yongbingid }).then(
             res => {
                 if (res.status === 200 && res.data.code === 0) {
-                    dispatch(publishSuccess({ taskname, detail, time, reward, from, done, to }))
+                    dispatch(publishSuccess({ taskname, detail, reward, from, yongbingid }))
                 } else {
                     dispatch(errorMsg(res.data.msg))
                 }

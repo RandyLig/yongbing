@@ -17,6 +17,7 @@ import DashBoard from './component/dashboard/dashboard.js'
 import Chat from './component/chat/chat'
 import Info from './component/info/info'
 import Published from './component/published/published'
+import Published2 from './component/published/published2'
 import Done from './component/published/done'
 const store = createStore(reducers, compose(
     applyMiddleware(thunk),
@@ -38,6 +39,7 @@ ReactDOM.render(
                     <Route path='/chat/:user' component={Chat} />
                     <Route path='/info'  component={Info}/>
                     <Route path='/published'  component={Published}/>
+                    <Route path='/published2'  component={Published2}/>
                     <Route path='/Done'  component={Done}/>
                     <Route component={DashBoard} />
                 </Switch>

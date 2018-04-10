@@ -40,6 +40,7 @@ class Chat extends React.Component {
         const to = this.props.match.params.user
         this.props.hadread(to)
     }
+    // 防止antd-mobile自帶的bug
     fixCarousel() {
         setTimeout(function () {
             window.dispatchEvent(new Event('resize'))
