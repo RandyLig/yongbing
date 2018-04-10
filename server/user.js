@@ -136,18 +136,40 @@ Router.post('/hadread', function (req, res) {
 Router.post('/haddone', function (req, res) {
     //获取请求的数据
     const userid = req.cookies.userid
-    // const { from } = req.body
+    // 获取当前任务的id
+    const { taskid } = req.body
+    const _id = { taskid }
     const { bossid } = userid
-    Task.update({}
+    Task.findByIdAndUpdate(
+        _id
         , { done: true }
         // , { 'multi': true }
         , function (err, doc) {
             if (!err) {
-                return res.json({ code: 0, num: doc.nModified })
+                return res.json({ code: 0, data: data })
             }
             return res.json({ code: 1, msg: '修改失败' })
         })
 })
+
+//佣兵接受任务
+Router.post('/accepttask', function (req, res) {
+    //获取佣兵的id
+    const userid = req.cookies.userid
+    const { taskid } = req.body
+    const _id = { taskid }
+    Task.findByIdAndUpdate(
+        _id
+        , { yongbingid: userid }
+        // , { 'multi': true }
+        , function (err, doc) {
+            if (!err) {
+                return res.json({ code: 0, data: data })
+            }
+            return res.json({ code: 1, msg: '修改失败' })
+        })
+})
+
 
 //发布任务
 Router.post('/addTask', function (req, res) {

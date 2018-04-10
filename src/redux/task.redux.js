@@ -26,9 +26,20 @@ export function task(state = initstate, action) {
                 ...state, errmsg: action.errmsg, msg: ''
             }
         case TASK_DONE:
-            const { from } = action.payload
+            const { taskid } = action.payload
             return {
-                ...state, tasklist: state.tasklist
+                ...state, tasklist: state.tasklist.map(v => ({
+                    ...v,
+                    done: true
+                }))
+            }
+        case ACCEPT_TASK:
+            const { yongbingid, _id } = action.payload.data
+            return {
+                ...state, tasklist: state.tasklist.map(v => ({
+                    ...v,
+                    yongbingid: action.payload.data.taskid === _id ? yongbingid : v.yongbingid
+                }))
             }
         default: return state
     }
@@ -44,8 +55,11 @@ function errorMsg(errmsg) {
 export function taskList(data) {
     return { type: TASK_LIST, payload: data }
 }
-function hadDone({ from, userid, num }) {
-    return { type: 'TASK_DONE', payload: { from, userid, num } }
+function hadDone({ taskid, userid, data }) {
+    return { type: 'TASK_DONE', payload: { taskid, userid, data } }
+}
+function acceptTask({ taskid, data }) {
+    return { type: 'ACCEPT_TASK', payload: { taskid, data } }
 }
 export function getTaskList() {
     return dispatch => {
@@ -77,16 +91,30 @@ export function addTask({ taskname, detail, reward, from, yongbingid }) {
 }
 
 // 任务完成函数
-export function haddone(from) {
+export function haddone(taskid) {
     return (dispatch, getState) => {
-        axios.post('/user/haddone', { from }).then(
+        axios.post('/user/haddone', { taskid }).then(
             res => {
                 const userid = getState().user._id
                 if (res.status === 200 && res.data.code === 0) {
                     // console.log(getState())
-
                     //分别是当前与之聊天的用户，登录的用户，未读消息数
-                    dispatch(hadDone({ from, userid, num: res.data.num }))
+                    dispatch(hadDone({ taskid, userid, data: res.data.data }))
+                }
+            }
+        )
+    }
+}
+// 佣兵接受任务
+export function accepttask(taskid) {
+    return (dispatch, getState) => {
+        // 获取当前任务的独一标识id
+        // const taskid = getState().task.tasklist._id
+        axios.post('/user/accepttask', { taskid }).then(
+            res => {
+                if (res.status === 200 && res.data.code === 0) {
+                    // console.log(getState())
+                    dispatch(acceptTask({ taskid, data: res.data.data }))
                 }
             }
         )

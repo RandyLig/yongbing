@@ -22,9 +22,8 @@ class Published extends React.Component {
     static PropTypes = {
         tasklist: PropTypes.array.isRequired
     }
-    Submit() {
-        const from = this.props.user._id
-        this.props.haddone({ from })
+    Submit(v) {
+        this.props.haddone(v._id)
     }
     handleChange(v) {
         this.props.history.push(`/chat/${v._id}`)
@@ -33,7 +32,7 @@ class Published extends React.Component {
         // 過濾其他用戶發佈的任務
         const userid = this.props.user._id
         const tasklist = this.props.task.tasklist.filter(v => v.bossid === userid)
-        
+
         return (
             <div>
                 <NavBar
@@ -44,21 +43,21 @@ class Published extends React.Component {
                     <WhiteSpace />
                     <WhiteSpace />
                     {tasklist.map(v => {
-                        return v.done ? '' : (<div key={v.time}>
+                        return v.done ? '' : (<div key={v._id}>
                             <WhiteSpace />
                             <QueueAnim>
-                                <Card key={v.taskname}>
-                                        {/* //显示boss */}
-                                        <Card.Header
-                                            title={v.taskname}
-                                            // thumb={require(`../img/${v.avatar}.png`)}
-                                            extra={<a onClick={this.Submit} size="small" type="ghost">完成</a>}
-                                        />
+                                <Card key={v._id}>
+                                    {/* //显示boss */}
+                                    <Card.Header
+                                        title={v.taskname}
+                                        // thumb={require(`../img/${v.avatar}.png`)}
+                                        extra={<a onClick={() => this.Submit(v)} size="small" type="ghost">完成</a>}
+                                    />
                                     <Card.Body>
                                         {v.detail}
                                     </Card.Body>
                                     <Card.Footer
-                                        content={v.to ? v.to : "暂无人接受"}
+                                        content={v.yongbingid ? v.yongbingid : "暂无人接受"}
                                     >
                                     </Card.Footer>
                                 </Card>
