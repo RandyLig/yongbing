@@ -107,7 +107,7 @@ class Me extends React.Component {
                             multipleLine
                             thumb="https://zos.alipayobjects.com/rmsportal/UmbJMbWOejVOpxe.png"
                             onClick={() => {
-                                this.props.history.push('/published')
+                                this.props.history.push('/doing')
                                 this.props.getTaskList()
                             }}
                             arrow="horizontal">

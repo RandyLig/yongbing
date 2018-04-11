@@ -98,7 +98,6 @@ export function haddone(taskid) {
                 const userid = getState().user._id
                 if (res.status === 200 && res.data.code === 0) {
                     // console.log(getState())
-                    //分别是当前与之聊天的用户，登录的用户，未读消息数
                     dispatch(hadDone({ taskid, userid, data: res.data.data }))
                 }
             }

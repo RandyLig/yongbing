@@ -5,8 +5,8 @@ const cookieParser = require('cookie-parser')
 const model = require('./model.js')
 const User = model.getModel('user')
 const Chat = model.getModel('chat')
+const Task = model.getModel('task')
 const app = express()
-
 const server = require('http').Server(app)
 const io = require('socket.io')(server)
 

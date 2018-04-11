@@ -4,15 +4,15 @@ import { Card, WingBlank, WhiteSpace, NavBar } from 'antd-mobile'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import { accepttask } from '../../redux/task.redux'
+// import { haddone } from '../../redux/task.redux'
 
 @withRouter
 @connect(
     state => state,
-    { accepttask }
+    {  }
 )
 
-class Published2 extends React.Component {
+class Doing extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -23,37 +23,36 @@ class Published2 extends React.Component {
         tasklist: PropTypes.array.isRequired
     }
     Submit(v) {
-        console.log(v._id)
-        this.props.accepttask(v._id)
-
+        console.log('正在进行中等待boss确认完成')
+        // this.props.haddone(v._id)
     }
     handleChange(v) {
         this.props.history.push(`/chat/${v._id}`)
     }
     render() {
-        // 過濾其他用戶發佈的任務
+        // 過濾其他用戶發佈的任務，获取当前佣兵接取的任务
         const userid = this.props.user._id
-        const tasklist = this.props.task.tasklist.filter(v => v.bossid === userid)
+        const tasklist = this.props.task.tasklist.filter(v => v.yongbingid === userid)
 
         return (
             <div>
                 <NavBar
                     mode="light"
                     leftContent="返回"
-                    onLeftClick={() => this.props.history.go(-1)}>已发布任务</NavBar>
+                    onLeftClick={() => this.props.history.go(-1)}>正在进行的任务</NavBar>
                 <WingBlank>
                     <WhiteSpace />
                     <WhiteSpace />
-                    {this.props.task.tasklist.map(v => {
+                    {tasklist.map(v => {
                         return v.done ? '' : (<div key={v._id}>
                             <WhiteSpace />
                             <QueueAnim>
                                 <Card key={v._id}>
-                                    {/* //显示yongbing */}
+                                    {/* //显示boss */}
                                     <Card.Header
                                         title={v.taskname}
                                         // thumb={require(`../img/${v.avatar}.png`)}
-                                        extra={<a onClick={() => this.Submit(v)} size="small" type="ghost">接受</a>}
+                                        extra={<a onClick={() => this.Submit(v)} size="small" type="ghost">正在进行中</a>}
                                     />
                                     <Card.Body>
                                         {v.detail}
@@ -73,4 +72,4 @@ class Published2 extends React.Component {
     }
 }
 
-export default Published2
+export default Doing
