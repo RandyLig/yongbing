@@ -17,6 +17,7 @@ class Msg extends React.Component {
             msgGroup[v.chatid] = msgGroup[v.chatid] || []
             msgGroup[v.chatid].push(v)
         })
+  
         //将消息按创建时间排序
         const chatList = Object.values(msgGroup).sort((a, b) => {
             const a_last = this.getLast(a).create_time

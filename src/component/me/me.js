@@ -1,7 +1,7 @@
 import React from 'react'
 import QueueAnim from 'rc-queue-anim';
 import { connect } from 'react-redux'
-import { WhiteSpace, List, Button, Modal } from 'antd-mobile';
+import { WhiteSpace, List, Button, Modal, Badge } from 'antd-mobile';
 import browserCookie from 'browser-cookies'
 import { logout } from '../../redux/user.redux'
 import { getTaskList } from '../../redux/task.redux'
@@ -60,7 +60,7 @@ class Me extends React.Component {
                         <Item extra='去完善'
                             arrow="horizontal"
                             multipleLine={true}
-                            thumb={<img src={require(`../img/${this.props.avatar}.png`)} style={{ width: 50 }} alt="" />}
+                            thumb={<img src={require(`../img/${this.props.avatar}.png`)} style={{ width: 25 }} alt="" />}
                             onClick={this.info}>
                             {this.props.type === 'yongbing' ? this.props.resume : this.props.nickname}
                             <Brief >{this.props.user}</Brief>
@@ -73,17 +73,47 @@ class Me extends React.Component {
                         renderHeader={() => '个人信息'}
                         key={'header'}
                     >
+                        {/* 实名认证 */}
+                        <List.Item
+                            multipleLine
+                            thumb={<img src={require(`../img/${'实名认证'}.png`)} style={{ width: 25 }} alt="" />}
+                            onClick={() => { this.props.history.push('/identify') }}
+                            arrow="horizontal"
+                        >
+                            实名认证
+                </List.Item>
+                        {/* 任务确认 */}
                         {this.props.type === 'boss' ? (<List.Item
                             multipleLine
-                            // thumb="https://zos.alipayobjects.com/rmsportal/dNuvNrtqUztHCwM.png"
+                            extra={<Badge text={'1'}></Badge>}
+                            thumb={<img src={require(`../img/${'发布任务'}.png`)} style={{ width: 25 }} alt="" />}
+                            onClick={() => { this.props.history.push('/addTask') }}
+                            arrow="horizontal"
+                        >
+                            任务确认
+                </List.Item>) : null}
+                    </List>
+                </QueueAnim>
+                <QueueAnim type='left' key={'list2'}>
+
+                    {/* 任务栏 */}
+                    <List
+                        renderHeader={() => '任务栏'}
+                        key={'header2'}
+                    >
+                        {/* BOSS发布任务 */}
+                        {this.props.type === 'boss' ? (<List.Item
+                            multipleLine
+                            thumb={<img src={require(`../img/${'发布任务'}.png`)} style={{ width: 25 }} alt="" />}
                             onClick={() => { this.props.history.push('/addTask') }}
                             arrow="horizontal"
                         >
                             发布任务
                 </List.Item>) : null}
+                        {/* BOSS查看已发布的任务 */}
                         {this.props.type === 'boss' ? (<List.Item
                             multipleLine
-                            thumb="https://zos.alipayobjects.com/rmsportal/dNuvNrtqUztHCwM.png"
+                            thumb={<img src={require(`../img/${'任务分配'}.png`)} style={{ width: 25 }} alt="" />}
                             onClick={() => {
                                 this.props.history.push('/published')
                                 this.props.getTaskList()
@@ -92,6 +122,7 @@ class Me extends React.Component {
                         >
                             已发布的任务
                     </List.Item>) : null}
+                        {/* 佣兵查看任务 */}
                         {this.props.type === 'yongbing' ? (<List.Item
                             multipleLine
                             // thumb="https://zos.alipayobjects.com/rmsportal/UmbJMbWOejVOpxe.png"
@@ -103,9 +134,10 @@ class Me extends React.Component {
 
                             查看任务
                 </List.Item>) : null}
+                        {/* 佣兵查看正在进行的任务 */}
                         {this.props.type === 'yongbing' ? (<List.Item
                             multipleLine
-                            thumb="https://zos.alipayobjects.com/rmsportal/UmbJMbWOejVOpxe.png"
+                            thumb={<img src={require(`../img/${'任务进行中'}.png`)} style={{ width: 25 }} alt="" />}
                             onClick={() => {
                                 this.props.history.push('/doing')
                                 this.props.getTaskList()
@@ -116,7 +148,7 @@ class Me extends React.Component {
                 </List.Item>) : null}
                         <List.Item
                             multipleLine
-                            thumb="https://zos.alipayobjects.com/rmsportal/UmbJMbWOejVOpxe.png"
+                            thumb={<img src={require(`../img/${'选择'}.png`)} style={{ width: 25 }} alt="" />}
                             onClick={() => {
                                 this.props.history.push('/done')
                                 this.props.getTaskList()

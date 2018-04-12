@@ -38,7 +38,7 @@ class Done extends React.Component {
                 <NavBar
                     mode="light"
                     leftContent="返回"
-                    onLeftClick={() => this.props.history.go(-1)}>已发布任务</NavBar>
+                    onLeftClick={() => this.props.history.go(-1)}>已完成任务</NavBar>
                 <WingBlank>
                     <WhiteSpace />
                     <WhiteSpace />
@@ -56,7 +56,7 @@ class Done extends React.Component {
                                         {v.detail}
                                     </Card.Body>
                                     <Card.Footer
-                                        content={v.to ? v.to : "暂无人接受"}
+                                        content={v.yongbingid ? v.yongbingid : "暂无人接受"}
                                     >
                                     </Card.Footer>
                                 </Card>

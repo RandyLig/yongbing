@@ -32,9 +32,8 @@ class Published2 extends React.Component {
     }
     render() {
         // 過濾其他用戶發佈的任務
-        const userid = this.props.user._id
-        const tasklist = this.props.task.tasklist.filter(v => v.bossid === userid)
-
+        // const userid = this.props.user._id
+        // const tasklist = this.props.task.tasklist.filter(v => v.bossid === userid)
         return (
             <div>
                 <NavBar
