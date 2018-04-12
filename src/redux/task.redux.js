@@ -27,10 +27,12 @@ export function task(state = initstate, action) {
             }
         case TASK_DONE:
             const { taskid } = action.payload
+            const id1 = action.payload.data._id
+            // console.log(taskid, id1)
             return {
                 ...state, tasklist: state.tasklist.map(v => ({
                     ...v,
-                    done: true
+                    done: v._id === taskid ? true : v.done
                 }))
             }
         case ACCEPT_TASK:
@@ -73,15 +75,15 @@ export function getTaskList() {
     }
 }
 
-export function addTask({ taskname, detail, reward, from, yongbingid }) {
+export function addTask({ taskname, detail, reward, from, yongbingid, files }) {
     if (!taskname) {
         return errorMsg('必须输入标题')
     }
     return dispatch => {
-        axios.post('/user/addTask', { taskname, detail, reward, from, yongbingid }).then(
+        axios.post('/user/addTask', { taskname, detail, reward, from, yongbingid, files }).then(
             res => {
                 if (res.status === 200 && res.data.code === 0) {
-                    dispatch(publishSuccess({ taskname, detail, reward, from, yongbingid }))
+                    dispatch(publishSuccess(res.data.data))
                 } else {
                     dispatch(errorMsg(res.data.msg))
                 }

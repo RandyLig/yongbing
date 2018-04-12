@@ -15,6 +15,7 @@ export function getChatId(userid, targetid) {
 
 //筛选佣兵列表
 export function filter(value, arr) {
+    //按年龄排列
     if (value === 'age') {
         const Group = {}
         arr.forEach(v => {
@@ -28,7 +29,16 @@ export function filter(value, arr) {
             const b_last = this.getLast(b).age
             return b_last - a_last
         })
-        console.log(userList)
+        // console.log(userList)
         return userList[0];
+    }
+    //按性别筛选
+    if (value === 'man') {
+        const userlist = arr.filter(v => v.sex === '男')
+        return userlist
+    }
+    if (value === 'woman') {
+        const userlist = arr.filter(v => v.sex === '女')
+        return userlist
     }
 }

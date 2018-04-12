@@ -176,7 +176,7 @@ Router.post('/addTask', function (req, res) {
     const userid = req.cookies.userid
     //确定发起任务boss 的id
     const bossid = userid
-    const { taskname, detail, time, reward, _id, yongbingid } = req.body
+    const { taskname, detail, time, reward, _id, yongbingid, files } = req.body
     Task.findOne({ taskname }, function (err, doc) {
         if (doc) {
             return res.json({ code: 1, msg: '该任务已存在' })
@@ -187,11 +187,11 @@ Router.post('/addTask', function (req, res) {
             if (e) {
                 return res.json({ code: 1, msg: '后台出错啦' })
             }
-            const { taskname, detail, time, reward, _id, type, bossid, yongbingid } = d
+            const { taskname, detail, time, reward, _id, type, bossid, yongbingid, imgUrl } = d
             // 重要，注册cookie
             // res.cookie('taskid', _id)
             return res.json({
-                code: 0, data: { taskname, detail, time, reward, _id, type, bossid, yongbingid }
+                code: 0, data: d
             })
         })
     })

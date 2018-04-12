@@ -7,11 +7,10 @@ import Boss from '../boss/boss'
 import Yongbing from '../yongbing/yongbing'
 import Me from '../me/me'
 import Msg from '../msg/msg'
-// import AddTask from '../addtask/addtask'
 import { getMsgList, reciveMsg } from '../../redux/chat.redux'
 import { filterUserList } from '../../redux/chatuser.redux'
 const Item = Popover.Item;
-const myImg = src => <img src={`https://gw.alipayobjects.com/zos/rmsportal/${src}.svg`} className="am-icon am-icon-xs" alt="" />;
+
 @withRouter
 @connect(
     state => state
@@ -102,10 +101,10 @@ class DashBoard extends React.Component {
                     // overlayStyle={{ color: 'currentColor' }}
                     visible={this.state.visible}
                     overlay={[
-                        (<Item key="4" value="age" icon={myImg('tOtXhkIWzwotgGSeptou')} data-seed="logId">按年龄</Item>),
-                        (<Item key="5" value="sex" icon={myImg('PKAgAqZWJVNwKsAJSmXd')} style={{ whiteSpace: 'nowrap' }}>按性别</Item>),
-                        (<Item key="6" value="area" icon={myImg('uQIYTFeRrjPELImDRrPt')}>
-                            <span style={{ marginRight: 5 }}>按地区</span>
+                        (<Item key="4" value="age" data-seed="logId">按年龄</Item>),
+                        (<Item key="5" value="man" style={{ whiteSpace: 'nowrap' }}>男性</Item>),
+                        (<Item key="6" value="woman" >
+                            <span style={{ marginRight: 5 }}>女性</span>
                         </Item>),
                     ]}
                     align={{
