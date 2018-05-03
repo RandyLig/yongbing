@@ -55,7 +55,7 @@ export function sendMsg({ from, to, msg }) {
     return dispatch => { socket.emit('sendMsg', { from, to, msg }) }
 }
 
-
+//客户端接收数据
 export function reciveMsg() {
     return (dispatch, getState) => {
         socket.on('reciveMsg', function (data) {

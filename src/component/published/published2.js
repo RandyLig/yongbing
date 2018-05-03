@@ -4,31 +4,35 @@ import { Card, WingBlank, WhiteSpace, NavBar } from 'antd-mobile'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import { accepttask } from '../../redux/task.redux'
+import { accepttask, getTaskList } from '../../redux/task.redux'
 
 @withRouter
 @connect(
     state => state,
-    { accepttask }
+    { accepttask, getTaskList }
 )
-
+//佣兵所看到的的任务列表
 class Published2 extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
         }
-        this.Submit = this.Submit.bind(this)
+        this.accept = this.accept.bind(this)
     }
     static PropTypes = {
         tasklist: PropTypes.array.isRequired
     }
-    Submit(v) {
+    accept(v) {
         console.log(v._id)
         this.props.accepttask(v._id)
 
     }
     handleChange(v) {
         this.props.history.push(`/chat/${v._id}`)
+    }
+    componentDidMount() {
+        //获取任务的数据
+        this.props.getTaskList()
     }
     render() {
         // 過濾其他用戶發佈的任務
@@ -52,7 +56,7 @@ class Published2 extends React.Component {
                                     <Card.Header
                                         title={v.taskname}
                                         // thumb={require(`../img/${v.avatar}.png`)}
-                                        extra={<a onClick={() => this.Submit(v)} size="small" type="ghost">接受</a>}
+                                        extra={<a onClick={() => this.accept(v)} size="small" type="ghost">接受</a>}
                                     />
                                     <Card.Body>
                                         {v.detail}

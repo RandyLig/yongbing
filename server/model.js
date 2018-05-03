@@ -23,7 +23,7 @@ const models = {
         //任务目标
         'taskname': { 'type': String },
         //任务详情
-        'desc': { 'type': String },
+        // 'desc': { 'type': String },
     },
     //聊天
     chat: {
@@ -43,10 +43,11 @@ const models = {
         //确定完成任务的人
         'yongbingid': { 'type': String },
         'imgUrl': { 'type': String, default: 'https://zos.alipayobjects.com/rmsportal/PZUUCKTRIHWiZSY.jpeg' },
-        'reward': { 'type': String },
+        'reward': { 'type': Number },
         'type': { 'type': String },
         'done': { 'type': Boolean, default: false, require: true },
         'create_time': { 'type': Number, default: new Date().getTime() },
+        'accept': { 'type': Boolean, default: false }
     }
 }
 

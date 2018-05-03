@@ -6,8 +6,10 @@ const ERROR_MSG = 'ERROR_MSG'
 const TASK_DONE = 'TASK_DONE'
 const PUBLISH_SUCCESS = 'PUBLISH_SUCCESS'
 const ACCEPT_TASK = 'ACCEPT_TASK'
+const REQUEST_TASK = 'REQUEST_TASK'
 const initstate = {
-    tasklist: []
+    tasklist: [],
+    requestlist: []
 }
 
 
@@ -34,6 +36,10 @@ export function task(state = initstate, action) {
                     ...v,
                     done: v._id === taskid ? true : v.done
                 }))
+            }
+        case REQUEST_TASK:
+            return {
+                ...state, requestlist: [...state.requestlist, action.payload]
             }
         case ACCEPT_TASK:
             const { yongbingid, _id } = action.payload.data
@@ -62,6 +68,9 @@ function hadDone({ taskid, userid, data }) {
 }
 function acceptTask({ taskid, data }) {
     return { type: 'ACCEPT_TASK', payload: { taskid, data } }
+}
+function requestTask({ taskid, data }) {
+    return { type: 'REQUEST_TASK', payload: { taskid, data } }
 }
 export function getTaskList() {
     return dispatch => {
@@ -106,7 +115,7 @@ export function haddone(taskid) {
         )
     }
 }
-// 佣兵接受任务
+// 佣兵接受任务(等待boss确认)
 export function accepttask(taskid) {
     return (dispatch, getState) => {
         // 获取当前任务的独一标识id
@@ -115,9 +124,24 @@ export function accepttask(taskid) {
             res => {
                 if (res.status === 200 && res.data.code === 0) {
                     // console.log(getState())
-                    dispatch(acceptTask({ taskid, data: res.data.data }))
+                    dispatch(requestTask({ taskid, data: res.data.data }))
                 }
             }
         )
     }
 }
+
+// export function accepttask(taskid) {
+//     return (dispatch, getState) => {
+//         // 获取当前任务的独一标识id
+//         // const taskid = getState().task.tasklist._id
+//         axios.post('/user/accepttask', { taskid }).then(
+//             res => {
+//                 if (res.status === 200 && res.data.code === 0) {
+//                     // console.log(getState())
+//                     dispatch(acceptTask({ taskid, data: res.data.data }))
+//                 }
+//             }
+//         )
+//     }
+// }

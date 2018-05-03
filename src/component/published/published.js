@@ -1,15 +1,15 @@
 import React from 'react'
 import QueueAnim from 'rc-queue-anim';
-import { Card, WingBlank, WhiteSpace, NavBar } from 'antd-mobile'
+import { Card, WingBlank, WhiteSpace, NavBar, Icon, Modal } from 'antd-mobile'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import { haddone } from '../../redux/task.redux'
-
+import { haddone, getTaskList } from '../../redux/task.redux'
+const prompt = Modal.prompt
 @withRouter
 @connect(
     state => state,
-    { haddone }
+    { haddone, getTaskList }
 )
 
 class Published extends React.Component {
@@ -28,6 +28,10 @@ class Published extends React.Component {
     handleChange(v) {
         this.props.history.push(`/chat/${v._id}`)
     }
+    componentDidMount() {
+        //获取任务的数据
+        this.props.getTaskList()
+    }
     render() {
         // 過濾其他用戶發佈的任務
         const userid = this.props.user._id
@@ -38,7 +42,16 @@ class Published extends React.Component {
                 <NavBar
                     mode="light"
                     leftContent="返回"
-                    onLeftClick={() => this.props.history.go(-1)}>已发布任务</NavBar>
+                    onLeftClick={() => this.props.history.go(-1)}
+                    rightContent={[
+                        //搜索按钮
+                        <Icon key="0" type="search" style={{ marginRight: '16px' }} onClick={
+                            () => prompt('请输入查询内容', '', [
+                                { text: 'Cancel' },
+                                { text: 'Submit', onPress: value => console.log(`输入的内容:${value}`) },
+                            ], 'default', '')} />
+                    ]}
+                >已发布任务</NavBar>
                 <WingBlank>
                     <WhiteSpace />
                     <WhiteSpace />

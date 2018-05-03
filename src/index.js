@@ -20,6 +20,7 @@ import Published from './component/published/published'
 import Published2 from './component/published/published2'
 import Doing from './component/published/doing'
 import Done from './component/published/done'
+import Confirm from './component/boss/confirm'
 const store = createStore(reducers, compose(
     applyMiddleware(thunk),
     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
@@ -33,6 +34,7 @@ ReactDOM.render(
                 <AuthRoute></AuthRoute>
                 <Switch>
                     <Route path='/bossinfo' component={BossInfo} />
+                    <Route path='/confirm' component={Confirm} />
                     <Route path='/yongbinginfo' component={YongbingInfo} />
                     <Route path='/login' component={Login} />
                     <Route path='/register' component={Register} />

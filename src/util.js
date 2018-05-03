@@ -8,7 +8,7 @@ export function getRedirectUrl({ type, avatar }) {
     }
     return url
 }
-
+//
 export function getChatId(userid, targetid) {
     return [userid, targetid].sort().join('_');
 }
@@ -41,4 +41,9 @@ export function filter(value, arr) {
         const userlist = arr.filter(v => v.sex === '女')
         return userlist
     }
+}
+
+//查询任务
+export function search(value) {
+
 }

@@ -10,10 +10,11 @@ const app = express()
 const server = require('http').Server(app)
 const io = require('socket.io')(server)
 
-
+//服务端开启服务
 io.on('connection', function (socket) {
     socket.on('sendMsg', function (data) {
         const { from, to, msg } = data
+        //为每一个聊天信息加入双方的id形成独一的id
         const chatid = [from, to].sort().join('_')
         //创建chat数据
         Chat.create({ chatid, from, to, content: msg }, function (err, doc) {
@@ -23,7 +24,7 @@ io.on('connection', function (socket) {
 
     })
 })
-
+//这里就可以解析get或者post的json数据
 app.use(cookieParser())
 app.use(bodyParser.json())
 app.use('/user', userRouter)

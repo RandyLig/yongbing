@@ -57,6 +57,7 @@ Router.post('/login', function (req, res) {
         if (!doc) {
             return res.json({ code: 1, msg: '用户名或密码错误' })
         }
+        //讲user的_id注册为cookie
         res.cookie('userid', doc._id)
         return res.json({ code: 0, data: doc })
     })
@@ -86,6 +87,8 @@ Router.post('/register', function (req, res) {
         })
     })
 })
+
+//首次登录完善信息
 Router.get('/info', function (req, res) {
     const { userid } = req.cookies
     if (!userid) {
@@ -132,7 +135,7 @@ Router.post('/hadread', function (req, res) {
             return res.json({ code: 1, msg: '修改失败' })
         })
 })
-//标记任务完成
+//标记任务完成(给boss发送一个请求)
 Router.post('/haddone', function (req, res) {
     //获取请求的数据
     const userid = req.cookies.userid
@@ -140,22 +143,31 @@ Router.post('/haddone', function (req, res) {
     const { taskid } = req.body
     const _id = taskid
     const { bossid } = userid
-    Task.findByIdAndUpdate(
-        _id
-        , { done: true }
-        // , { 'multi': true }
-        , function (err, doc) {
-            if (!err) {
-                return res.json({ code: 0, data: doc })
-            }
-            return res.json({ code: 1, msg: '修改失败' })
-        })
+    //标记任务完成
+    // Task.findByIdAndUpdate(
+    //     _id
+    //     , { done: true }
+    //     // , { 'multi': true }
+    //     , function (err, doc) {
+    //         if (!err) {
+    //             return res.json({ code: 0, data: doc })
+    //         }
+    //         return res.json({ code: 1, msg: '修改失败' })
+    //     })
+    //找到当前任务返回
+    Task.findOne(_id, function (err, doc) {
+        if (err) {
+            return res.json({ code: 1, msg: '后台出错了' })
+        }
+        return res.json({ code: 0, data: doc })
+    })
 })
 
 //佣兵接受任务
 Router.post('/accepttask', function (req, res) {
     //获取佣兵的id
     const userid = req.cookies.userid
+    //获取当前请求任务的id
     const { taskid } = req.body
     const _id = taskid
     Task.findByIdAndUpdate(
