@@ -21,6 +21,18 @@ Router.get('/list', function (req, res) {
         return res.json({ code: 0, data: doc })
     })
 })
+//查询符合地区条件的用户
+Router.get('/listArea', function (req, res) {
+    // 清空list下所有数据
+    // User.remove({}, function (e, d) {})
+    const { type, home } = req.query
+    // const { home } = req.body
+
+    console.log({ home })
+    User.find({ type, home }, function (err, doc) {
+        return res.json({ code: 0, data: doc })
+    })
+})
 
 Router.get('/tasklist', function (req, res) {
     // 清空tasklist下所有数据
@@ -29,7 +41,15 @@ Router.get('/tasklist', function (req, res) {
         return res.json({ code: 0, data: doc })
     })
 })
-//huoqu chat xinxi
+//获取请求状态中的任务
+Router.get('/requesttask', function (req, res) {
+    // 清空tasklist下所有数据
+    // Task.remove({}, function (e, d) {})
+    Task.find({ requset: true }, function (err, doc) {
+        return res.json({ code: 0, data: doc })
+    })
+})
+//获取聊天数据
 Router.get('/getMsglist', function (req, res) {
     //获取 userid
     const user = req.cookies.userid
@@ -124,6 +144,7 @@ Router.post('/hadread', function (req, res) {
     //获取请求的数据
     const userid = req.cookies.userid
     const { from } = req.body
+    console.log(from)
     Chat.update({ from, to: userid }
         , { read: true }
         , { 'multi': true }
@@ -163,23 +184,28 @@ Router.post('/haddone', function (req, res) {
     })
 })
 
-//佣兵接受任务
+//佣兵请求接受任务
 Router.post('/accepttask', function (req, res) {
     //获取佣兵的id
     const userid = req.cookies.userid
     //获取当前请求任务的id
     const { taskid } = req.body
     const _id = taskid
-    Task.findByIdAndUpdate(
-        _id
-        , { yongbingid: userid }
-        // , { 'multi': true }
-        , function (err, doc) {
-            if (!err) {
-                return res.json({ code: 0, data: doc })
-            }
-            return res.json({ code: 1, msg: '修改失败', err: err })
-        })
+    //根据佣兵id获取其用户名再返回给task
+    User.findOne({ _id: userid }, function (e, d) {
+        name = d.nickname
+        Task.findByIdAndUpdate(
+            _id
+            , { yongbingid: name, request: true }
+            // , { 'multi': true }
+            , function (err, doc) {
+                if (!err) {
+                    return res.json({ code: 0, data: doc })
+                }
+                return res.json({ code: 1, msg: '修改失败', err: err })
+            })
+    })
+
 })
 
 

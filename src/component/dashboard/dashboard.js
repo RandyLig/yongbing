@@ -1,16 +1,16 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { withRouter, Switch, Route, Redirect } from 'react-router-dom'
-import { Popover, NavBar, Icon } from 'antd-mobile'
+import { Popover, NavBar, Icon, Modal } from 'antd-mobile'
 import NavLink from '../navLink/navLink'
 import Boss from '../boss/boss'
 import Yongbing from '../yongbing/yongbing'
 import Me from '../me/me'
 import Msg from '../msg/msg'
 import { getMsgList, reciveMsg } from '../../redux/chat.redux'
-import { filterUserList } from '../../redux/chatuser.redux'
+import { filterUserList, areaSearch } from '../../redux/chatuser.redux'
 const Item = Popover.Item;
-
+const prompt = Modal.prompt
 @withRouter
 @connect(
     state => state
@@ -18,7 +18,7 @@ const Item = Popover.Item;
 
 @connect(
     state => state,
-    { getMsgList, reciveMsg, filterUserList }
+    { getMsgList, reciveMsg, filterUserList, areaSearch }
 )
 
 class DashBoard extends React.Component {
@@ -30,7 +30,16 @@ class DashBoard extends React.Component {
             selected: '',
         }
     }
-
+    correctType = (type) => {
+        if (type === 'boss') {
+            const type = 'yongbing'
+            return type
+        }
+        if (type === 'yongbing') {
+            const type = 'boss'
+            return type
+        }
+    };
     onSelect = (opt) => {
         // console.log(opt.props.value);
         this.setState({
@@ -38,7 +47,7 @@ class DashBoard extends React.Component {
             selected: opt.props.value,
         });
         // console.log(this.props.user.type)
-        this.props.filterUserList(this.props.user.type, opt.props.value)
+        this.props.filterUserList(this.correctType(this.props.user.type), opt.props.value)
     };
     handleVisibleChange = (visible) => {
         this.setState({
@@ -96,7 +105,7 @@ class DashBoard extends React.Component {
         const page = NavList.find(v => v.path === pathname)
         return page ? (<div>
             {page.icon === '猪' ? (<NavBar mode="dark" rightContent={
-                <Popover mask
+                <Popover
                     // overlayClassName="fortest"
                     // overlayStyle={{ color: 'currentColor' }}
                     visible={this.state.visible}
@@ -106,6 +115,12 @@ class DashBoard extends React.Component {
                         (<Item key="6" value="woman" >
                             <span style={{ marginRight: 5 }}>女性</span>
                         </Item>),
+                        (//搜索按钮
+                            <Icon style={{ marginLeft: 15 }} key="7" type='search' size='sm' value='address' onClick={
+                                () => prompt('请输入查询地区', '', [
+                                    { text: 'Cancel' },
+                                    { text: 'Submit', onPress: value => this.props.areaSearch(this.correctType(this.props.user.type), `${value}`) },
+                                ], 'default', '')}></Icon>)
                     ]}
                     align={{
                         overflow: { adjustY: 0, adjustX: 0 },

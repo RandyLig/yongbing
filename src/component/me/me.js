@@ -87,7 +87,7 @@ class Me extends React.Component {
                             multipleLine
                             extra={<Badge text={'1'}></Badge>}
                             thumb={<img src={require(`../img/${'发布任务'}.png`)} style={{ width: 25 }} alt="" />}
-                            onClick={() => { this.props.history.push('/confirm') }}
+                            onClick={() => { this.props.history.push('/confirm'), this.props.getTaskList() }}
                             arrow="horizontal"
                         >
                             任务确认

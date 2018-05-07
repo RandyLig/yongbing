@@ -2,6 +2,7 @@ import axios from 'axios'
 import { filter } from '../util'
 const USER_LIST = 'USER_LIST'
 const FILTER_USERLIST = 'FILTER_USERLIST'
+const AREA_USERLIST = 'AREA_USERLIST'
 const initstate = {
     userlist: [],
 }
@@ -18,6 +19,10 @@ export function chatuser(state = initstate, action) {
             return {
                 ...state, userlist: filter(filterValue, action.payload.data)
             }
+        case AREA_USERLIST:
+            return {
+                ...state, userlist: action.payload
+            }
         default: return state
     }
 }
@@ -27,6 +32,9 @@ export function userList(data) {
 }
 function filteruserList(data, filterValue) {
     return { type: FILTER_USERLIST, payload: { data, filterValue } }
+}
+function areauserList(data) {
+    return { type: AREA_USERLIST, payload: data }
 }
 
 export function getUserList(type) {
@@ -52,4 +60,18 @@ export function filterUserList(type, filterValue) {
         )
     }
 }
+
+export function areaSearch(type, home) {
+    return dispatch => {
+        console.log({ home })
+        axios.get('/user/listArea?type=' + type, { home }).then(
+            res => {
+                if (res.data.code === 0) {
+                    dispatch(areauserList(res.data.data))
+                }
+            }
+        )
+    }
+}
+
 

@@ -47,7 +47,9 @@ const models = {
         'type': { 'type': String },
         'done': { 'type': Boolean, default: false, require: true },
         'create_time': { 'type': Number, default: new Date().getTime() },
-        'accept': { 'type': Boolean, default: false }
+        'accept': { 'type': Boolean, default: false },
+        //属性表示是否在请求状态
+        'request': { 'type': Boolean, default: false }
     }
 }
 

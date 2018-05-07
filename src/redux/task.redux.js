@@ -59,25 +59,40 @@ function publishSuccess(data) {
 function errorMsg(errmsg) {
     return { errmsg, type: ERROR_MSG }
 }
-
+//获取全部任务列表
 export function taskList(data) {
     return { type: TASK_LIST, payload: data }
 }
+
 function hadDone({ taskid, userid, data }) {
     return { type: 'TASK_DONE', payload: { taskid, userid, data } }
 }
 function acceptTask({ taskid, data }) {
     return { type: 'ACCEPT_TASK', payload: { taskid, data } }
 }
+//获取请求状态的任务
 function requestTask({ taskid, data }) {
     return { type: 'REQUEST_TASK', payload: { taskid, data } }
 }
+//获取任务列表
 export function getTaskList() {
     return dispatch => {
         axios.get('/user/tasklist').then(
             res => {
                 if (res.data.code === 0) {
                     dispatch(taskList(res.data.data))
+                }
+            }
+        )
+    }
+}
+//获取请求状态中的任务
+export function getRequestTask() {
+    return dispatch => {
+        axios.get('/user/requesttask').then(
+            res => {
+                if (res.data.code === 0) {
+                    dispatch(requestTask(res.data.data))
                 }
             }
         )

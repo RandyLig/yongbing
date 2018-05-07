@@ -23,7 +23,7 @@ export function filter(value, arr) {
             Group[v.type].push(v)
         })
 
-        //将佣兵列表按年龄排序
+        //将佣兵列表按年龄排序 从小到大
         const userList = Object.values(Group).sort((a, b) => {
             const a_last = this.getLast(a).age
             const b_last = this.getLast(b).age
@@ -40,7 +40,12 @@ export function filter(value, arr) {
     if (value === 'woman') {
         const userlist = arr.filter(v => v.sex === '女')
         return userlist
+    } 
+    //按地区筛选
+    else {
+        return arr
     }
+
 }
 
 //查询任务
