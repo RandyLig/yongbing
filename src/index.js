@@ -21,6 +21,7 @@ import Published2 from './component/published/published2'
 import Doing from './component/published/doing'
 import Done from './component/published/done'
 import Confirm from './component/boss/confirm'
+import TestWrapper from './container/test.js'
 const store = createStore(reducers, compose(
     applyMiddleware(thunk),
     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
@@ -45,6 +46,7 @@ ReactDOM.render(
                     <Route path='/published2'  component={Published2}/>
                     <Route path='/doing'  component={Doing}/>
                     <Route path='/Done'  component={Done}/>
+                    <Route path='/Test'  component={TestWrapper}/>
                     <Route component={DashBoard} />
                 </Switch>
             </div>

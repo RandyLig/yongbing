@@ -16,6 +16,8 @@ class Info extends React.Component {
         super(props)
         this.state = {
             hasError: false,
+            hasErrorAge: false,
+            hasErrorSex: false,
             nickname: this.props.nickname,
             sex: this.props.sex,
             age: this.props.age,
@@ -41,6 +43,50 @@ class Info extends React.Component {
             Toast.info('请输入不超过8位的昵称');
         }
     }
+    //年龄验证
+    handleChangeAge(key, val) {
+        var pattern = /\D/g
+        console.log(val.replace(/\D/g, ''))
+        if (pattern.test(val) === true || val.replace(/\d/g, '').length > 3) {
+            this.setState({
+                hasErrorAge: true,
+            });
+        } else {
+            this.setState({
+                hasErrorAge: false,
+            });
+        }
+        this.setState({
+            [key]: val.replace(/\D/g, '')
+        })
+    }
+    onErrorClickAge = () => {
+        if (this.state.hasErrorAge) {
+            Toast.info('请输入正确的年龄');
+        }
+    }
+    //性别验证
+    // handleChangeSex(key, val) {
+    //     var pattern = /^['男'|'女']$/ ;
+    //     console.log(val.replace(/\D/g, ''))
+    //     if (pattern.test(val) === true || val.replace(/\d/g, '').length > 3) {
+    //         this.setState({
+    //             hasErrorSex: true,
+    //         });
+    //     } else {
+    //         this.setState({
+    //             hasErrorSex: false,
+    //         });
+    //     }
+    //     this.setState({
+    //         [key]: val.exec(pattern)
+    //     })
+    // }
+    // onErrorClickSex = () => {
+    //     if (this.state.hasErrorSex) {
+    //         Toast.info('请输入男或女');
+    //     }
+    // }
     render() {
         const path = this.props.location.pathname
         const re = this.props.redirectTo
@@ -55,7 +101,7 @@ class Info extends React.Component {
                     avatar: imgname
                 })
             }}></AvatarSelector>
-            <WhiteSpace/>
+            <WhiteSpace />
             <InputItem
                 defaultValue={this.props.nickname}
                 onChange={v => this.handleChange('nickname', v)}
@@ -65,12 +111,14 @@ class Info extends React.Component {
             >昵称</InputItem>
             <InputItem
                 onChange={v => this.handleChange('sex', v)}
-                defaultValue={this.props.sex}
+                value={this.props.sex}
                 editable="false"
                 extra={<Icon type='right'></Icon>}>性别</InputItem>
             <InputItem
-                onChange={v => this.handleChange('age', v)}
+                onChange={v => this.handleChangeAge('age', v)}
                 defaultValue={this.props.age}
+                error={this.state.hasErrorAge}
+                onErrorClick={this.onErrorClickAge}
                 extra={<Icon type='right'></Icon>}>年龄</InputItem>
             <TextareaItem
                 rows={2}
@@ -78,7 +126,7 @@ class Info extends React.Component {
                 onChange={v => this.handleChange('home', v)}
                 defaultValue={this.props.home}
                 title='家乡'
-               
+                clear='true'
             ></TextareaItem>
             <WhiteSpace />
             <WhiteSpace />

@@ -16,6 +16,7 @@ const _filter = {
 Router.get('/list', function (req, res) {
     // 清空list下所有数据
     // User.remove({}, function (e, d) {})
+    // Chat.remove({}, function (e, d) {})
     const { type } = req.query
     User.find({ type }, function (err, doc) {
         return res.json({ code: 0, data: doc })

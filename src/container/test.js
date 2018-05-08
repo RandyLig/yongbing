@@ -1,12 +1,9 @@
 import React from 'react'
-import { NavBar, InputItem, TextareaItem, Button, WhiteSpace, Picker, List } from 'antd-mobile'
-import AvatarSelector from '../../component/avatarSelector/avatarSelector.js'
-import { connect } from 'react-redux'
-import { update } from '../../redux/user.redux'
-import { Redirect } from 'react-router-dom'
+import { Picker, List, WhiteSpace } from 'antd-mobile';
 import { createForm } from 'rc-form';
 import arrayTreeFilter from 'array-tree-filter';
 import { district, provinceLite } from 'antd-mobile-demo-data';
+
 const sex = [
     [
         {
@@ -20,34 +17,19 @@ const sex = [
 
     ]
 ];
-
-@connect(
-    state => state.user,
-    { update }
-)
-
-class BossInfo extends React.Component {
+class Test extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            nickname: '',
-            sex: '',
-            age: '',
-            home: '',
             data: [],
             cols: 1,
-            // pickerValue: [],
+            pickerValue: [],
             asyncValue: [],
             visible: false,
-            // sValue: ''
+            sValue: ''
         }
-        // this.getSel = this.getSel.bind(this)
     }
-    handleChange(key, val) {
-        this.setState({
-            [key]: val
-        })
-    }
+
     onClick = () => {
         setTimeout(() => {
             this.setState({
@@ -97,83 +79,73 @@ class BossInfo extends React.Component {
         });
     };
     getSel() {
-        const value = this.state.home;
+        const value = this.state.pickerValue;
         if (!value) {
             return '';
         }
         const treeChildren = arrayTreeFilter(district, (c, level) => c.value === value[level]);
         return treeChildren.map(v => v.label).join(',');
     }
-    // setVal() {
-    //     this.props.form.setFieldsValue({
-    //         district: ['340000', '340800', '340822'],
-    //     });
-    // }
+    setVal() {
+        this.props.form.setFieldsValue({
+            district: ['340000', '340800', '340822'],
+        });
+    }
     render() {
-        const path = this.props.location.pathname
-        const re = this.props.redirectTo
-        return <div>
-            {re && re !== path ? <Redirect to={re} /> : null}
-            <NavBar mode="dark">boss信息完善</NavBar>
-            <AvatarSelector selectAvatar={imgname => {
-                this.setState({
-                    avatar: imgname
-                })
-            }}></AvatarSelector>
-            <InputItem onChange={v => this.handleChange('nickname', v)}>昵称</InputItem>
-            {/* 选择性别 */}
+        const { getFieldProps } = this.props.form;
+        return (<div>
+            <WhiteSpace size="lg" />
+            <List style={{ backgroundColor: 'white' }} className="picker-list">
+                <Picker extra="请选择(可选)"
+                    data={district}
+                    title="地区选择"
+                    {...getFieldProps('district', {
+                        initialValue: ['340000', '341500', '341502'],
+                    }) }
+                    onOk={e => console.log('ok', e)}
+                    onDismiss={e => console.log('dismiss', e)}
+                >
+                    <List.Item arrow="horizontal">地区选择</List.Item>
+                </Picker>
+            </List>
             <Picker
                 data={sex}
                 title="选择性别"
                 cascade={false}
                 extra="请选择"
                 cols={1}
-                value={this.state.sex}
-                onChange={v => this.setState({ sex: v })}
+                value={this.state.sValue}
+                onChange={v => this.setState({ sValue: v })}
                 onOk={v => {
-                    this.setState({ sex: v })
+                    this.setState({ sValue: v })
                     console.log(v[0])
+                    console.log(v)
                 }}
             >
-                <List.Item arrow="horizontal">性别</List.Item>
+                <List.Item arrow="horizontal">选择性别</List.Item>
             </Picker>
-            {/* 选择年龄 */}
-            <InputItem onChange={v => this.handleChange('age', v)}>年龄</InputItem>
             {/* 选择地区 */}
             <Picker
                 visible={this.state.visible}
                 data={district}
-                value={this.state.home}
-                onChange={v => this.setState({ home: v })}
-                onOk={v => {
-                    this.setState({ visible: false })
-                    this.setState({ home: v })
-                    // this.setState({ home: this.getSel() })
-                    console.log(this.state.home)
-                }}
+                value={this.state.pickerValue}
+                onChange={v => this.setState({ pickerValue: v })}
+                onOk={() => this.setState({ visible: false })}
                 onDismiss={() => this.setState({ visible: false })}
             >
                 <List.Item extra={this.getSel()} onClick={() => {
-                    this.setState({ visible: true })
+                    this.setState({ visible: true }),
+                        this.getSel()
+                    console.log(this.getSel())
                 }
                 }>
-                    地区
+                    地区选择
           </List.Item>
             </Picker>
-            <WhiteSpace />
-            <WhiteSpace />
-            <WhiteSpace />
-            <Button type="primary" onClick={() => {
-                var area = this.getSel()
-                console.log(area),
-                    this.setState({ home: area })
-                // this.props.update(this.state)
-                setTimeout(() => {
-                    console.log(this.state)
-                }, 1200);
-            }}>保存</Button>
-        </div >
+        </div>);
     }
-}
 
-export default BossInfo
+}
+const TestWrapper = createForm()(Test);
+export default TestWrapper
+// ReactDOM.render(<TestWrapper />, mountNode);

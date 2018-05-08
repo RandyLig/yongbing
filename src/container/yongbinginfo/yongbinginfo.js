@@ -1,10 +1,22 @@
 import React from 'react'
-import { NavBar, InputItem, Button, TextareaItem, WhiteSpace } from 'antd-mobile'
+import { NavBar, InputItem, Button, TextareaItem, WhiteSpace, Picker, List } from 'antd-mobile'
 import AvatarSelector from '../../component/avatarSelector/avatarSelector.js'
 import { connect } from 'react-redux'
 import { update } from '../../redux/user.redux'
 import { Redirect } from 'react-router-dom'
+const sex = [
+    [
+        {
+            label: '男',
+            value: '男',
+        },
+        {
+            label: '女',
+            value: '女',
+        }
 
+    ]
+];
 
 @connect(
     state => state.user,
@@ -42,7 +54,21 @@ class YongbingInfo extends React.Component {
                 })
             }}></AvatarSelector>
             <InputItem onChange={v => this.handleChange('nickname', v)}>昵称</InputItem>
-            <InputItem onChange={v => this.handleChange('sex', v)}>性别</InputItem>
+            <Picker
+                data={sex}
+                title="选择性别"
+                cascade={false}
+                extra="请选择"
+                cols={1}
+                value={this.state.sex}
+                onChange={v => this.setState({ sex: v })}
+                onOk={v => {
+                    this.setState({ sex: v })
+                    console.log(v[0])
+                }}
+            >
+                <List.Item arrow="horizontal">选择性别</List.Item>
+            </Picker>
             <InputItem onChange={v => this.handleChange('age', v)}>年龄</InputItem>
             <TextareaItem rows={2} autoHeight onChange={v => this.handleChange('home', v)} title='家乡'></TextareaItem>
             <InputItem onChange={v => this.handleChange('specialities', v)}>特长</InputItem>
