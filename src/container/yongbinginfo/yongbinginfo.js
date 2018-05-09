@@ -4,6 +4,8 @@ import AvatarSelector from '../../component/avatarSelector/avatarSelector.js'
 import { connect } from 'react-redux'
 import { update } from '../../redux/user.redux'
 import { Redirect } from 'react-router-dom'
+import arrayTreeFilter from 'array-tree-filter';
+import { district, provinceLite } from 'antd-mobile-demo-data';
 const sex = [
     [
         {
@@ -34,13 +36,26 @@ class YongbingInfo extends React.Component {
             home: '',
             //特长
             specialities: '',
-            resume: ''
+            resume: '',
+            data: [],
+            cols: 1,
+            // pickerValue: [],
+            asyncValue: [],
+            visible: false,
         }
     }
     handleChange(key, val) {
         this.setState({
             [key]: val
         })
+    }
+    getSel() {
+        const value = this.state.home;
+        if (!value) {
+            return '';
+        }
+        const treeChildren = arrayTreeFilter(district, (c, level) => c.value === value[level]);
+        return treeChildren.map(v => v.label).join(',');
     }
     render() {
         const path = this.props.location.pathname
@@ -67,17 +82,42 @@ class YongbingInfo extends React.Component {
                     console.log(v[0])
                 }}
             >
-                <List.Item arrow="horizontal">选择性别</List.Item>
+                <List.Item>选择性别</List.Item>
             </Picker>
             <InputItem onChange={v => this.handleChange('age', v)}>年龄</InputItem>
-            <TextareaItem rows={2} autoHeight onChange={v => this.handleChange('home', v)} title='家乡'></TextareaItem>
+            {/* 选择地区 */}
+            <Picker
+                visible={this.state.visible}
+                data={district}
+                value={this.state.home}
+                onChange={v => this.setState({ home: v })}
+                onOk={v => {
+                    this.setState({ visible: false })
+                    this.setState({ home: v })
+                    // this.setState({ home: this.getSel() })
+                    console.log(this.state.home)
+                }}
+                onDismiss={() => this.setState({ visible: false })}
+            >
+                <List.Item extra={this.getSel()} onClick={() => {
+                    this.setState({ visible: true })
+                }
+                }>
+                    地区
+          </List.Item>
+            </Picker>
             <InputItem onChange={v => this.handleChange('specialities', v)}>特长</InputItem>
             <TextareaItem rows={3} autoHeight onChange={v => this.handleChange('resume', v)} title='个人简介'></TextareaItem>
             <WhiteSpace />
             <WhiteSpace />
             <WhiteSpace />
             <Button type="primary" onClick={() => {
-                this.props.update(this.state)
+                var area = this.getSel()
+                this.setState({ home: area })
+                setTimeout(() => {
+                    console.log(this.state)
+                    this.props.update(this.state)
+                }, 1200);
             }}>出发</Button>
         </div>
     }

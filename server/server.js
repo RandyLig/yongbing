@@ -26,7 +26,9 @@ io.on('connection', function (socket) {
 })
 //这里就可以解析get或者post的json数据
 app.use(cookieParser())
-app.use(bodyParser.json())
+//增加后台传输容量 防止413报错
+app.use(bodyParser.json({limit: '50mb'}))
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 app.use('/user', userRouter)
 
 server.listen(9093, function () {

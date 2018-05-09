@@ -14,7 +14,8 @@ const initstate = {
     errmsg: '',
     msg: '',
     user: '',
-    type: ''
+    type: '',
+    avatar: ''
 }
 
 

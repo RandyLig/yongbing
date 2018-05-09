@@ -4,13 +4,6 @@ import QueueAnim from 'rc-queue-anim';
 import { connect } from 'react-redux'
 import { addTask } from '../../redux/task.redux'
 
-const data = [{
-    url: 'https://zos.alipayobjects.com/rmsportal/PZUUCKTRIHWiZSY.jpeg',
-    id: '2121',
-}, {
-    url: 'https://zos.alipayobjects.com/rmsportal/hqQWgTXdrlmVVYi.jpeg',
-    id: '2122',
-}];
 
 @connect(
     state => state,
@@ -21,7 +14,7 @@ class AddTask extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            files: data,
+            files: [],
             taskname: '',
             detail: '',
             reward: '',
@@ -66,7 +59,7 @@ class AddTask extends React.Component {
                     key={'ImagePicker'}
                     files={files}
                     onChange={this.onChange}
-                    onImageClick={(index, fs) => console.log(index, fs)}
+                    onImageClick={(index, fs) => console.log(index, fs,'111')}
                     selectable={true}
                     multiple={true}
                 />

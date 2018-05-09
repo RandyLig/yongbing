@@ -42,9 +42,13 @@ class Register extends React.Component {
         });
     }
 
-
+    //注册
     register() {
         this.props.register(this.state)
+        setTimeout(() => {
+            console.log(this.props.errmsg)
+            Toast.info(this.props.errmsg)
+        }, 500);
     }
 
     onBlue(v) {
@@ -70,9 +74,9 @@ class Register extends React.Component {
     }
     onErrorClick = () => {
         if (this.state.hasError) {
-          Toast.info('Please enter 11 digits');
+            Toast.info('Please enter 11 digits');
         }
-      }
+    }
     render() {
         return <div>
             {this.props.redirectTo ? <Redirect to={this.props.redirectTo} /> : null}

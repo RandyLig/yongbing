@@ -1,10 +1,9 @@
 import React from 'react'
-import { NavBar, InputItem, TextareaItem, Button, WhiteSpace, Picker, List } from 'antd-mobile'
+import { NavBar, InputItem, Button, WhiteSpace, Picker, List } from 'antd-mobile'
 import AvatarSelector from '../../component/avatarSelector/avatarSelector.js'
 import { connect } from 'react-redux'
 import { update } from '../../redux/user.redux'
 import { Redirect } from 'react-router-dom'
-import { createForm } from 'rc-form';
 import arrayTreeFilter from 'array-tree-filter';
 import { district, provinceLite } from 'antd-mobile-demo-data';
 const sex = [
@@ -165,11 +164,10 @@ class BossInfo extends React.Component {
             <WhiteSpace />
             <Button type="primary" onClick={() => {
                 var area = this.getSel()
-                console.log(area),
-                    this.setState({ home: area })
-                // this.props.update(this.state)
+                this.setState({ home: area })
                 setTimeout(() => {
                     console.log(this.state)
+                    this.props.update(this.state)
                 }, 1200);
             }}>保存</Button>
         </div >

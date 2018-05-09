@@ -11,24 +11,31 @@ const _filter = {
 }
 //清空聊天数据
 // Chat.remove({}, function (e, d) {
-
+// 清空list下所有数据
+// User.remove({}, function (e, d) {})
 // })
+//获取type=?的列表
 Router.get('/list', function (req, res) {
-    // 清空list下所有数据
-    // User.remove({}, function (e, d) {})
-    // Chat.remove({}, function (e, d) {})
     const { type } = req.query
     User.find({ type }, function (err, doc) {
         return res.json({ code: 0, data: doc })
     })
 })
+//Boss删除任务
+Router.post('/canceltask', function (req, res) {
+    const { taskid } = req.body
+    console.log(taskid)
+    Task.deleteOne({ _id: taskid }, function (err, doc) {
+        console.log(doc)
+        Task.find({}, function (e, d) {
+            return res.json({ code: 0, data: d })
+        })
+    })
+})
 //查询符合地区条件的用户
 Router.get('/listArea', function (req, res) {
-    // 清空list下所有数据
-    // User.remove({}, function (e, d) {})
     const { type, home } = req.query
     // const { home } = req.body
-
     console.log({ home })
     User.find({ type, home }, function (err, doc) {
         return res.json({ code: 0, data: doc })
@@ -166,23 +173,23 @@ Router.post('/haddone', function (req, res) {
     const _id = taskid
     const { bossid } = userid
     //标记任务完成
-    // Task.findByIdAndUpdate(
-    //     _id
-    //     , { done: true }
-    //     // , { 'multi': true }
-    //     , function (err, doc) {
-    //         if (!err) {
-    //             return res.json({ code: 0, data: doc })
-    //         }
-    //         return res.json({ code: 1, msg: '修改失败' })
-    //     })
+    Task.findByIdAndUpdate(
+        _id
+        , { done: true }
+        // , { 'multi': true }
+        , function (err, doc) {
+            if (!err) {
+                return res.json({ code: 0, data: doc })
+            }
+            return res.json({ code: 1, msg: '修改失败' })
+        })
     //找到当前任务返回
-    Task.findOne(_id, function (err, doc) {
-        if (err) {
-            return res.json({ code: 1, msg: '后台出错了' })
-        }
-        return res.json({ code: 0, data: doc })
-    })
+    // Task.findOne(_id, function (err, doc) {
+    //     if (err) {
+    //         return res.json({ code: 1, msg: '后台出错了' })
+    //     }
+    //     return res.json({ code: 0, data: doc })
+    // })
 })
 
 //佣兵请求接受任务
@@ -209,7 +216,26 @@ Router.post('/accepttask', function (req, res) {
 
 })
 
-
+//Boss确认该佣兵接受任务
+Router.post('/checktask', function (req, res) {
+    //获取请求的数据
+    const bossid = req.cookies.userid
+    // 获取当前任务的id
+    const { taskid } = req.body
+    const _id = taskid
+    //标记任务完成
+    Task.findByIdAndUpdate(
+        _id
+        , { accept: true, request: false }
+        // , { 'multi': true }
+        , function (err, doc) {
+            if (!err) {
+                return res.json({ code: 0, data: doc })
+            }
+            return res.json({ code: 1, msg: '修改失败' })
+        })
+  
+})
 //发布任务
 Router.post('/addTask', function (req, res) {
     const userid = req.cookies.userid
@@ -221,12 +247,12 @@ Router.post('/addTask', function (req, res) {
             return res.json({ code: 1, msg: '该任务已存在' })
         }
         //用save方法是为了获得_id,用creat方法取不到_id
-        const TaskModel = new Task({ taskname, detail, time, reward, bossid, _id, yongbingid })
+        const TaskModel = new Task({ taskname, detail, time, reward, bossid, _id, yongbingid, files })
         TaskModel.save(function (e, d) {
             if (e) {
                 return res.json({ code: 1, msg: '后台出错啦' })
             }
-            const { taskname, detail, time, reward, _id, type, bossid, yongbingid, imgUrl } = d
+            const { taskname, detail, time, reward, _id, type, bossid, yongbingid, files } = d
             // 重要，注册cookie
             // res.cookie('taskid', _id)
             return res.json({

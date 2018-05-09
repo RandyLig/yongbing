@@ -37,11 +37,15 @@ class Login extends React.Component {
     }
     login1() {
         this.login()
-        if (this.props.errmsg) {
-            Toast.fail(this.props.errmsg)
-        } else {
-            Toast.success(this.props.errmsg)
-        }
+        setTimeout(() => {
+            console.log(this.props.errmsg)
+            if (this.props.errmsg) {
+                Toast.fail(this.props.errmsg)
+            } else {
+                Toast.success(this.props.errmsg)
+            }
+        }, 500);
+
     }
     render() {
         return <div>

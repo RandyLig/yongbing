@@ -1,13 +1,11 @@
 import React from 'react'
 import QueueAnim from 'rc-queue-anim';
 import { connect } from 'react-redux'
-import { getRequestTask } from '../../redux/task.redux'
-import Cards from '../card/card'
-import { Icon, Modal, NavBar, Card, WingBlank, WhiteSpace } from 'antd-mobile'
-const prompt = Modal.prompt
+import { checkTask } from '../../redux/task.redux'
+import { NavBar, Card, WingBlank, WhiteSpace, Icon } from 'antd-mobile'
 @connect(
     state => state,
-    { getRequestTask }
+    { checkTask }
 )
 
 class Confirm extends React.Component {
@@ -16,15 +14,15 @@ class Confirm extends React.Component {
         this.state = {
             data: []
         }
-        this.Submit = this.Submit.bind(this)
+        this.Check = this.Check.bind(this)
     }
-    Submit(v) {
-        this.props.haddone(v._id)
+    Check(v) {
+        this.props.checkTask(v._id)
     }
-    componentDidMount() {
-        //获取待确认任务的数据
-        this.props.getRequestTask()
-    }
+    // componentDidMount() {
+    //     //获取待确认任务的数据
+    //     this.props.getRequestTask()
+    // }
     render() {
         // const datas = this.props.userlist
         // console.log(this.props.userlist)
@@ -32,15 +30,15 @@ class Confirm extends React.Component {
         const userid = this.props.user._id
         //筛选属于该boss的请求任务
         const tasklist = this.props.task.tasklist.filter(v => v.bossid === userid)
-        const requestlist = tasklist.filter(v => v.request === true)
+        const requestlist = tasklist.filter(v => (v.request === true && v.accept === false))
         return <div>
             <NavBar
                 mode="dark"
                 leftContent="返回"
                 onLeftClick={() => this.props.history.go(-1)}
-                rightContent={[
-
-                ]}
+                rightContent={
+                    <Icon type="check" onClick={() => console.log('done page')} />
+                }
             >任务确认</NavBar>
             <WingBlank>
                 <WhiteSpace />
@@ -54,7 +52,7 @@ class Confirm extends React.Component {
                                 <Card.Header
                                     title={v.yongbingid}
                                     // thumb={require(`../img/${v.avatar}.png`)}
-                                    extra={<a onClick={() => this.Submit(v)} size="small" type="ghost">确认</a>}
+                                    extra={<a onClick={() => this.Check(v)} size="small" type="ghost">确认</a>}
                                 />
                                 <Card.Body>
                                     请求接受您的{v.taskname}的任务

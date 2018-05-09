@@ -4,12 +4,12 @@ import { Card, WingBlank, WhiteSpace, NavBar, Icon, Modal } from 'antd-mobile'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import { haddone, getTaskList } from '../../redux/task.redux'
+import { haddone, getTaskList, cancelTask } from '../../redux/task.redux'
 const prompt = Modal.prompt
 @withRouter
 @connect(
     state => state,
-    { haddone, getTaskList }
+    { haddone, getTaskList, cancelTask }
 )
 
 class Published extends React.Component {
@@ -18,12 +18,16 @@ class Published extends React.Component {
         this.state = {
         }
         this.Submit = this.Submit.bind(this)
+        this.cancel = this.cancel.bind(this)
     }
     static PropTypes = {
         tasklist: PropTypes.array.isRequired
     }
     Submit(v) {
         this.props.haddone(v._id)
+    }
+    cancel(v) {
+        this.props.cancelTask(v._id)
     }
     handleChange(v) {
         this.props.history.push(`/chat/${v._id}`)
@@ -63,8 +67,10 @@ class Published extends React.Component {
                                     {/* //显示boss */}
                                     <Card.Header
                                         title={v.taskname}
-                                        // thumb={require(`../img/${v.avatar}.png`)}
-                                        extra={<a onClick={() => this.Submit(v)} size="small" type="ghost">完成</a>}
+                                        thumb={v.files[0].url}
+                                        thumbStyle={{ height: '56px', width: '50px' }}
+                                        extra={(<div><a style={{ color: 'red' }} onClick={() => this.Submit(v)} size="small" type="ghost">确认完成</a>
+                                            <a style={{ color: 'green' }} onClick={() => this.cancel(v)} size="small" type="ghost">取消任务</a></div>)}
                                     />
                                     <Card.Body>
                                         {v.detail}

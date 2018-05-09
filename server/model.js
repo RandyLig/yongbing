@@ -42,7 +42,7 @@ const models = {
         'bossid': { 'type': String, require: true },
         //确定完成任务的人
         'yongbingid': { 'type': String },
-        'imgUrl': { 'type': String, default: 'https://zos.alipayobjects.com/rmsportal/PZUUCKTRIHWiZSY.jpeg' },
+        'files': { 'type': Array },
         'reward': { 'type': Number },
         'type': { 'type': String },
         'done': { 'type': Boolean, default: false, require: true },

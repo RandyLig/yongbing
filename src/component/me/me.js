@@ -10,15 +10,15 @@ const alert = Modal.alert;
 const Item = List.Item;
 const Brief = Item.Brief;
 @connect(
-    state => state.user,
+    state => state,
     { logout, getTaskList }
 )
 
 
 class Me extends React.Component {
-
     constructor(props) {
         super(props)
+        this.props.getTaskList()
         this.logout = this.logout.bind(this)
         this.info = this.info.bind(this)
     }
@@ -40,9 +40,24 @@ class Me extends React.Component {
     info() {
         this.props.history.push('/info')
     }
+    componentDidMount() {
+        //获取任务列表筛选后获得待确认的徽标数
+        // this.props.getTaskList()
+        // //获取用户id
+        // const userid = this.props.user._id
+        // //筛选属于该boss的请求任务
+        // const tasklist = this.props.task.tasklist.filter(v => v.bossid === userid)
+        // const requestlist = tasklist.filter(v => (v.request === true && v.accept === false))
+        // console.log(requestlist.length)
+    }
     render() {
-        // console.log(this.props)
-        return this.props.user ? <QueueAnim>
+        //获取用户id
+        const userid = this.props.user._id
+        //筛选属于该boss的请求任务
+        const tasklist = this.props.task.tasklist.filter(v => v.bossid === userid)
+        const requestlist = tasklist.filter(v => (v.request === true && v.accept === false))
+        // console.log(requestlist.length)
+        return this.props.user.user ? <QueueAnim>
             <div>
                 <QueueAnim key='111' type='left'>
                     {/* <Result
@@ -54,16 +69,16 @@ class Me extends React.Component {
                         // onButtonClick={this.info}
                         key={'result'}
                     /> */}
-                    <List renderHeader={() => 'Customized Right Side（Empty Content / Text / Image）'}
+                    <List renderHeader={() => 'welcome'}
                         className="my-list"
                         key={'result'}>
                         <Item extra='去完善'
                             arrow="horizontal"
                             multipleLine={true}
-                            thumb={<img src={require(`../img/${this.props.avatar}.png`)} style={{ width: 25 }} alt="" />}
+                            thumb={<img src={require(`../img/${this.props.user.avatar}.png`)} style={{ width: 25 }} alt="" />}
                             onClick={this.info}>
-                            {this.props.type === 'yongbing' ? this.props.resume : this.props.nickname}
-                            <Brief >{this.props.user}</Brief>
+                            {this.props.user.type === 'yongbing' ? this.props.user.nickname : this.props.user.nickname}
+                            <Brief >{this.props.user.user}</Brief>
                         </Item>
                     </List>
                 </QueueAnim>
@@ -83,11 +98,11 @@ class Me extends React.Component {
                             实名认证
                 </List.Item>
                         {/* 任务确认 */}
-                        {this.props.type === 'boss' ? (<List.Item
+                        {this.props.user.type === 'boss' ? (<List.Item
                             multipleLine
-                            extra={<Badge text={'1'}></Badge>}
+                            extra={<Badge text={requestlist.length ? requestlist.length : ''}></Badge>}
                             thumb={<img src={require(`../img/${'发布任务'}.png`)} style={{ width: 25 }} alt="" />}
-                            onClick={() => { this.props.history.push('/confirm'), this.props.getTaskList() }}
+                            onClick={() => { (this.props.history.push('/confirm'), this.props.getTaskList()) }}
                             arrow="horizontal"
                         >
                             任务确认
@@ -95,14 +110,13 @@ class Me extends React.Component {
                     </List>
                 </QueueAnim>
                 <QueueAnim type='left' key={'list2'}>
-
                     {/* 任务栏 */}
                     <List
                         renderHeader={() => '任务栏'}
                         key={'header2'}
                     >
                         {/* BOSS发布任务 */}
-                        {this.props.type === 'boss' ? (<List.Item
+                        {this.props.user.type === 'boss' ? (<List.Item
                             multipleLine
                             thumb={<img src={require(`../img/${'发布任务'}.png`)} style={{ width: 25 }} alt="" />}
                             onClick={() => { this.props.history.push('/addTask') }}
@@ -111,7 +125,7 @@ class Me extends React.Component {
                             发布任务
                 </List.Item>) : null}
                         {/* BOSS查看已发布的任务 */}
-                        {this.props.type === 'boss' ? (<List.Item
+                        {this.props.user.type === 'boss' ? (<List.Item
                             multipleLine
                             thumb={<img src={require(`../img/${'任务分配'}.png`)} style={{ width: 25 }} alt="" />}
                             onClick={() => {
@@ -123,7 +137,7 @@ class Me extends React.Component {
                             已发布的任务
                     </List.Item>) : null}
                         {/* 佣兵查看任务 */}
-                        {this.props.type === 'yongbing' ? (<List.Item
+                        {this.props.user.type === 'yongbing' ? (<List.Item
                             multipleLine
                             // thumb="https://zos.alipayobjects.com/rmsportal/UmbJMbWOejVOpxe.png"
                             onClick={() => {
@@ -135,7 +149,7 @@ class Me extends React.Component {
                             查看任务
                 </List.Item>) : null}
                         {/* 佣兵查看正在进行的任务 */}
-                        {this.props.type === 'yongbing' ? (<List.Item
+                        {this.props.user.type === 'yongbing' ? (<List.Item
                             multipleLine
                             thumb={<img src={require(`../img/${'任务进行中'}.png`)} style={{ width: 25 }} alt="" />}
                             onClick={() => {
@@ -168,7 +182,7 @@ class Me extends React.Component {
                 </QueueAnim>
 
             </div>
-        </QueueAnim> : <Redirect to={this.props.redirectTo} />
+        </QueueAnim> : <Redirect to={this.props.user.redirectTo} />
     }
 }
 

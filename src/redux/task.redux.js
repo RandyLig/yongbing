@@ -7,6 +7,7 @@ const TASK_DONE = 'TASK_DONE'
 const PUBLISH_SUCCESS = 'PUBLISH_SUCCESS'
 const ACCEPT_TASK = 'ACCEPT_TASK'
 const REQUEST_TASK = 'REQUEST_TASK'
+const CHECK_DONE = 'CHECK_DONE'
 const initstate = {
     tasklist: [],
     requestlist: []
@@ -29,7 +30,7 @@ export function task(state = initstate, action) {
             }
         case TASK_DONE:
             const { taskid } = action.payload
-            const id1 = action.payload.data._id
+            // const id1 = action.payload.data._id
             // console.log(taskid, id1)
             return {
                 ...state, tasklist: state.tasklist.map(v => ({
@@ -37,9 +38,15 @@ export function task(state = initstate, action) {
                     done: v._id === taskid ? true : v.done
                 }))
             }
+        case CHECK_DONE:
+            // const { taskid } = action.payload
+            return {
+                ...state, tasklist: state.tasklist
+
+            }
         case REQUEST_TASK:
             return {
-                ...state, requestlist: [...state.requestlist, action.payload]
+                ...state, tasklist: [...state.requestlist, action.payload]
             }
         case ACCEPT_TASK:
             const { yongbingid, _id } = action.payload.data
@@ -74,6 +81,9 @@ function acceptTask({ taskid, data }) {
 function requestTask({ taskid, data }) {
     return { type: 'REQUEST_TASK', payload: { taskid, data } }
 }
+function checktask({ taskid, data }) {
+    return { type: 'CHECK_TASK', payload: { taskid, data } }
+}
 //获取任务列表
 export function getTaskList() {
     return dispatch => {
@@ -103,6 +113,7 @@ export function addTask({ taskname, detail, reward, from, yongbingid, files }) {
     if (!taskname) {
         return errorMsg('必须输入标题')
     }
+    console.log(files)
     return dispatch => {
         axios.post('/user/addTask', { taskname, detail, reward, from, yongbingid, files }).then(
             res => {
@@ -116,7 +127,7 @@ export function addTask({ taskname, detail, reward, from, yongbingid, files }) {
     }
 }
 
-// 任务完成函数
+// 任务完成
 export function haddone(taskid) {
     return (dispatch, getState) => {
         axios.post('/user/haddone', { taskid }).then(
@@ -130,22 +141,48 @@ export function haddone(taskid) {
         )
     }
 }
-// 佣兵接受任务(等待boss确认)
-export function accepttask(taskid) {
+
+// 任务取消
+export function cancelTask(taskid) {
     return (dispatch, getState) => {
-        // 获取当前任务的独一标识id
-        // const taskid = getState().task.tasklist._id
-        axios.post('/user/accepttask', { taskid }).then(
+        axios.post('/user/canceltask', { taskid }).then(
             res => {
+                const userid = getState().user._id
                 if (res.status === 200 && res.data.code === 0) {
                     // console.log(getState())
-                    dispatch(requestTask({ taskid, data: res.data.data }))
+                    dispatch(taskList(res.data.data))
                 }
             }
         )
     }
 }
-
+// 佣兵接受任务(等待boss确认)
+export function accepttask(taskid, yongbingid) {
+    return (dispatch, getState) => {
+        // 获取当前任务的独一标识id
+        // const taskid = getState().task.tasklist._id
+        axios.post('/user/accepttask', { taskid, yongbingid }).then(
+            res => {
+                if (res.status === 200 && res.data.code === 0) {
+                    // console.log(getState())
+                    dispatch(requestTask({ taskid, yongbingid, data: res.data.data }))
+                }
+            }
+        )
+    }
+}
+//确认该佣兵执行任务
+export function checkTask(taskid) {
+    return dispatch => {
+        axios.post('/user/checktask', { taskid }).then(
+            res => {
+                if (res.data.code === 0) {
+                    dispatch(checktask({ taskid }, res.data.data))
+                }
+            }
+        )
+    }
+}
 // export function accepttask(taskid) {
 //     return (dispatch, getState) => {
 //         // 获取当前任务的独一标识id

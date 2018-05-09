@@ -22,9 +22,11 @@ class Published2 extends React.Component {
     static PropTypes = {
         tasklist: PropTypes.array.isRequired
     }
+    //请求执行任务
     accept(v) {
-        console.log(v._id)
-        this.props.accepttask(v._id)
+        // console.log(v._id)
+        const userid = this.props.user._id
+        this.props.accepttask(v._id, userid)
 
     }
     handleChange(v) {
@@ -35,9 +37,6 @@ class Published2 extends React.Component {
         this.props.getTaskList()
     }
     render() {
-        // 過濾其他用戶發佈的任務
-        // const userid = this.props.user._id
-        // const tasklist = this.props.task.tasklist.filter(v => v.bossid === userid)
         return (
             <div>
                 <NavBar
@@ -52,7 +51,7 @@ class Published2 extends React.Component {
                             <WhiteSpace />
                             <QueueAnim>
                                 <Card key={v._id}>
-                                    {/* //显示yongbing */}
+                                    {/* //显示佣兵 */}
                                     <Card.Header
                                         title={v.taskname}
                                         // thumb={require(`../img/${v.avatar}.png`)}
