@@ -11,8 +11,8 @@ import { withRouter } from 'react-router-dom'
     state => state,
     {}
 )
-
-class Done extends React.Component {
+//佣兵完成界面
+class Doneyb extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -32,8 +32,8 @@ class Done extends React.Component {
     render() {
         // 過濾其他用戶發佈的任務
         const userid = this.props.user._id
-        
-        const tasklist = this.props.task.tasklist.filter(v => v.bossid === userid)
+        const name = this.props.user.nickname
+        const tasklist = this.props.task.tasklist.filter(v => v.yongbingid === name)
         return (
             <div>
                 <NavBar
@@ -52,7 +52,7 @@ class Done extends React.Component {
                                         title={v.taskname}
                                         thumb={v.files[0].url}
                                         thumbStyle={{ height: '56px', width: '50px' }}
-                                        extra={<a onClick={() => console.log('评价')} size="small" type="ghost">去评价</a>}
+                                        extra={<a onClick={() => console.log('评价')} size="small" type="ghost">等待评价</a>}
                                     />
                                     <Card.Body>
                                         {v.detail}
@@ -72,4 +72,4 @@ class Done extends React.Component {
     }
 }
 
-export default Done
+export default Doneyb

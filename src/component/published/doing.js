@@ -9,7 +9,7 @@ import { withRouter } from 'react-router-dom'
 @withRouter
 @connect(
     state => state,
-    {  }
+    {}
 )
 
 class Doing extends React.Component {
@@ -30,9 +30,10 @@ class Doing extends React.Component {
         this.props.history.push(`/chat/${v._id}`)
     }
     render() {
-        // 過濾其他用戶發佈的任務，获取当前佣兵接取的任务
-        const userid = this.props.user._id
-        const tasklist = this.props.task.tasklist.filter(v => v.yongbingid === userid)
+        // 過濾其他用戶發佈的任務，获取当前佣兵接取的，正在进行的任务
+        // const userid = this.props.user._id
+        const nickname = this.props.user.nickname
+        const tasklist = this.props.task.tasklist.filter(v => v.yongbingid === nickname)
 
         return (
             <div>
@@ -51,14 +52,15 @@ class Doing extends React.Component {
                                     {/* //显示boss */}
                                     <Card.Header
                                         title={v.taskname}
-                                        // thumb={require(`../img/${v.avatar}.png`)}
+                                        thumb={v.files[0].url}
+                                        thumbStyle={{ height: '56px', width: '50px' }}
                                         extra={<a onClick={() => this.Submit(v)} size="small" type="ghost">正在进行中</a>}
                                     />
                                     <Card.Body>
                                         {v.detail}
                                     </Card.Body>
                                     <Card.Footer
-                                        content={v.yongbingid ? v.yongbingid : "暂无人接受"}
+                                        content={'执行人:' + (v.yongbingid ? v.yongbingid : "出错了")}
                                     >
                                     </Card.Footer>
                                 </Card>

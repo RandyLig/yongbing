@@ -76,7 +76,7 @@ class Published extends React.Component {
                                         {v.detail}
                                     </Card.Body>
                                     <Card.Footer
-                                        content={v.yongbingid ? v.yongbingid : "暂无人接受"}
+                                        content={'执行人:' + (v.yongbingid ? v.yongbingid : "暂时无人接受")}
                                     >
                                     </Card.Footer>
                                 </Card>

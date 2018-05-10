@@ -2,13 +2,19 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { List, Badge } from 'antd-mobile'
 import QueueAnim from 'rc-queue-anim';
+import { getMsgList } from '../../redux/chat.redux'
 @connect(
-    state => state
+    state => state,
+    { getMsgList }
 )
 
 class Msg extends React.Component {
     getLast(arr) {
         return arr[arr.length - 1]
+    }
+    componentDidMount() {
+        //获取未读消息数
+        this.props.getMsgList()
     }
     render() {
         const Item = List.Item
@@ -17,7 +23,7 @@ class Msg extends React.Component {
             msgGroup[v.chatid] = msgGroup[v.chatid] || []
             msgGroup[v.chatid].push(v)
         })
-  
+
         //将消息按创建时间排序
         const chatList = Object.values(msgGroup).sort((a, b) => {
             const a_last = this.getLast(a).create_time
@@ -41,7 +47,6 @@ class Msg extends React.Component {
                     }
                     const chatItem = this.getLast(v)
                     // console.log('chatItem', chatItem)
-
                     //读取未读消息数
                     const unread = v.filter(v => !v.read && v.to === userid).length
                     return (

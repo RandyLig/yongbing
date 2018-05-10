@@ -17,6 +17,7 @@ class Confirm extends React.Component {
         this.Check = this.Check.bind(this)
     }
     Check(v) {
+        console.log(v._id)
         this.props.checkTask(v._id)
     }
     // componentDidMount() {
@@ -30,7 +31,7 @@ class Confirm extends React.Component {
         const userid = this.props.user._id
         //筛选属于该boss的请求任务
         const tasklist = this.props.task.tasklist.filter(v => v.bossid === userid)
-        const requestlist = tasklist.filter(v => (v.request === true && v.accept === false))
+        const requestlist = tasklist.filter(v => (v.request === true))
         return <div>
             <NavBar
                 mode="dark"
@@ -55,7 +56,7 @@ class Confirm extends React.Component {
                                     extra={<a onClick={() => this.Check(v)} size="small" type="ghost">确认</a>}
                                 />
                                 <Card.Body>
-                                    请求接受您的{v.taskname}的任务
+                                    请求接受您的<a style={{ color: 'red' }}>{v.taskname}</a>的任务
                                 </Card.Body>
                                 {/* <Card.Footer
                                     content={v.yongbingid ? v.yongbingid : "暂无人接受"}

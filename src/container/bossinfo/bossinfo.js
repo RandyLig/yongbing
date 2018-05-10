@@ -1,5 +1,5 @@
 import React from 'react'
-import { NavBar, InputItem, Button, WhiteSpace, Picker, List } from 'antd-mobile'
+import { NavBar, InputItem, Button, WhiteSpace, Picker, List, TextareaItem } from 'antd-mobile'
 import AvatarSelector from '../../component/avatarSelector/avatarSelector.js'
 import { connect } from 'react-redux'
 import { update } from '../../redux/user.redux'
@@ -33,6 +33,7 @@ class BossInfo extends React.Component {
             sex: '',
             age: '',
             home: '',
+            resume: '',
             data: [],
             cols: 1,
             // pickerValue: [],
@@ -159,6 +160,7 @@ class BossInfo extends React.Component {
                     地区
           </List.Item>
             </Picker>
+            <TextareaItem rows={3} autoHeight onChange={v => this.handleChange('resume', v)} title='个人简介'></TextareaItem>
             <WhiteSpace />
             <WhiteSpace />
             <WhiteSpace />

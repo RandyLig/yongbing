@@ -1,12 +1,13 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { getUserList } from '../../redux/chatuser.redux'
+import { getMsgList } from '../../redux/chat.redux'
 import Cards from '../card/card'
 
 
 @connect(
     state => state.chatuser,
-    { getUserList }
+    { getUserList, getMsgList }
 )
 
 class Boss extends React.Component {
@@ -19,6 +20,8 @@ class Boss extends React.Component {
     componentDidMount() {
         //获取佣兵的数据
         this.props.getUserList('yongbing')
+        //获取未读消息数
+        this.props.getMsgList()
     }
     render() {
         // const datas = this.props.userlist

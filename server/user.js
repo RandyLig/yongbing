@@ -14,6 +14,8 @@ const _filter = {
 // 清空list下所有数据
 // User.remove({}, function (e, d) {})
 // })
+// 清空tasklist下所有数据
+// Task.remove({}, function (e, d) {})
 //获取type=?的列表
 Router.get('/list', function (req, res) {
     const { type } = req.query
@@ -37,14 +39,12 @@ Router.get('/listArea', function (req, res) {
     const { type, home } = req.query
     // const { home } = req.body
     console.log({ home })
-    User.find({ type, home }, function (err, doc) {
+    User.find({ type, home:eval("/"+home+"/g") }, function (err, doc) {
         return res.json({ code: 0, data: doc })
     })
 })
 
 Router.get('/tasklist', function (req, res) {
-    // 清空tasklist下所有数据
-    // Task.remove({}, function (e, d) {})
     Task.find({}, function (err, doc) {
         return res.json({ code: 0, data: doc })
     })
@@ -64,7 +64,7 @@ Router.get('/getMsglist', function (req, res) {
     User.find({}, function (e, d) {
         let users = {}
         d.forEach(v => {
-            users[v._id] = { name: v.user, avatar: v.avatar }
+            users[v._id] = { name: v.nickname, avatar: v.avatar }
         })
         // { '$or': [{ from: user, to: user }] }
         Chat.find({ '$or': [{ from: user }, { to: user }] }, function (err, doc) {
@@ -229,12 +229,12 @@ Router.post('/checktask', function (req, res) {
         , { accept: true, request: false }
         // , { 'multi': true }
         , function (err, doc) {
-            if (!err) {
-                return res.json({ code: 0, data: doc })
-            }
-            return res.json({ code: 1, msg: '修改失败' })
+            Task.find({}, function (e, d) {
+                return res.json({ code: 0, data: d })
+            })
+            // return res.json({ code: 1, msg: '修改失败' })
         })
-  
+
 })
 //发布任务
 Router.post('/addTask', function (req, res) {

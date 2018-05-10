@@ -165,7 +165,7 @@ export function accepttask(taskid, yongbingid) {
             res => {
                 if (res.status === 200 && res.data.code === 0) {
                     // console.log(getState())
-                    dispatch(requestTask({ taskid, yongbingid, data: res.data.data }))
+                    dispatch(acceptTask({ taskid, yongbingid, data: res.data.data }))
                 }
             }
         )
@@ -177,7 +177,7 @@ export function checkTask(taskid) {
         axios.post('/user/checktask', { taskid }).then(
             res => {
                 if (res.data.code === 0) {
-                    dispatch(checktask({ taskid }, res.data.data))
+                    dispatch(taskList(res.data.data))
                 }
             }
         )

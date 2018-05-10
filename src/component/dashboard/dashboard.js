@@ -56,8 +56,9 @@ class DashBoard extends React.Component {
     };
     componentDidMount() {
         if (!this.props.chat.chatMsg.length) {
-            this.props.getMsgList()
             this.props.reciveMsg()
+            this.props.getMsgList()
+            
         }
 
     }
@@ -143,9 +144,7 @@ class DashBoard extends React.Component {
             }>{page.title}</NavBar>) : (<NavBar mode="dark">{page.title}</NavBar>)}
             <div className='content'>
                 <Switch>
-
                     <Route key={page.path} path={page.path} component={page.component} />
-
                 </Switch>
             </div>
             <NavLink data={NavList} className='NavLink'></NavLink>

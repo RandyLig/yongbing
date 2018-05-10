@@ -16,10 +16,12 @@ import YongbingInfo from './container/yongbinginfo/yongbinginfo.js'
 import DashBoard from './component/dashboard/dashboard.js'
 import Chat from './component/chat/chat'
 import Info from './component/info/info'
+import Identify from './component/me/identify'
 import Published from './component/published/published'
 import Published2 from './component/published/published2'
 import Doing from './component/published/doing'
 import Done from './component/published/done'
+import Doneyb from './component/published/doneyb'
 import Confirm from './component/boss/confirm'
 import TestWrapper from './container/test.js'
 const store = createStore(reducers, compose(
@@ -42,10 +44,12 @@ ReactDOM.render(
                     <Route path='/addtask' component={AddTask} />
                     <Route path='/chat/:user' component={Chat} />
                     <Route path='/info'  component={Info}/>
+                    <Route path='/identify'  component={Identify}/>
                     <Route path='/published'  component={Published}/>
                     <Route path='/published2'  component={Published2}/>
                     <Route path='/doing'  component={Doing}/>
-                    <Route path='/Done'  component={Done}/>
+                    <Route path='/done'  component={Done}/>
+                    <Route path='/doneyb'  component={Doneyb}/>
                     <Route path='/Test'  component={TestWrapper}/>
                     <Route component={DashBoard} />
                 </Switch>

@@ -21,7 +21,9 @@ class Info extends React.Component {
             nickname: this.props.nickname,
             sex: this.props.sex,
             age: this.props.age,
-            home: this.props.home
+            home: this.props.home,
+            resume: this.props.resume,
+            specialities: this.props.specialities
         }
     }
     handleChange(key, val) {
@@ -121,11 +123,24 @@ class Info extends React.Component {
                 onErrorClick={this.onErrorClickAge}
                 extra={<Icon type='right'></Icon>}>年龄</InputItem>
             <TextareaItem
-                rows={2}
+                rows={1}
                 autoHeight
                 onChange={v => this.handleChange('home', v)}
                 defaultValue={this.props.home}
                 title='家乡'
+                clear='true'
+            ></TextareaItem>
+            {this.props.type === 'yongbing' ? <InputItem
+                onChange={v => this.handleChange('specialities', v)}
+                value={this.props.specialities}
+                editable="false"
+                extra={<Icon type='right'></Icon>}>特长</InputItem> : ''}
+            <TextareaItem
+                rows={2}
+                autoHeight
+                onChange={v => this.handleChange('resume', v)}
+                defaultValue={this.props.resume}
+                title='个人简介'
                 clear='true'
             ></TextareaItem>
             <WhiteSpace />

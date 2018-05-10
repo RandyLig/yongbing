@@ -21,7 +21,7 @@ export function chatuser(state = initstate, action) {
             }
         case AREA_USERLIST:
             return {
-                ...state, userlist: action.payload
+                ...state, userlist: action.payload.data
             }
         default: return state
     }
@@ -33,8 +33,8 @@ export function userList(data) {
 function filteruserList(data, filterValue) {
     return { type: FILTER_USERLIST, payload: { data, filterValue } }
 }
-function areauserList(data) {
-    return { type: AREA_USERLIST, payload: data }
+function areauserList(home, data) {
+    return { type: AREA_USERLIST, payload: { home, data } }
 }
 
 export function getUserList(type) {
@@ -64,13 +64,17 @@ export function filterUserList(type, filterValue) {
 export function areaSearch(type, home) {
     return dispatch => {
         console.log({ home })
-        axios.get('/user/listArea?type=' + type, { home }).then(
+        axios.get('/user/listArea?type=' + type, {
+            params: {
+                home: home
+            }
+        }).then(
             res => {
                 if (res.data.code === 0) {
-                    dispatch(areauserList(res.data.data))
+                    dispatch(areauserList(home, res.data.data))
                 }
             }
-        )
+            )
     }
 }
 

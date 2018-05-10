@@ -23,17 +23,10 @@ class Chat extends React.Component {
     }
     componentDidMount() {
         if (!this.props.chat.chatMsg.length) {
-            this.props.getMsgList()
             this.props.reciveMsg()
+            this.props.getMsgList()
+            
         }
-        // const to = this.props.match.params.user
-        // // console.log('from', from)
-        // this.props.hadread(to)
-        // // socket.on('reciveMsg', (data) => {
-        // //     this.setState({
-        // //         msg: [...this.state.msg, data.text]
-        // //     })
-        // // })
     }
     //退出聊天时执行
     componentWillUnmount() {
@@ -51,7 +44,12 @@ class Chat extends React.Component {
         const from = this.props.user._id
         const to = this.props.match.params.user
         const msg = this.state.text
-        this.props.sendMsg({ from, to, msg })
+        if (this.state.text) {
+            this.props.sendMsg({ from, to, msg })
+            this.props.getMsgList()
+        }else {
+            console.log('请输入消息')
+        }
         // this.props.getMsgList()
         this.setState({ text: '' })
         // console.log(this.state.text)
@@ -77,24 +75,24 @@ class Chat extends React.Component {
                         onLeftClick={() => this.props.history.goBack()}
                     >{users[user].name}</NavBar>
                     <QueueAnim>
-                    {chatMsg.map(v => {
-                        const avatar = require(`../img/${users[v.from].avatar}.png`)
-                        return user === v.from ?
-                            (<List key={v._id}>
-                                <List.Item
-                                    thumb={avatar}
-                                >
-                                    {v.content}
-                                </List.Item>
-                            </List>)
-                            : (<List key={v._id}>
-                                <List.Item
-                                    extra={<img alt='' src={avatar} />}
-                                    className="chat_listItem">
-                                    {v.content}
-                                </List.Item>
-                            </List>)
-                    })}
+                        {chatMsg.map(v => {
+                            const avatar = require(`../img/${users[v.from].avatar}.png`)
+                            return user === v.from ?
+                                (<List key={v._id}>
+                                    <List.Item
+                                        thumb={avatar}
+                                    >
+                                        {v.content}
+                                    </List.Item>
+                                </List>)
+                                : (<List key={v._id}>
+                                    <List.Item
+                                        extra={<img alt='' src={avatar} />}
+                                        className="chat_listItem">
+                                        {v.content}
+                                    </List.Item>
+                                </List>)
+                        })}
                     </QueueAnim>
                 </div>
                 <div className='submitMsg'>

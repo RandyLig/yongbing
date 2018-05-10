@@ -160,7 +160,7 @@ class Me extends React.Component {
 
                             正在进行的任务
                 </List.Item>) : null}
-                        <List.Item
+                        {this.props.user.type === 'boss' ? <List.Item
                             multipleLine
                             thumb={<img src={require(`../img/${'选择'}.png`)} style={{ width: 25 }} alt="" />}
                             onClick={() => {
@@ -170,7 +170,17 @@ class Me extends React.Component {
                             arrow="horizontal">
 
                             已完成的任务
-                </List.Item>
+                </List.Item> : <List.Item
+                                multipleLine
+                                thumb={<img src={require(`../img/${'选择'}.png`)} style={{ width: 25 }} alt="" />}
+                                onClick={() => {
+                                    this.props.history.push('/doneyb')
+                                    this.props.getTaskList()
+                                }}
+                                arrow="horizontal">
+
+                                已完成的任务
+                </List.Item>}
 
                     </List>
                 </QueueAnim>

@@ -23,7 +23,7 @@ export function user(state = initstate, action) {
     switch (action.type) {
         case AUTH_SUCCESS:
             return {
-                ...state, msg: '登陆成功', redirectTo: getRedirectUrl(action.payload), ...action.payload
+                ...state, msg: '登陆成功', errmsg: '', redirectTo: getRedirectUrl(action.payload), ...action.payload
             }
         case ERROR_MSG:
             return {

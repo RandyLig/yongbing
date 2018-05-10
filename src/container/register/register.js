@@ -16,6 +16,7 @@ class Register extends React.Component {
         super(props)
         //这种注册方法的方式能性能优化
         this.register = this.register.bind(this)
+        this.login = this.login.bind(this)
         this.onBlue = this.onBlue.bind(this)
         this.onBluePassword = this.onBluePassword.bind(this)
         this.state = {
@@ -50,7 +51,9 @@ class Register extends React.Component {
             Toast.info(this.props.errmsg)
         }, 500);
     }
-
+    login() {
+        this.props.history.push('/login')
+    }
     onBlue(v) {
         let RegExp123 = /^1\d{10}$/
         // return RegExp123.test(v)
@@ -107,6 +110,8 @@ class Register extends React.Component {
                     onChange={() => this.handleChange('type', 'boss')}>BOSS</RadioItem>
                 <WhiteSpace />
                 <Button type="primary" onClick={this.register}>注册</Button>
+                <WhiteSpace />
+                <Button type="primary" onClick={this.login}>返回</Button>
             </WingBlank>
 
         </div >
