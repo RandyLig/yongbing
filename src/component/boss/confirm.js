@@ -51,7 +51,7 @@ class Confirm extends React.Component {
                             <Card key={v._id}>
                                 {/* //显示boss */}
                                 <Card.Header
-                                    title={v.yongbingid}
+                                    title={v.yongbing}
                                     // thumb={require(`../img/${v.avatar}.png`)}
                                     extra={<a onClick={() => this.Check(v)} size="small" type="ghost">确认</a>}
                                 />

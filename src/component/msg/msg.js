@@ -3,18 +3,28 @@ import { connect } from 'react-redux'
 import { List, Badge } from 'antd-mobile'
 import QueueAnim from 'rc-queue-anim';
 import { getMsgList } from '../../redux/chat.redux'
+import { getEvaluate } from '../../redux/task.redux'
 @connect(
     state => state,
-    { getMsgList }
+    { getMsgList, getEvaluate }
 )
 
 class Msg extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+        }
+        this.Submit = this.Submit.bind(this)
+    }
     getLast(arr) {
         return arr[arr.length - 1]
     }
     componentDidMount() {
         //获取未读消息数
         this.props.getMsgList()
+    }
+    Submit() {
+    
     }
     render() {
         const Item = List.Item
@@ -58,7 +68,7 @@ class Msg extends React.Component {
                                 thumb={require(`../img/${user[targetid].avatar}.png`)}
                                 arrow='horizontal'
                                 onClick={() =>
-                                    this.props.history.push(`/chat/${targetid}`)
+                                    (this.props.history.push(`/chat/${targetid}`))
                                 }
                             >
                                 {chatItem.content}

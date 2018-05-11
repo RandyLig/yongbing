@@ -31,7 +31,7 @@ class Doneyb extends React.Component {
     }
     render() {
         // 過濾其他用戶發佈的任務
-        const userid = this.props.user._id
+        // const userid = this.props.user._id
         const name = this.props.user.nickname
         const tasklist = this.props.task.tasklist.filter(v => v.yongbingid === name)
         return (
@@ -50,7 +50,7 @@ class Doneyb extends React.Component {
                                 <Card key={v.taskname}>
                                     <Card.Header
                                         title={v.taskname}
-                                        thumb={v.files[0].url}
+                                        thumb={''}
                                         thumbStyle={{ height: '56px', width: '50px' }}
                                         extra={<a onClick={() => console.log('评价')} size="small" type="ghost">等待评价</a>}
                                     />

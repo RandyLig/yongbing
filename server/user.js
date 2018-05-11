@@ -1,9 +1,11 @@
+
 const express = require('express')
 const Router = express.Router()
 const model = require('./model.js')
 const User = model.getModel('user')
 const Chat = model.getModel('chat')
 const Task = model.getModel('task')
+const Evaluate = model.getModel('evaluate')
 const util = require('utility')
 const _filter = {
     pwd: 0,
@@ -16,6 +18,7 @@ const _filter = {
 // })
 // 清空tasklist下所有数据
 // Task.remove({}, function (e, d) {})
+// Evaluate.remove({}, function (e, d) { })
 //获取type=?的列表
 Router.get('/list', function (req, res) {
     const { type } = req.query
@@ -23,12 +26,36 @@ Router.get('/list', function (req, res) {
         return res.json({ code: 0, data: doc })
     })
 })
+//获取评价信息
+Router.get('/getevaluate', function (req, res) {
+    Evaluate.find({}, function (err, doc) {
+        return res.json({ code: 0, data: doc })
+    })
+})
+//评价
+Router.post('/evaluate', function (req, res) {
+    const { evaluate, files, praise, from, user, chatid } = req.body
+    const boss = from
+    const yongbing = user
+    const done = true
+    // console.log(praise)
+    const EvaluateModel = new Evaluate({ evaluate, files, praise, boss, yongbing, chatid, done })
+    EvaluateModel.save(function (e, d) {
+        if (e) {
+            return res.json({ code: 1, msg: '后台出错啦' })
+        }
+        return res.json({
+            code: 0, data: d
+        })
+    })
+
+})
 //Boss删除任务
 Router.post('/canceltask', function (req, res) {
     const { taskid } = req.body
-    console.log(taskid)
+    // console.log(taskid)
     Task.deleteOne({ _id: taskid }, function (err, doc) {
-        console.log(doc)
+        // console.log(doc)
         Task.find({}, function (e, d) {
             return res.json({ code: 0, data: d })
         })
@@ -38,8 +65,8 @@ Router.post('/canceltask', function (req, res) {
 Router.get('/listArea', function (req, res) {
     const { type, home } = req.query
     // const { home } = req.body
-    console.log({ home })
-    User.find({ type, home:eval("/"+home+"/g") }, function (err, doc) {
+    // console.log({ home })
+    User.find({ type, home: eval("/" + home + "/g") }, function (err, doc) {
         return res.json({ code: 0, data: doc })
     })
 })
@@ -152,7 +179,7 @@ Router.post('/hadread', function (req, res) {
     //获取请求的数据
     const userid = req.cookies.userid
     const { from } = req.body
-    console.log(from)
+    // console.log(from)
     Chat.update({ from, to: userid }
         , { read: true }
         , { 'multi': true }
@@ -164,25 +191,34 @@ Router.post('/hadread', function (req, res) {
             return res.json({ code: 1, msg: '修改失败' })
         })
 })
-//标记任务完成(给boss发送一个请求)
+//标记任务完成
 Router.post('/haddone', function (req, res) {
     //获取请求的数据
     const userid = req.cookies.userid
     // 获取当前任务的id
-    const { taskid } = req.body
+    const { taskid, yongbingid, chatid } = req.body
     const _id = taskid
     const { bossid } = userid
-    //标记任务完成
-    Task.findByIdAndUpdate(
-        _id
-        , { done: true }
-        // , { 'multi': true }
-        , function (err, doc) {
-            if (!err) {
-                return res.json({ code: 0, data: doc })
-            }
-            return res.json({ code: 1, msg: '修改失败' })
-        })
+    //先查找到yongbingid
+   
+    //将两人聊天中评价按钮显示
+  
+    Evaluate.update({ chatid }, { visiable: true }, function (a, b) {
+        //标记任务完成
+        Task.findByIdAndUpdate(
+            _id
+            , { done: true }
+            // , { 'multi': true }
+            , function (err, doc) {
+                if (!err) {
+                    return res.json({ code: 0, data: doc, data2: b })
+                }
+                return res.json({ code: 1, msg: '修改失败' })
+            })
+    })
+
+
+
     //找到当前任务返回
     // Task.findOne(_id, function (err, doc) {
     //     if (err) {
@@ -204,7 +240,7 @@ Router.post('/accepttask', function (req, res) {
         name = d.nickname
         Task.findByIdAndUpdate(
             _id
-            , { yongbingid: name, request: true }
+            , { yongbing: name, yongbingid: userid, request: true }
             // , { 'multi': true }
             , function (err, doc) {
                 if (!err) {

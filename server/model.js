@@ -41,16 +41,35 @@ const models = {
         //确定发起任务的人
         'bossid': { 'type': String, require: true },
         //确定完成任务的人
+        'yongbing': { 'type': String },
         'yongbingid': { 'type': String },
         'files': { 'type': Array },
         'reward': { 'type': Number },
+        //任务类别(暂无)
         'type': { 'type': String },
+        //完成
         'done': { 'type': Boolean, default: false, require: true },
         'create_time': { 'type': Number, default: new Date().getTime() },
+        //是否进行中
         'accept': { 'type': Boolean, default: false },
         //属性表示是否在请求状态
         'request': { 'type': Boolean, default: false }
-    }
+    },
+    //评价
+    evaluate: {
+        //评价
+        'evaluate': { 'type': String, require: true },
+        //图片
+        'files': { 'type': Array },
+        'boss': { 'type': String, require: true },
+        'yongbing': { 'type': String, require: true },
+        'visiable': { 'type': Boolean, require: true, default: false },
+        'chatid': { 'type': String, require: true },
+        //好评
+        'praise': { 'type': String, require: true },
+        'done': { 'type': Boolean, require: true },
+        'create_time': { 'type': Number, default: new Date().getTime() },
+    },
 }
 
 for (let m in models) {

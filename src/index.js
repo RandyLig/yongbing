@@ -23,6 +23,7 @@ import Doing from './component/published/doing'
 import Done from './component/published/done'
 import Doneyb from './component/published/doneyb'
 import Confirm from './component/boss/confirm'
+import Evaluate from './component/boss/evaluate'
 import TestWrapper from './container/test.js'
 const store = createStore(reducers, compose(
     applyMiddleware(thunk),
@@ -30,7 +31,7 @@ const store = createStore(reducers, compose(
 ))
 ReactDOM.render(
     // 可以用componentDidCatch(){}来处理出错
-    
+
     <Provider store={store}>
         <BrowserRouter>
             <div>
@@ -38,19 +39,20 @@ ReactDOM.render(
                 <Switch>
                     <Route path='/bossinfo' component={BossInfo} />
                     <Route path='/confirm' component={Confirm} />
+                    <Route path='/evaluate/:user' component={Evaluate} />
                     <Route path='/yongbinginfo' component={YongbingInfo} />
                     <Route path='/login' component={Login} />
                     <Route path='/register' component={Register} />
                     <Route path='/addtask' component={AddTask} />
                     <Route path='/chat/:user' component={Chat} />
-                    <Route path='/info'  component={Info}/>
-                    <Route path='/identify'  component={Identify}/>
-                    <Route path='/published'  component={Published}/>
-                    <Route path='/published2'  component={Published2}/>
-                    <Route path='/doing'  component={Doing}/>
-                    <Route path='/done'  component={Done}/>
-                    <Route path='/doneyb'  component={Doneyb}/>
-                    <Route path='/Test'  component={TestWrapper}/>
+                    <Route path='/info' component={Info} />
+                    <Route path='/identify' component={Identify} />
+                    <Route path='/published' component={Published} />
+                    <Route path='/published2' component={Published2} />
+                    <Route path='/doing' component={Doing} />
+                    <Route path='/done' component={Done} />
+                    <Route path='/doneyb' component={Doneyb} />
+                    <Route path='/Test' component={TestWrapper} />
                     <Route component={DashBoard} />
                 </Switch>
             </div>

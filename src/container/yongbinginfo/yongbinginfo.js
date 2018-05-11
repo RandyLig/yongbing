@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import { update } from '../../redux/user.redux'
 import { Redirect } from 'react-router-dom'
 import arrayTreeFilter from 'array-tree-filter';
-import { district, provinceLite } from 'antd-mobile-demo-data';
+import { district } from 'antd-mobile-demo-data';
 const sex = [
     [
         {

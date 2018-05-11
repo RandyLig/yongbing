@@ -96,3 +96,9 @@ body{
     background: #ffffff;
     padding-bottom: 12px;
 }
+.sub-title {
+    text-align: center;
+}
+.am-card {
+    min-height: 37.5px !important;
+}

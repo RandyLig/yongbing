@@ -50,9 +50,9 @@ class Done extends React.Component {
                                 <Card key={v.taskname}>
                                     <Card.Header
                                         title={v.taskname}
-                                        thumb={v.files[0].url}
+                                        thumb={''}
                                         thumbStyle={{ height: '56px', width: '50px' }}
-                                        extra={<a onClick={() => console.log('评价')} size="small" type="ghost">去评价</a>}
+                                        extra={<a onClick={() => this.props.history.push('/evaluate')} size="small" type="ghost">去评价</a>}
                                     />
                                     <Card.Body>
                                         {v.detail}

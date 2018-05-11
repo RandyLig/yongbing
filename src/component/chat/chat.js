@@ -1,31 +1,35 @@
 import React from 'react'
 import QueueAnim from 'rc-queue-anim';
-import { List, InputItem, NavBar, Icon, Grid } from 'antd-mobile'
+import { List, InputItem, NavBar, Icon, Grid, WhiteSpace, WingBlank, Card } from 'antd-mobile'
 import { connect } from 'react-redux'
 import { getMsgList, sendMsg, reciveMsg, hadread } from '../../redux/chat.redux'
+import { getEvaluate } from '../../redux/task.redux'
 import { getChatId } from '../../util'
 // const socket = io('ws://localhost:9093')
 
 @connect(
     state => state,
-    { getMsgList, sendMsg, reciveMsg, hadread }
+    { getMsgList, sendMsg, reciveMsg, hadread, getEvaluate }
 )
 
 class Chat extends React.Component {
     constructor(props) {
         super(props)
+        this.props.getEvaluate()
         this.state = {
             text: '',
             msg: [],
             showEmoji: false
         }
         this.Submit = this.Submit.bind(this)
+        // this.evaluate = this.evaluate.bind(this)
     }
     componentDidMount() {
         if (!this.props.chat.chatMsg.length) {
+            this.props.getEvaluate()
             this.props.reciveMsg()
             this.props.getMsgList()
-            
+
         }
     }
     //退出聊天时执行
@@ -47,13 +51,16 @@ class Chat extends React.Component {
         if (this.state.text) {
             this.props.sendMsg({ from, to, msg })
             this.props.getMsgList()
-        }else {
+        } else {
             console.log('请输入消息')
         }
         // this.props.getMsgList()
         this.setState({ text: '' })
         // console.log(this.state.text)
     }
+    // evaluate() {
+    //     this.props.history.push(`/evaluate/${chatid}`)
+    // }
     render() {
         const emoji = '😀 😁 😎 😂 😃 😄 😅 😉 😊 😋 😍 😘 😗 😙 😐 😑 😶 😏 😣 😥 😮 😯 😪 😫 😛 😜 😝 😒 😖 😤 😷 😬 😵 😱 😈 🎅 💀'.split(' ').filter(v => v).map(v => ({ text: v }))
         const user = this.props.match.params.user
@@ -62,6 +69,7 @@ class Chat extends React.Component {
         const chatid = getChatId(this.props.user._id, user)
         //过滤其他用户的数据
         const chatMsg = this.props.chat.chatMsg.filter(v => v.chatid === chatid)
+        const evaluate111 = this.props.task.evaluate.filter(v => v.chatid === chatid)
         // console.log(user)
         //没有这句则会报错
         if (!users[user]) {
@@ -95,6 +103,31 @@ class Chat extends React.Component {
                         })}
                     </QueueAnim>
                 </div>
+                <WhiteSpace size="lg" />
+                {evaluate111.map(v => v.visiable ? <QueueAnim key={'list'}>
+                    <WingBlank>
+                        <Card key={'evaluate'} onClick={() => this.props.history.push(`/evaluate/${user}`)}>
+                            <Card.Header
+                                title="交易完成，去评价"
+                                thumb=""
+                                extra={<Icon type='right' color='#108ee9'></Icon>}
+                            />
+                        </Card>
+                    </WingBlank>
+                </QueueAnim> : '')}
+                <WhiteSpace size="lg" />
+                {evaluate111.map(v => v.done && v.visiable ? <QueueAnim key={'list2'}>
+                    <WingBlank>
+                        <Card key={'evaluatedone'}>
+                            <Card.Header
+                                title="已完成评价"
+                                thumb=""
+                                extra={<Icon type='check-circle' color='#108ee9'></Icon>}
+                            />
+                        </Card>
+                    </WingBlank>
+                </QueueAnim> : '')}
+
                 <div className='submitMsg'>
                     <List>
                         <InputItem

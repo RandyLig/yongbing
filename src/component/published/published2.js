@@ -54,7 +54,7 @@ class Published2 extends React.Component {
                                     {/* //显示佣兵 */}
                                     <Card.Header
                                         title={v.taskname}
-                                        thumb={v.files[0].url}
+                                        thumb={''}
                                         thumbStyle={{ height: '56px', width: '50px' }}
                                         extra={<a onClick={() => this.accept(v)} size="small" type="ghost">接受</a>}
                                     />

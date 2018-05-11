@@ -8,9 +8,11 @@ const PUBLISH_SUCCESS = 'PUBLISH_SUCCESS'
 const ACCEPT_TASK = 'ACCEPT_TASK'
 const REQUEST_TASK = 'REQUEST_TASK'
 const CHECK_DONE = 'CHECK_DONE'
+const EVALUATE = 'EVALUATE'
 const initstate = {
     tasklist: [],
-    requestlist: []
+    requestlist: [],
+    evaluate: []
 }
 
 
@@ -56,6 +58,10 @@ export function task(state = initstate, action) {
                     yongbingid: action.payload.data.taskid === _id ? yongbingid : v.yongbingid
                 }))
             }
+        case EVALUATE:
+            return {
+                ...state, evaluate: action.payload
+            }
         default: return state
     }
 }
@@ -69,6 +75,10 @@ function errorMsg(errmsg) {
 //获取全部任务列表
 export function taskList(data) {
     return { type: TASK_LIST, payload: data }
+}
+//获取评价信息
+export function evaluateList(data) {
+    return { type: EVALUATE, payload: data }
 }
 
 function hadDone({ taskid, userid, data }) {
@@ -128,9 +138,9 @@ export function addTask({ taskname, detail, reward, from, yongbingid, files }) {
 }
 
 // 任务完成
-export function haddone(taskid) {
+export function haddone(taskid, yongbingid,chatid) {
     return (dispatch, getState) => {
-        axios.post('/user/haddone', { taskid }).then(
+        axios.post('/user/haddone', { taskid, yongbingid,chatid }).then(
             res => {
                 const userid = getState().user._id
                 if (res.status === 200 && res.data.code === 0) {
@@ -178,6 +188,32 @@ export function checkTask(taskid) {
             res => {
                 if (res.data.code === 0) {
                     dispatch(taskList(res.data.data))
+                }
+            }
+        )
+    }
+}
+
+//获取评价信息
+export function getEvaluate() {
+    return dispatch => {
+        axios.get('/user/getevaluate').then(
+            res => {
+                if (res.data.code === 0) {
+                    dispatch(evaluateList(res.data.data))
+                }
+            }
+        )
+    }
+}
+//评价
+export function evaluate({ evaluate, files, praise, from, user, chatid }) {
+    return dispatch => {
+        // console.log(from, praise)
+        axios.post('/user/evaluate', { evaluate, files, praise, from, user, chatid }).then(
+            res => {
+                if (res.data.code === 0) {
+                    dispatch(evaluateList(res.data.data))
                 }
             }
         )

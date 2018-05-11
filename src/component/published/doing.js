@@ -33,7 +33,7 @@ class Doing extends React.Component {
         // 過濾其他用戶發佈的任務，获取当前佣兵接取的，正在进行的任务
         // const userid = this.props.user._id
         const nickname = this.props.user.nickname
-        const tasklist = this.props.task.tasklist.filter(v => v.yongbingid === nickname)
+        const tasklist = this.props.task.tasklist.filter(v => v.yongbing === nickname)
 
         return (
             <div>
@@ -52,7 +52,7 @@ class Doing extends React.Component {
                                     {/* //显示boss */}
                                     <Card.Header
                                         title={v.taskname}
-                                        thumb={v.files[0].url}
+                                        thumb={''}
                                         thumbStyle={{ height: '56px', width: '50px' }}
                                         extra={<a onClick={() => this.Submit(v)} size="small" type="ghost">正在进行中</a>}
                                     />
@@ -60,7 +60,7 @@ class Doing extends React.Component {
                                         {v.detail}
                                     </Card.Body>
                                     <Card.Footer
-                                        content={'执行人:' + (v.yongbingid ? v.yongbingid : "出错了")}
+                                        content={'执行人:' + (v.yongbing ? v.yongbing : "出错了")}
                                     >
                                     </Card.Footer>
                                 </Card>

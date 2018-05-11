@@ -5,6 +5,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { haddone, getTaskList, cancelTask } from '../../redux/task.redux'
+import { getChatId } from '../../util'
 const prompt = Modal.prompt
 @withRouter
 @connect(
@@ -24,7 +25,11 @@ class Published extends React.Component {
         tasklist: PropTypes.array.isRequired
     }
     Submit(v) {
-        this.props.haddone(v._id)
+        const yongbingname = v.yongbing
+        const yongbingid = v.yongbingid
+        const chatid = getChatId(yongbingid, this.props.user._id)
+        console.log(chatid)
+        this.props.haddone(v._id, yongbingname, chatid)
     }
     cancel(v) {
         this.props.cancelTask(v._id)
@@ -40,7 +45,6 @@ class Published extends React.Component {
         // 過濾其他用戶發佈的任務
         const userid = this.props.user._id
         const tasklist = this.props.task.tasklist.filter(v => v.bossid === userid)
-
         return (
             <div>
                 <NavBar
@@ -67,7 +71,7 @@ class Published extends React.Component {
                                     {/* //显示boss */}
                                     <Card.Header
                                         title={v.taskname}
-                                        thumb={v.files[0].url}
+                                        thumb={v.files.url}
                                         thumbStyle={{ height: '56px', width: '50px' }}
                                         extra={(<div><a style={{ color: 'red' }} onClick={() => this.Submit(v)} size="small" type="ghost">确认完成</a>
                                             <a style={{ color: 'green' }} onClick={() => this.cancel(v)} size="small" type="ghost">取消任务</a></div>)}
@@ -76,7 +80,7 @@ class Published extends React.Component {
                                         {v.detail}
                                     </Card.Body>
                                     <Card.Footer
-                                        content={'执行人:' + (v.yongbingid ? v.yongbingid : "暂时无人接受")}
+                                        content={'执行人:' + (v.yongbing ? v.yongbing : "暂时无人接受")}
                                     >
                                     </Card.Footer>
                                 </Card>
