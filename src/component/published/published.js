@@ -27,9 +27,10 @@ class Published extends React.Component {
     Submit(v) {
         const yongbingname = v.yongbing
         const yongbingid = v.yongbingid
+        const taskname = v.taskname
         const chatid = getChatId(yongbingid, this.props.user._id)
-        console.log(chatid)
-        this.props.haddone(v._id, yongbingname, chatid)
+        // console.log(v._id, yongbingid, chatid)
+        this.props.haddone(v._id, yongbingid, chatid, taskname)
     }
     cancel(v) {
         this.props.cancelTask(v._id)
@@ -73,7 +74,7 @@ class Published extends React.Component {
                                         title={v.taskname}
                                         thumb={v.files.url}
                                         thumbStyle={{ height: '56px', width: '50px' }}
-                                        extra={(<div><a style={{ color: 'red' }} onClick={() => this.Submit(v)} size="small" type="ghost">确认完成</a>
+                                        extra={(<div>{v.yongbing ? <a style={{ color: 'red' }} onClick={() => this.Submit(v)} size="small" type="ghost">确认完成</a> : ''}
                                             <a style={{ color: 'green' }} onClick={() => this.cancel(v)} size="small" type="ghost">取消任务</a></div>)}
                                     />
                                     <Card.Body>

@@ -32,22 +32,44 @@ Router.get('/getevaluate', function (req, res) {
         return res.json({ code: 0, data: doc })
     })
 })
+//获取评价信息(特定)
+Router.get('/getevaluateOne', function (req, res) {
+    const { taskid } = req.query
+    console.log({ taskid })
+    Evaluate.find({ taskid }, function (err, doc) {
+        return res.json({ code: 0, data: doc })
+    })
+})
 //评价
 Router.post('/evaluate', function (req, res) {
-    const { evaluate, files, praise, from, user, chatid } = req.body
-    const boss = from
-    const yongbing = user
+    const { evaluate, files, praise, taskid } = req.body
+    // const boss = from
+    // const yongbing = user
     const done = true
-    // console.log(praise)
-    const EvaluateModel = new Evaluate({ evaluate, files, praise, boss, yongbing, chatid, done })
-    EvaluateModel.save(function (e, d) {
-        if (e) {
+    Evaluate.findOne({ taskid }, { evaluate, files, praise, done }, function (err, doc) {
+        console.log(err)
+        if (err) {
             return res.json({ code: 1, msg: '后台出错啦' })
         }
         return res.json({
-            code: 0, data: d
+            code: 0, data: doc
         })
     })
+    // const { evaluate, files, praise, from, user, chatid } = req.body
+    // const boss = from
+    // const yongbing = user
+    // const done = true
+    // // console.log(praise)
+    // const EvaluateModel = new Evaluate({ evaluate, files, praise, boss, yongbing, chatid, done })
+    // EvaluateModel.save(function (e, d) {
+    //     if (e) {
+    //         return res.json({ code: 1, msg: '后台出错啦' })
+    //     }
+    //     return res.json({
+    //         code: 0, data: d
+    //     })
+    // })
+
 
 })
 //Boss删除任务
@@ -70,7 +92,22 @@ Router.get('/listArea', function (req, res) {
         return res.json({ code: 0, data: doc })
     })
 })
+//根据任务标题查询
+Router.get('/tasktitle', function (req, res) {
+    const { title } = req.query
 
+    Task.find({ taskname: eval("/" + title + "/g") }, function (err, doc) {
+        return res.json({ code: 0, data: doc })
+    })
+})
+//根据任务内容查询
+Router.get('/taskdetail', function (req, res) {
+    const { detail } = req.query
+
+    Task.find({ detail: eval("/" + detail + "/g") }, function (err, doc) {
+        return res.json({ code: 0, data: doc })
+    })
+})
 Router.get('/tasklist', function (req, res) {
     Task.find({}, function (err, doc) {
         return res.json({ code: 0, data: doc })
@@ -196,17 +233,18 @@ Router.post('/haddone', function (req, res) {
     //获取请求的数据
     const userid = req.cookies.userid
     // 获取当前任务的id
-    const { taskid, yongbingid, chatid } = req.body
-    const _id = taskid
-    const { bossid } = userid
-    //先查找到yongbingid
-   
-    //将两人聊天中评价按钮显示
-  
-    Evaluate.update({ chatid }, { visiable: true }, function (a, b) {
+    const { taskid, yongbingid, chatid, taskname } = req.body
+    // const { boss } = userid
+    // //先查找到yongbingid
+    // console.log({ taskid, boss: userid, yongbing: yongbingid, chatid })
+    const EvaluateModel = new Evaluate({ taskid, boss: userid, yongbing: yongbingid, chatid, visiable: true, taskname })
+    EvaluateModel.save(function (a, b) {
+        if (a) {
+            return res.json({ code: 1, msg: '后台出错啦' })
+        }
         //标记任务完成
         Task.findByIdAndUpdate(
-            _id
+            { _id: taskid }
             , { done: true }
             // , { 'multi': true }
             , function (err, doc) {

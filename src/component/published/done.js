@@ -58,7 +58,7 @@ class Done extends React.Component {
                                         {v.detail}
                                     </Card.Body>
                                     <Card.Footer
-                                        content={v.yongbingid ? v.yongbingid : "暂无人接受"}
+                                        content={v.yongbing ? v.yongbing : "出错了"}
                                     >
                                     </Card.Footer>
                                 </Card>

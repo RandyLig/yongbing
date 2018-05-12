@@ -5,11 +5,12 @@
 
 body{
     font-family: 'hanyiquantang';
-    overflow: hidden;
+    /* overflow: hidden; */
 }
 #root {
     height: 100%;
     position: relative;
+    padding-top: 45px;
 }
 /* avatarSelector 请选择头像 */
 .am-list-header {
@@ -102,3 +103,18 @@ body{
 .am-card {
     min-height: 37.5px !important;
 }
+.chat {
+    padding-bottom: 99px;
+}
+.am-navbar {
+    position: fixed;
+    top:0;
+    left: 0;
+    z-index: 100;
+    right: 0;
+}
+/* 评价详情页 */
+/* .spe {
+    width: 60px;
+    height: 60px;
+  } */

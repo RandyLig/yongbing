@@ -55,7 +55,10 @@ class Me extends React.Component {
         const userid = this.props.user._id
         //筛选属于该boss的请求任务
         const tasklist = this.props.task.tasklist.filter(v => v.bossid === userid)
+        const tasklist2 = this.props.task.tasklist.filter(v => v.yongbingid === userid)
+        //确认栏的徽标数
         const requestlist = tasklist.filter(v => (v.request === true && v.accept === false))
+        const doinglist = tasklist2.filter(v => (v.request === false && v.accept === true && v.done === false))
         // console.log(requestlist.length)
         return this.props.user.user ? <QueueAnim>
             <div>
@@ -151,6 +154,7 @@ class Me extends React.Component {
                         {/* 佣兵查看正在进行的任务 */}
                         {this.props.user.type === 'yongbing' ? (<List.Item
                             multipleLine
+                            extra={<Badge text={doinglist.length ? doinglist.length : ''}></Badge>}
                             thumb={<img src={require(`../img/${'任务进行中'}.png`)} style={{ width: 25 }} alt="" />}
                             onClick={() => {
                                 this.props.history.push('/doing')

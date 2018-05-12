@@ -33,7 +33,7 @@ class Doneyb extends React.Component {
         // 過濾其他用戶發佈的任務
         // const userid = this.props.user._id
         const name = this.props.user.nickname
-        const tasklist = this.props.task.tasklist.filter(v => v.yongbingid === name)
+        const tasklist = this.props.task.tasklist.filter(v => v.yongbing === name)
         return (
             <div>
                 <NavBar
@@ -58,7 +58,7 @@ class Doneyb extends React.Component {
                                         {v.detail}
                                     </Card.Body>
                                     <Card.Footer
-                                        content={v.yongbingid ? v.yongbingid : "暂无人接受"}
+                                        content={v.yongbing ? v.yongbing : "出错了"}
                                     >
                                     </Card.Footer>
                                 </Card>

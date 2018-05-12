@@ -47,14 +47,16 @@ class Evaluate extends React.Component {
             [key]: val
         })
     }
-    Submit(user) {
+    Submit() {
         // if (!this.state.evaluate) {
         //     this.setState({
         //         haserror: true
         //     })
         // }
+        //从url中获取任务id
+        const taskid = this.props.match.params.user
         const from = this.props.user._id
-        const chatid = getChatId(from, user)
+        // const chatid = getChatId(from, user)
         if (!this.state.evaluate) {
             Toast.info('请填写评价')
             console.log(this.state)
@@ -62,14 +64,14 @@ class Evaluate extends React.Component {
             this.setState({
                 haserror: false
             })
-            console.log(chatid)
-            this.props.evaluate({ ...this.state, from, user, chatid })
+            console.log({ ...this.state, taskid })
+            this.props.evaluate({ ...this.state, taskid })
             this.props.history.go(-1)
         }
     }
     render() {
         const { files } = this.state;
-        const user = this.props.match.params.user
+        // const user = this.props.match.params.user
         // console.log(user)
         return <div>
             <NavBar mode="dark" icon={<Icon type="cross" />}
@@ -98,7 +100,7 @@ class Evaluate extends React.Component {
             <QueueAnim type='bottom' className='confirm'>
                 <WingBlank key={'confirmButton'}>
                     <Button type="warning"
-                        onClick={() => this.Submit(user)}
+                        onClick={() => this.Submit()}
                         key={'button'} className='confirmButton'
                         size='small'
                         inline={true}

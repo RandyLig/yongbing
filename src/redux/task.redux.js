@@ -138,9 +138,9 @@ export function addTask({ taskname, detail, reward, from, yongbingid, files }) {
 }
 
 // 任务完成
-export function haddone(taskid, yongbingid,chatid) {
+export function haddone(taskid, yongbingid, chatid, taskname) {
     return (dispatch, getState) => {
-        axios.post('/user/haddone', { taskid, yongbingid,chatid }).then(
+        axios.post('/user/haddone', { taskid, yongbingid, chatid, taskname }).then(
             res => {
                 const userid = getState().user._id
                 if (res.status === 200 && res.data.code === 0) {
@@ -206,17 +206,66 @@ export function getEvaluate() {
         )
     }
 }
+//获取评价信息(特定的)
+export function getEvaluateOne(taskid) {
+    return dispatch => {
+        
+        axios.get('/user/getevaluateOne', {
+            params: {
+                taskid: taskid
+            }
+        }).then(
+            res => {
+                if (res.data.code === 0) {
+                    dispatch(evaluateList(res.data.data))
+                }
+            }
+            )
+    }
+}
 //评价
-export function evaluate({ evaluate, files, praise, from, user, chatid }) {
+export function evaluate({ evaluate, files, praise, taskid }) {
     return dispatch => {
         // console.log(from, praise)
-        axios.post('/user/evaluate', { evaluate, files, praise, from, user, chatid }).then(
+        axios.post('/user/evaluate', { evaluate, files, praise, taskid }).then(
             res => {
                 if (res.data.code === 0) {
                     dispatch(evaluateList(res.data.data))
                 }
             }
         )
+    }
+}
+//根据任务标题查询
+export function titleSearch(title) {
+    return dispatch => {
+        axios.get('/user/tasktitle', {
+            params: {
+                title: title
+            }
+        }).then(
+            res => {
+                if (res.data.code === 0) {
+                    dispatch(taskList(res.data.data))
+                }
+            }
+            )
+    }
+}
+//根据任务内容查询
+export function detailSearch(detail) {
+    return dispatch => {
+        axios.get('/user/taskdetail', {
+            params: {
+                detail: detail
+            }
+        }).then(
+            res => {
+                if (res.data.code === 0) {
+                    dispatch(taskList(res.data.data))
+                }
+            }
+            )
     }
 }
 // export function accepttask(taskid) {

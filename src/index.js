@@ -24,6 +24,7 @@ import Done from './component/published/done'
 import Doneyb from './component/published/doneyb'
 import Confirm from './component/boss/confirm'
 import Evaluate from './component/boss/evaluate'
+import Evaluateinfo from './component/boss/evaluateinfo'
 import TestWrapper from './container/test.js'
 const store = createStore(reducers, compose(
     applyMiddleware(thunk),
@@ -40,6 +41,7 @@ ReactDOM.render(
                     <Route path='/bossinfo' component={BossInfo} />
                     <Route path='/confirm' component={Confirm} />
                     <Route path='/evaluate/:user' component={Evaluate} />
+                    <Route path='/evaluateinfo/:user' component={Evaluateinfo} />
                     <Route path='/yongbinginfo' component={YongbingInfo} />
                     <Route path='/login' component={Login} />
                     <Route path='/register' component={Register} />

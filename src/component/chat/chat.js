@@ -70,6 +70,7 @@ class Chat extends React.Component {
         //过滤其他用户的数据
         const chatMsg = this.props.chat.chatMsg.filter(v => v.chatid === chatid)
         const evaluate111 = this.props.task.evaluate.filter(v => v.chatid === chatid)
+        console.log(evaluate111)
         // console.log(user)
         //没有这句则会报错
         if (!users[user]) {
@@ -104,30 +105,31 @@ class Chat extends React.Component {
                     </QueueAnim>
                 </div>
                 <WhiteSpace size="lg" />
-                {evaluate111.map(v => v.visiable ? <QueueAnim key={'list'}>
+                {evaluate111.map(v => v.visiable ? <div><WhiteSpace size="lg" /> <QueueAnim key={'list'}>
                     <WingBlank>
-                        <Card key={'evaluate'} onClick={() => this.props.history.push(`/evaluate/${user}`)}>
+                        <Card key={'evaluate'} onClick={() => this.props.history.push(`/evaluate/${v.taskid}`)}>
                             <Card.Header
                                 title="交易完成，去评价"
                                 thumb=""
                                 extra={<Icon type='right' color='#108ee9'></Icon>}
                             />
-                        </Card>
-                    </WingBlank>
-                </QueueAnim> : '')}
-                <WhiteSpace size="lg" />
-                {evaluate111.map(v => v.done && v.visiable ? <QueueAnim key={'list2'}>
-                    <WingBlank>
-                        <Card key={'evaluatedone'}>
-                            <Card.Header
-                                title="已完成评价"
-                                thumb=""
-                                extra={<Icon type='check-circle' color='#108ee9'></Icon>}
-                            />
-                        </Card>
-                    </WingBlank>
-                </QueueAnim> : '')}
 
+                        </Card>
+                    </WingBlank>
+                </QueueAnim>
+                    <WhiteSpace size="lg" />
+                    {v.done && v.visiable ? <QueueAnim key={'list2'}>
+                        <WingBlank>
+                            <Card key={'evaluatedone'}
+                                onClick={() => this.props.history.push(`/evaluateinfo/${v.taskid}`)}>
+                                <Card.Header
+                                    title="已完成评价"
+                                    thumb=""
+                                    extra={<Icon type='check-circle' color='#108ee9'></Icon>}
+                                />
+                            </Card>
+                        </WingBlank>
+                    </QueueAnim> : ''}</div> : '')}
                 <div className='submitMsg'>
                     <List>
                         <InputItem

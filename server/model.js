@@ -57,17 +57,19 @@ const models = {
     },
     //评价
     evaluate: {
+        'taskid': { 'type': String, require: true },
+        'taskname': { 'type': String, require: true },
         //评价
-        'evaluate': { 'type': String, require: true },
+        'evaluate': { 'type': String },
         //图片
         'files': { 'type': Array },
         'boss': { 'type': String, require: true },
         'yongbing': { 'type': String, require: true },
-        'visiable': { 'type': Boolean, require: true, default: false },
+        'visiable': { 'type': Boolean, default: false },
         'chatid': { 'type': String, require: true },
         //好评
-        'praise': { 'type': String, require: true },
-        'done': { 'type': Boolean, require: true },
+        'praise': { 'type': String },
+        'done': { 'type': Boolean },
         'create_time': { 'type': Number, default: new Date().getTime() },
     },
 }
