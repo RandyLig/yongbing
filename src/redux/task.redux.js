@@ -9,6 +9,8 @@ const ACCEPT_TASK = 'ACCEPT_TASK'
 const REQUEST_TASK = 'REQUEST_TASK'
 const CHECK_DONE = 'CHECK_DONE'
 const EVALUATE = 'EVALUATE'
+const EVALUATE_LIST = 'EVALUATE_LIST'
+const EVALUATE_INFO = 'EVALUATE_INFO'
 const initstate = {
     tasklist: [],
     requestlist: [],
@@ -60,6 +62,14 @@ export function task(state = initstate, action) {
             }
         case EVALUATE:
             return {
+                ...state, evaluate: state.evaluate
+            }
+        case EVALUATE_INFO:
+            return {
+                ...state, evaluate: action.payload.data, bossname: action.payload.bossname
+            }
+        case EVALUATE_LIST:
+            return {
                 ...state, evaluate: action.payload
             }
         default: return state
@@ -78,11 +88,19 @@ export function taskList(data) {
 }
 //获取评价信息
 export function evaluateList(data) {
+    return { type: EVALUATE_LIST, payload: data }
+}
+//评价
+export function evaluate1(data) {
     return { type: EVALUATE, payload: data }
 }
+//获取评价详情
+export function evaluateListInfo(data, bossname) {
+    return { type: EVALUATE_INFO, payload: { data, bossname } }
+}
 
-function hadDone({ taskid, userid, data }) {
-    return { type: 'TASK_DONE', payload: { taskid, userid, data } }
+function hadDone({ taskid, data }) {
+    return { type: 'TASK_DONE', payload: { taskid, data } }
 }
 function acceptTask({ taskid, data }) {
     return { type: 'ACCEPT_TASK', payload: { taskid, data } }
@@ -91,9 +109,9 @@ function acceptTask({ taskid, data }) {
 function requestTask({ taskid, data }) {
     return { type: 'REQUEST_TASK', payload: { taskid, data } }
 }
-function checktask({ taskid, data }) {
-    return { type: 'CHECK_TASK', payload: { taskid, data } }
-}
+// function checktask({ taskid, data }) {
+//     return { type: 'CHECK_TASK', payload: { taskid, data } }
+// }
 //获取任务列表
 export function getTaskList() {
     return dispatch => {
@@ -104,6 +122,21 @@ export function getTaskList() {
                 }
             }
         )
+    }
+}
+export function getTaskListOne(taskid) {
+    return dispatch => {
+        axios.get('/user/tasklistOne', {
+            params: {
+                taskid: taskid
+            }
+        }).then(
+            res => {
+                if (res.data.code === 0) {
+                    dispatch(taskList(res.data.data))
+                }
+            }
+            )
     }
 }
 //获取请求状态中的任务
@@ -142,10 +175,10 @@ export function haddone(taskid, yongbingid, chatid, taskname) {
     return (dispatch, getState) => {
         axios.post('/user/haddone', { taskid, yongbingid, chatid, taskname }).then(
             res => {
-                const userid = getState().user._id
+                // const userid = getState().user._id
                 if (res.status === 200 && res.data.code === 0) {
                     // console.log(getState())
-                    dispatch(hadDone({ taskid, userid, data: res.data.data }))
+                    dispatch(hadDone({ taskid, data: res.data.data }))
                 }
             }
         )
@@ -157,7 +190,7 @@ export function cancelTask(taskid) {
     return (dispatch, getState) => {
         axios.post('/user/canceltask', { taskid }).then(
             res => {
-                const userid = getState().user._id
+                // const userid = getState().user._id
                 if (res.status === 200 && res.data.code === 0) {
                     // console.log(getState())
                     dispatch(taskList(res.data.data))
@@ -209,7 +242,6 @@ export function getEvaluate() {
 //获取评价信息(特定的)
 export function getEvaluateOne(taskid) {
     return dispatch => {
-        
         axios.get('/user/getevaluateOne', {
             params: {
                 taskid: taskid
@@ -217,7 +249,7 @@ export function getEvaluateOne(taskid) {
         }).then(
             res => {
                 if (res.data.code === 0) {
-                    dispatch(evaluateList(res.data.data))
+                    dispatch(evaluateListInfo(res.data.data, res.data.bossname))
                 }
             }
             )
@@ -230,7 +262,7 @@ export function evaluate({ evaluate, files, praise, taskid }) {
         axios.post('/user/evaluate', { evaluate, files, praise, taskid }).then(
             res => {
                 if (res.data.code === 0) {
-                    dispatch(evaluateList(res.data.data))
+                    dispatch(evaluate1(res.data.data))
                 }
             }
         )

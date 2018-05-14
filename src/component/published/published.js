@@ -25,7 +25,7 @@ class Published extends React.Component {
         tasklist: PropTypes.array.isRequired
     }
     Submit(v) {
-        const yongbingname = v.yongbing
+        // const yongbingname = v.yongbing
         const yongbingid = v.yongbingid
         const taskname = v.taskname
         const chatid = getChatId(yongbingid, this.props.user._id)
@@ -49,7 +49,7 @@ class Published extends React.Component {
         return (
             <div>
                 <NavBar
-                    mode="light"
+                    mode="dark"
                     leftContent="返回"
                     onLeftClick={() => this.props.history.go(-1)}
                     rightContent={[
@@ -72,7 +72,7 @@ class Published extends React.Component {
                                     {/* //显示boss */}
                                     <Card.Header
                                         title={v.taskname}
-                                        thumb={v.files.url}
+                                        thumb={v.files[0].url ? v.files[0].url : '加载出错'}
                                         thumbStyle={{ height: '56px', width: '50px' }}
                                         extra={(<div>{v.yongbing ? <a style={{ color: 'red' }} onClick={() => this.Submit(v)} size="small" type="ghost">确认完成</a> : ''}
                                             <a style={{ color: 'green' }} onClick={() => this.cancel(v)} size="small" type="ghost">取消任务</a></div>)}

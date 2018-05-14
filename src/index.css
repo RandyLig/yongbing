@@ -118,3 +118,12 @@ body{
     width: 60px;
     height: 60px;
   } */
+/* .am-grid-icon {
+    width: 43% !important;
+    height: 40px;
+} 
+   */
+   /* card显示时间 */
+.am-card-header-content,.am-card-footer-extra {
+    flex:none !important;
+}

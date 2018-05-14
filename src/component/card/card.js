@@ -11,7 +11,8 @@ class Cards extends React.Component {
     }
 
     handleChange(v) {
-        this.props.history.push(`/chat/${v._id}`)
+        // this.props.history.push(`/chat/${v._id}`)
+        this.props.history.push(`/userinfo/${v._id}`)
     }
     render() {
         return (

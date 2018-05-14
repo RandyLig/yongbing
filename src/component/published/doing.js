@@ -38,7 +38,7 @@ class Doing extends React.Component {
         return (
             <div>
                 <NavBar
-                    mode="light"
+                    mode="dark"
                     leftContent="返回"
                     onLeftClick={() => this.props.history.go(-1)}>正在进行的任务</NavBar>
                 <WingBlank>
@@ -52,7 +52,7 @@ class Doing extends React.Component {
                                     {/* //显示boss */}
                                     <Card.Header
                                         title={v.taskname}
-                                        thumb={''}
+                                        thumb={v.files[0].url ? v.files[0].url : '加载出错'}
                                         thumbStyle={{ height: '56px', width: '50px' }}
                                         extra={<a onClick={() => this.Submit(v)} size="small" type="ghost">正在进行中</a>}
                                     />

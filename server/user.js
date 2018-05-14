@@ -29,15 +29,26 @@ Router.get('/list', function (req, res) {
 //获取评价信息
 Router.get('/getevaluate', function (req, res) {
     Evaluate.find({}, function (err, doc) {
-        return res.json({ code: 0, data: doc })
+        //获取评论时的boss昵称
+        // const { bossid } = doc
+        // console.log(bossid)
+        User.find({}, function (e, d) {
+            return res.json({ code: 0, data: doc, data2: d })
+        })
+        // return res.json({ code: 0, data: doc })
     })
 })
 //获取评价信息(特定)
 Router.get('/getevaluateOne', function (req, res) {
     const { taskid } = req.query
-    console.log({ taskid })
+    // console.log({ taskid })
     Evaluate.find({ taskid }, function (err, doc) {
-        return res.json({ code: 0, data: doc })
+        const boss = doc[0].boss
+        // console.log('boss:', boss, '111:', doc)
+        User.findOne({ _id: boss }, function (e, d) {
+            const { nickname } = d
+            return res.json({ code: 0, data: doc, bossname: nickname })
+        })
     })
 })
 //评价
@@ -46,8 +57,8 @@ Router.post('/evaluate', function (req, res) {
     // const boss = from
     // const yongbing = user
     const done = true
-    Evaluate.findOne({ taskid }, { evaluate, files, praise, done }, function (err, doc) {
-        console.log(err)
+    Evaluate.update({ taskid }, { evaluate, files, praise, done, create_time: new Date().getTime() }, function (err, doc) {
+
         if (err) {
             return res.json({ code: 1, msg: '后台出错啦' })
         }
@@ -110,6 +121,13 @@ Router.get('/taskdetail', function (req, res) {
 })
 Router.get('/tasklist', function (req, res) {
     Task.find({}, function (err, doc) {
+        return res.json({ code: 0, data: doc })
+    })
+})
+//获取单个任务 以获得其信息
+Router.get('/tasklistOne', function (req, res) {
+    const { taskid } = req.query
+    Task.find({ _id: taskid }, function (err, doc) {
         return res.json({ code: 0, data: doc })
     })
 })
@@ -245,7 +263,7 @@ Router.post('/haddone', function (req, res) {
         //标记任务完成
         Task.findByIdAndUpdate(
             { _id: taskid }
-            , { done: true }
+            , { done: true, create_time: new Date().getTime() }
             // , { 'multi': true }
             , function (err, doc) {
                 if (!err) {

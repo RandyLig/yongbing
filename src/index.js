@@ -19,13 +19,15 @@ import Info from './component/info/info'
 import Identify from './component/me/identify'
 import Published from './component/published/published'
 import Published2 from './component/published/published2'
+import Published2F from './component/published/published2F'
 import Doing from './component/published/doing'
 import Done from './component/published/done'
 import Doneyb from './component/published/doneyb'
 import Confirm from './component/boss/confirm'
 import Evaluate from './component/boss/evaluate'
 import Evaluateinfo from './component/boss/evaluateinfo'
-import TestWrapper from './container/test.js'
+import Userinfo from './component/card/userinfo'
+// import TestWrapper from './container/test.js'
 const store = createStore(reducers, compose(
     applyMiddleware(thunk),
     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
@@ -51,10 +53,11 @@ ReactDOM.render(
                     <Route path='/identify' component={Identify} />
                     <Route path='/published' component={Published} />
                     <Route path='/published2' component={Published2} />
+                    <Route path='/published2F' component={Published2F} />
                     <Route path='/doing' component={Doing} />
                     <Route path='/done' component={Done} />
                     <Route path='/doneyb' component={Doneyb} />
-                    <Route path='/Test' component={TestWrapper} />
+                    <Route path='/userinfo/:user' component={Userinfo} />
                     <Route component={DashBoard} />
                 </Switch>
             </div>

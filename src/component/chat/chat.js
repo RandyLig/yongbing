@@ -3,25 +3,27 @@ import QueueAnim from 'rc-queue-anim';
 import { List, InputItem, NavBar, Icon, Grid, WhiteSpace, WingBlank, Card } from 'antd-mobile'
 import { connect } from 'react-redux'
 import { getMsgList, sendMsg, reciveMsg, hadread } from '../../redux/chat.redux'
-import { getEvaluate } from '../../redux/task.redux'
+import { getEvaluate, getTaskListOne, getTaskList } from '../../redux/task.redux'
 import { getChatId } from '../../util'
 // const socket = io('ws://localhost:9093')
 
 @connect(
     state => state,
-    { getMsgList, sendMsg, reciveMsg, hadread, getEvaluate }
+    { getMsgList, sendMsg, reciveMsg, hadread, getEvaluate, getTaskListOne, getTaskList }
 )
 
 class Chat extends React.Component {
     constructor(props) {
         super(props)
         this.props.getEvaluate()
+        this.props.getTaskList()
         this.state = {
             text: '',
             msg: [],
             showEmoji: false
         }
         this.Submit = this.Submit.bind(this)
+        this.evaluateinfo = this.evaluateinfo.bind(this)
         // this.evaluate = this.evaluate.bind(this)
     }
     componentDidMount() {
@@ -31,6 +33,11 @@ class Chat extends React.Component {
             this.props.getMsgList()
 
         }
+    }
+    evaluateinfo(v) {
+        this.props.getTaskListOne(v.taskid)
+        setTimeout(this.props.history.push(`/evaluateinfo/${v.taskid}`), 200)
+
     }
     //退出聊天时执行
     componentWillUnmount() {
@@ -70,7 +77,7 @@ class Chat extends React.Component {
         //过滤其他用户的数据
         const chatMsg = this.props.chat.chatMsg.filter(v => v.chatid === chatid)
         const evaluate111 = this.props.task.evaluate.filter(v => v.chatid === chatid)
-        console.log(evaluate111)
+        // console.log(evaluate111)
         // console.log(user)
         //没有这句则会报错
         if (!users[user]) {
@@ -105,31 +112,45 @@ class Chat extends React.Component {
                     </QueueAnim>
                 </div>
                 <WhiteSpace size="lg" />
-                {evaluate111.map(v => v.visiable ? <div><WhiteSpace size="lg" /> <QueueAnim key={'list'}>
-                    <WingBlank>
-                        <Card key={'evaluate'} onClick={() => this.props.history.push(`/evaluate/${v.taskid}`)}>
-                            <Card.Header
-                                title="交易完成，去评价"
-                                thumb=""
-                                extra={<Icon type='right' color='#108ee9'></Icon>}
-                            />
-
-                        </Card>
-                    </WingBlank>
-                </QueueAnim>
-                    <WhiteSpace size="lg" />
-                    {v.done && v.visiable ? <QueueAnim key={'list2'}>
+                {this.props.user.type === 'boss' ? (
+                    evaluate111.map(v => v.visiable ? <div key={v._id + 'evaluate'}><WhiteSpace size="lg" /> <QueueAnim key={'list'}>
                         <WingBlank>
-                            <Card key={'evaluatedone'}
-                                onClick={() => this.props.history.push(`/evaluateinfo/${v.taskid}`)}>
+                            <Card key={'evaluate' + v._id} onClick={() => this.props.history.push(`/evaluate/${v.taskid}`)}>
                                 <Card.Header
-                                    title="已完成评价"
+                                    title={v.taskname + "交易完成，去评价"}
                                     thumb=""
-                                    extra={<Icon type='check-circle' color='#108ee9'></Icon>}
+                                    extra={<Icon type='right' color='#108ee9'></Icon>}
                                 />
+
                             </Card>
                         </WingBlank>
-                    </QueueAnim> : ''}</div> : '')}
+                    </QueueAnim>
+                        <WhiteSpace size="lg" />
+                        {v.done && v.visiable ? <QueueAnim key={'list2'}>
+                            <WingBlank>
+                                <Card key={'evaluateinfo' + v._id}
+                                    onClick={() => this.evaluateinfo(v)}>
+                                    <Card.Header
+                                        title="已完成评价"
+                                        thumb=""
+                                        extra={<Icon type='check-circle' color='#108ee9'></Icon>}
+                                    />
+                                </Card>
+                            </WingBlank>
+                        </QueueAnim> : ''}</div> : '')
+                ) : ''}
+                {this.props.user.type === 'yongbing' ? (evaluate111.map(v => v.done && v.visiable ? <QueueAnim key={'list2'}>
+                    <WingBlank>
+                        <Card key={'yongbing' + v._id}
+                            onClick={() => this.props.history.push(`/evaluateinfo/${v.taskid}`)}>
+                            <Card.Header
+                                title="boss已完成评价"
+                                thumb=""
+                                extra={<Icon type='check-circle' color='#108ee9'></Icon>}
+                            />
+                        </Card>
+                    </WingBlank>
+                </QueueAnim> : '')) : ''}
                 <div className='submitMsg'>
                     <List>
                         <InputItem

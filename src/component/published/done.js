@@ -4,6 +4,7 @@ import { Card, WingBlank, WhiteSpace, NavBar } from 'antd-mobile'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
+import { formatDate } from '../../util'
 // import { haddone } from '../../redux/task.redux'
 
 @withRouter
@@ -17,7 +18,7 @@ class Done extends React.Component {
         super(props)
         this.state = {
         }
-        // this.Submit = this.Submit.bind(this)
+
     }
     static PropTypes = {
         tasklist: PropTypes.array.isRequired
@@ -32,12 +33,12 @@ class Done extends React.Component {
     render() {
         // 過濾其他用戶發佈的任務
         const userid = this.props.user._id
-        
+
         const tasklist = this.props.task.tasklist.filter(v => v.bossid === userid)
         return (
             <div>
                 <NavBar
-                    mode="light"
+                    mode="dark"
                     leftContent="返回"
                     onLeftClick={() => this.props.history.go(-1)}>已完成任务</NavBar>
                 <WingBlank>
@@ -50,15 +51,16 @@ class Done extends React.Component {
                                 <Card key={v.taskname}>
                                     <Card.Header
                                         title={v.taskname}
-                                        thumb={''}
+                                        thumb={v.files[0].url ? v.files[0].url : '加载出错'}
                                         thumbStyle={{ height: '56px', width: '50px' }}
-                                        extra={<a onClick={() => this.props.history.push('/evaluate')} size="small" type="ghost">去评价</a>}
+                                        extra={<a onClick={() => this.props.history.push('/msg')} size="small" type="ghost">去评价</a>}
                                     />
                                     <Card.Body>
                                         {v.detail}
                                     </Card.Body>
                                     <Card.Footer
                                         content={v.yongbing ? v.yongbing : "出错了"}
+                                        extra={'完成时间:' + formatDate(new Date(v.create_time))}
                                     >
                                     </Card.Footer>
                                 </Card>

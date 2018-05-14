@@ -1,23 +1,26 @@
 import React from 'react'
-import { NavBar, Icon, ImagePicker, Button, SegmentedControl, Toast, Result, Card, WhiteSpace } from 'antd-mobile'
+import { NavBar, Icon, Result, Card, WhiteSpace } from 'antd-mobile'
 import QueueAnim from 'rc-queue-anim';
-import { getEvaluateOne } from '../../redux/task.redux'
+import { getEvaluateOne, getTaskListOne } from '../../redux/task.redux'
 import { connect } from 'react-redux'
-import { getChatId } from '../../util'
+// import { getChatId } from '../../util'
 
 @connect(
     state => state,
-    { getEvaluateOne }
+    { getEvaluateOne, getTaskListOne }
 )
 
 class Evaluateinfo extends React.Component {
     constructor(props) {
         super(props)
         this.props.getEvaluateOne(this.props.match.params.user)
+        this.props.getTaskListOne(this.props.match.params.user)
         this.state = {
             haserror: false,
         }
         this.Submit = this.Submit.bind(this)
+        this.formatTen = this.formatTen.bind(this)
+        this.formatDate = this.formatDate.bind(this)
     }
     onChange = (files, type, index) => {
         console.log(files, type, index);
@@ -25,10 +28,27 @@ class Evaluateinfo extends React.Component {
             files,
         });
     }
+    // componentDidMount() {
+    //     this.props.getTaskListOne(this.props.match.params.user)
+    // }
     handleChange(key, val) {
         this.setState({
             [key]: val
         })
+    }
+    //时间格式化
+    formatTen(num) {
+        return num > 9 ? (num + "") : ("0" + num);
+    }
+
+    formatDate(date) {
+        var year = date.getFullYear();
+        var month = date.getMonth() + 1;
+        var day = date.getDate();
+        var hour = date.getHours();
+        var minute = date.getMinutes();
+        var second = date.getSeconds();
+        return year + "-" + this.formatTen(month) + "-" + this.formatTen(day) + " " + this.formatTen(hour) + ":" + this.formatTen(minute) + ":" + this.formatTen(second);
     }
     Submit() {
         // if (!this.state.evaluate) {
@@ -37,8 +57,8 @@ class Evaluateinfo extends React.Component {
         //     })
         // }
         //从url中获取任务id
-        const taskid = this.props.match.params.user
-        const from = this.props.user._id
+        // const taskid = this.props.match.params.user
+        // const from = this.props.user._id
         // const chatid = getChatId(from, user)
 
         // console.log({ ...this.state, taskid })
@@ -47,42 +67,10 @@ class Evaluateinfo extends React.Component {
 
     }
     render() {
-        // var SimpleDateFormat = function (pattern) {
-        //     var reg = /[\-\/\.]/g;
-        //     var format = new RegExp("^[ymd]+" + reg.source + "[ymd]+" + reg.source + "[ymd]+$", "i");
-        //     if (!format.test(pattern)) {
-        //         throw new Error("the pattern paramters is not legal !");
-        //     }
-        //     this.pattern = pattern;
-        //     this.reg = reg;
-        //     this.spliter = pattern.replace(/[ymd]/gi, '').substr(1);
-        // }
-
-        // SimpleDateFormat.prototype.format = function (date) {
-        //     if (!(date instanceof Date)) {
-        //         throw new Error("the date paramter is not Date type.");
-        //     }
-        //     var spliter = this.spliter;
-        //     var year = date.getFullYear();
-        //     var month = date.getMonth();
-        //     var day = date.getDate();
-        //     return year + spliter + month + spliter + day;
-        // }
-
-        // SimpleDateFormat.prototype.parse = function (str) {
-        //     var pattern = this.pattern;
-        //     var reg = new RegExp("^" + pattern.replace(/[ymd]/gi, '\\d') + "$");
-        //     if (!reg.test(str)) {
-        //         throw new Error("the str paramter could not be pattered.");
-        //     }
-        //     var tempDate = str.split(this.spliter);
-        //     return new Date(tempDate[0], tempDate[1], tempDate[2]);
-        // }
-        // var d1 = new SimpleDateFormat("yyyy-MM-dd");
-        // console.log(d1.format(this.props.task.evaluate[0].create_time))
-        // const user = this.props.match.params.user
-        // console.log(user)
-        return <div>
+        const tasklist = this.props.task.tasklist.filter(v => v._id === this.props.match.params.user)
+        const evaluate = this.props.task.evaluate.filter(v => v.taskid === this.props.match.params.user)
+        // console.log(tasklist)
+        return !!tasklist ? (<div>
             <NavBar mode="dark" icon={<Icon type="cross" />}
                 onLeftClick={() => this.props.history.go(-1)}>评价详情</NavBar>
             <Result
@@ -90,26 +78,26 @@ class Evaluateinfo extends React.Component {
                     fill: '#1F90E6', width: '60px',
                     height: '60px'
                 }} />}
-                title="交易完成"
-                message="完成时间："
+                title={(evaluate[0].taskname ? evaluate[0].taskname : '') + "交易完成"}
+                message={"完成时间：" + this.formatDate(new Date(tasklist[0].create_time))}
             />
             <WhiteSpace size="lg" />
             <QueueAnim type='bottom'>
-                <Card key={'evaluateinfo'} onClick={''}>
+                <Card key={'evaluateinfo'} onClick={() => console.log('评价')}>
                     <Card.Header
-                        title={this.props.user.nickname}
+                        title={this.props.task.bossname}
                         thumb={<img src={require(`../img/${this.props.user.avatar}.png`)} style={{ width: 25 }} alt="" />}
-                        extra={this.props.task.evaluate[0].praise}
+                        extra={evaluate[0].praise}
                     />
                     <Card.Body>
-                        <div>{this.props.task.evaluate[0].evaluate}</div>
+                        <div>{evaluate[0].evaluate}</div>
                     </Card.Body>
-                    <Card.Footer content={'评论时间:' + this.props.task.evaluate[0].create_time}>
+                    <Card.Footer content={'评论时间:' + this.formatDate(new Date(this.props.task.evaluate[0].create_time))}>
 
                     </Card.Footer>
                 </Card>
             </QueueAnim>
-        </div>
+        </div>) : ''
     }
 }
 

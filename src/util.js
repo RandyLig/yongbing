@@ -40,7 +40,7 @@ export function filter(value, arr) {
     if (value === 'woman') {
         const userlist = arr.filter(v => v.sex === '女')
         return userlist
-    } 
+    }
     //按地区筛选
     else {
         return arr
@@ -51,4 +51,19 @@ export function filter(value, arr) {
 //查询任务
 export function search(value) {
 
+}
+
+//时间格式化
+export function formatTen(num) {
+    return num > 9 ? (num + "") : ("0" + num);
+}
+
+export function formatDate(date) {
+    var year = date.getFullYear();
+    var month = date.getMonth() + 1;
+    var day = date.getDate();
+    var hour = date.getHours();
+    var minute = date.getMinutes();
+    var second = date.getSeconds();
+    return year + "-" + formatTen(month) + "-" + formatTen(day) + " " + formatTen(hour) + ":" + formatTen(minute) + ":" + formatTen(second);
 }

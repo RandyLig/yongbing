@@ -1,6 +1,6 @@
 import React from 'react'
-import QueueAnim from 'rc-queue-anim';
-import { Card, WingBlank, WhiteSpace, NavBar, Popover, Icon, Modal, Button } from 'antd-mobile'
+// import QueueAnim from 'rc-queue-anim';
+import { NavBar, Popover, Icon, Modal, Button, Grid } from 'antd-mobile'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
@@ -9,50 +9,50 @@ import { accepttask, getTaskList } from '../../redux/task.redux'
 import { titleSearch, detailSearch } from '../../redux/task.redux'
 // const Item = Popover.Item;
 const prompt = Modal.prompt
-// const data = new Array({
-//     icon: require(`../img/${'界面设计'}.png` ),
-//     text: '绘画书法'
-// }, {
-//         icon: require(`../img/${'放映机'}.png`),
-//         text: '舞蹈音乐'
-//     }, {
-//         icon: require(`../img/${'书架'}.png`),
-//         text: '语言翻译'
-//     }, {
-//         icon: require(`../img/${'电脑'}.png`),
-//         text: 'IT服务'
-//     }, {
-//         icon: require(`../img/${'检测单'}.png`),
-//         text: '兼职家教'
-//     }, {
-//         icon: require(`../img/${'绘画'}.png`),
-//         text: '手绘修图'
-//     }, {
-//         icon: require(`../img/${'数码'}.png`),
-//         text: '摄影约拍'
-//     }, {
-//         icon: require(`../img/${'背包'}.png`),
-//         text: '旅游服务'
-//     }, {
-//         icon: require(`../img/${'飞碟'}.png`),
-//         text: '游戏服务'
-//     }, {
-//         icon: require(`../img/${'体育运动'}.png`),
-//         text: '运动私教'
-//     }, {
-//         icon: require(`../img/${'机器人'}.png`),
-//         text: '机器人'
-//     }, {
-//         icon: require(`../img/${'VR眼镜'}.png`),
-//         text: '电影推荐'
-//     })
+const data = new Array([{
+    icon: require(`../img/${'界面设计'}.png`),
+    text: '绘画书法'
+}, {
+    icon: require(`../img/${'放映机'}.png`),
+    text: '舞蹈音乐'
+}, {
+    icon: require(`../img/${'书架'}.png`),
+    text: '语言翻译'
+}, {
+    icon: require(`../img/${'电脑'}.png`),
+    text: 'IT服务'
+}, {
+    icon: require(`../img/${'检测单'}.png`),
+    text: '兼职家教'
+}, {
+    icon: require(`../img/${'绘画'}.png`),
+    text: '手绘修图'
+}, {
+    icon: require(`../img/${'数码'}.png`),
+    text: '摄影约拍'
+}, {
+    icon: require(`../img/${'背包'}.png`),
+    text: '旅游服务'
+}, {
+    icon: require(`../img/${'飞碟'}.png`),
+    text: '游戏服务'
+}, {
+    icon: require(`../img/${'体育运动'}.png`),
+    text: '运动私教'
+}, {
+    icon: require(`../img/${'机器人'}.png`),
+    text: '机器人'
+}, {
+    icon: require(`../img/${'VR眼镜'}.png`),
+    text: '电影推荐'
+}])
 @withRouter
 @connect(
     state => state,
     { accepttask, getTaskList, titleSearch, detailSearch }
 )
 //佣兵所看到的的任务列表
-class Published2 extends React.Component {
+class Published2F extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -135,38 +135,13 @@ class Published2 extends React.Component {
                         </div>
                     </Popover>}
                 >已发布任务</NavBar>
-                <WingBlank>
-                    <WhiteSpace />
-                    <WhiteSpace />
-                    {this.props.task.tasklist.map(v => {
-                        return v.done ? '' : (<div key={v._id}>
-                            <WhiteSpace />
-                            <QueueAnim>
-                                <Card key={v._id}>
-                                    {/* //显示佣兵 */}
-                                    <Card.Header
-                                        title={v.taskname}
-                                        thumb={v.files[0].url ? v.files[0].url : '加载出错'}
-                                        thumbStyle={{ height: '56px', width: '50px' }}
-                                        extra={<a onClick={() => this.accept(v)} size="small" type="ghost">接受</a>}
-                                    />
-                                    <Card.Body>
-                                        {v.detail}
-                                    </Card.Body>
-                                    <Card.Footer
-                                        content={v.yongbing ? v.yongbing : "暂无人接受"}
-                                    >
-                                    </Card.Footer>
-                                </Card>
-                            </QueueAnim>
-                        </div>)
-                    })}
-                    {/* <Grid data={data} columnNum={3} hasLine={false} onClick={_el => console.log(_el)}
-                     /> */}
-                </WingBlank>
+                <Grid data={data} columnNum={3} hasLine={false} onClick={_el => {
+                    this.props.history.push('/published2')
+                }}
+                />
             </div>
         )
     }
 }
 
-export default Published2
+export default Published2F

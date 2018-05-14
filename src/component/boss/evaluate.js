@@ -3,7 +3,7 @@ import { NavBar, InputItem, Icon, ImagePicker, Button, WingBlank, SegmentedContr
 import QueueAnim from 'rc-queue-anim';
 import { evaluate } from '../../redux/task.redux'
 import { connect } from 'react-redux'
-import { getChatId } from '../../util'
+// import { getChatId } from '../../util'
 
 @connect(
     state => state,
@@ -55,7 +55,7 @@ class Evaluate extends React.Component {
         // }
         //从url中获取任务id
         const taskid = this.props.match.params.user
-        const from = this.props.user._id
+        // const from = this.props.user._id
         // const chatid = getChatId(from, user)
         if (!this.state.evaluate) {
             Toast.info('请填写评价')
