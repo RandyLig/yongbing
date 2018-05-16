@@ -50,9 +50,9 @@ class Userinfo extends React.Component {
                             <Accordion.Panel header="年龄" className="pad" key={'age' + v._id}>
                                 <List.Item thumb={<img src={require(`../img/${'年龄'}.png`)} style={{ width: 25, height: 25 }} alt="" />}>{v.age}</List.Item>
                             </Accordion.Panel>
-                            <Accordion.Panel header="特长" className="pad" key={'spe' + v._id}>
+                            {v.type === 'yongbing' ? <Accordion.Panel header="特长" className="pad" key={'spe' + v._id}>
                                 <List.Item thumb={<img src={require(`../img/${'彩色特长'}.png`)} style={{ width: 25, height: 25 }} alt="" />}> {v.specialities}</List.Item>
-                            </Accordion.Panel>
+                            </Accordion.Panel> : ''}
                             <Accordion.Panel header="个人简介" className="pad" key={'resume' + v._id}>
                                 <List.Item thumb={<img src={require(`../img/${'简介'}.png`)} style={{ width: 25, height: 25 }} alt="" />}>{v.resume}</List.Item>
                             </Accordion.Panel>

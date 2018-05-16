@@ -46,8 +46,8 @@ Router.get('/getevaluateOne', function (req, res) {
         const boss = doc[0].boss
         // console.log('boss:', boss, '111:', doc)
         User.findOne({ _id: boss }, function (e, d) {
-            const { nickname } = d
-            return res.json({ code: 0, data: doc, bossname: nickname })
+            const { nickname, avatar } = d
+            return res.json({ code: 0, data: doc, bossname: nickname, avatar: avatar })
         })
     })
 })

@@ -126,7 +126,7 @@ class Chat extends React.Component {
                         </WingBlank>
                     </QueueAnim>
                         <WhiteSpace size="lg" />
-                        {v.done && v.visiable ? <QueueAnim key={'list2'}>
+                        {v.done && v.visiable ? <QueueAnim key={v._id + 'list2'}>
                             <WingBlank>
                                 <Card key={'evaluateinfo' + v._id}
                                     onClick={() => this.evaluateinfo(v)}>
@@ -139,7 +139,7 @@ class Chat extends React.Component {
                             </WingBlank>
                         </QueueAnim> : ''}</div> : '')
                 ) : ''}
-                {this.props.user.type === 'yongbing' ? (evaluate111.map(v => v.done && v.visiable ? <QueueAnim key={'list2'}>
+                {this.props.user.type === 'yongbing' ? (evaluate111.map(v => v.done && v.visiable ? <QueueAnim key={v._id + 'list2'}>
                     <WingBlank>
                         <Card key={'yongbing' + v._id}
                             onClick={() => this.props.history.push(`/evaluateinfo/${v.taskid}`)}>

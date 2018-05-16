@@ -42,7 +42,12 @@ class Register extends React.Component {
             [key]: val
         });
     }
+    handleChangeUser(key, val) {
 
+        this.setState({
+            [key]: val
+        });
+    }
     //注册
     register() {
         this.props.register(this.state)
@@ -77,7 +82,7 @@ class Register extends React.Component {
     }
     onErrorClick = () => {
         if (this.state.hasError) {
-            Toast.info('Please enter 11 digits');
+            Toast.info('请输入11位手机号');
         }
     }
     render() {
@@ -87,7 +92,7 @@ class Register extends React.Component {
             <WingBlank>
                 <List>
                     <InputItem
-                        onChange={v => this.handleChange('user', v)}
+                        onChange={v => this.handleChangeUser('user', v)}
                         placeholder="请输入手机号"
                         error={this.state.hasError}
                         onErrorClick={this.onErrorClick}

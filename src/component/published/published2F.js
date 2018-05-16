@@ -9,43 +9,43 @@ import { accepttask, getTaskList } from '../../redux/task.redux'
 import { titleSearch, detailSearch } from '../../redux/task.redux'
 // const Item = Popover.Item;
 const prompt = Modal.prompt
-const data = new Array([{
+const data = new Array({
     icon: require(`../img/${'界面设计'}.png`),
     text: '绘画书法'
 }, {
-    icon: require(`../img/${'放映机'}.png`),
-    text: '舞蹈音乐'
-}, {
-    icon: require(`../img/${'书架'}.png`),
-    text: '语言翻译'
-}, {
-    icon: require(`../img/${'电脑'}.png`),
-    text: 'IT服务'
-}, {
-    icon: require(`../img/${'检测单'}.png`),
-    text: '兼职家教'
-}, {
-    icon: require(`../img/${'绘画'}.png`),
-    text: '手绘修图'
-}, {
-    icon: require(`../img/${'数码'}.png`),
-    text: '摄影约拍'
-}, {
-    icon: require(`../img/${'背包'}.png`),
-    text: '旅游服务'
-}, {
-    icon: require(`../img/${'飞碟'}.png`),
-    text: '游戏服务'
-}, {
-    icon: require(`../img/${'体育运动'}.png`),
-    text: '运动私教'
-}, {
-    icon: require(`../img/${'机器人'}.png`),
-    text: '机器人'
-}, {
-    icon: require(`../img/${'VR眼镜'}.png`),
-    text: '电影推荐'
-}])
+        icon: require(`../img/${'放映机'}.png`),
+        text: '舞蹈音乐'
+    }, {
+        icon: require(`../img/${'书架'}.png`),
+        text: '语言翻译'
+    }, {
+        icon: require(`../img/${'电脑'}.png`),
+        text: 'IT服务'
+    }, {
+        icon: require(`../img/${'检测单'}.png`),
+        text: '兼职家教'
+    }, {
+        icon: require(`../img/${'绘画'}.png`),
+        text: '手绘修图'
+    }, {
+        icon: require(`../img/${'数码'}.png`),
+        text: '摄影约拍'
+    }, {
+        icon: require(`../img/${'背包'}.png`),
+        text: '旅游服务'
+    }, {
+        icon: require(`../img/${'飞碟'}.png`),
+        text: '游戏服务'
+    }, {
+        icon: require(`../img/${'体育运动'}.png`),
+        text: '运动私教'
+    }, {
+        icon: require(`../img/${'机器人'}.png`),
+        text: '机器人'
+    }, {
+        icon: require(`../img/${'VR眼镜'}.png`),
+        text: '电影推荐'
+    })
 @withRouter
 @connect(
     state => state,

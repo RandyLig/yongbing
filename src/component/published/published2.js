@@ -1,6 +1,6 @@
 import React from 'react'
 import QueueAnim from 'rc-queue-anim';
-import { Card, WingBlank, WhiteSpace, NavBar, Popover, Icon, Modal, Button } from 'antd-mobile'
+import { Card, WingBlank, WhiteSpace, NavBar, Popover, Icon, Modal, Button, ActionSheet, Toast } from 'antd-mobile'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
@@ -56,6 +56,7 @@ class Published2 extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
+            clicked1: 'none',
             visible: false,
             selected: '',
         }
@@ -64,6 +65,17 @@ class Published2 extends React.Component {
     static PropTypes = {
         tasklist: PropTypes.array.isRequired
     }
+    dataList = [
+        { url: 'OpHiXAcYzmPQHcdlLFrc', title: '发送给朋友' },
+        { url: 'wvEzCMiDZjthhAOcwTOu', title: '新浪微博' },
+        { url: 'cTTayShKtEIdQVEMuiWt', title: '生活圈' },
+        { url: 'umnHwvEgSyQtXlZjNJTt', title: '微信好友' },
+        { url: 'SxpunpETIwdxNjcJamwB', title: 'QQ' },
+    ].map(obj => ({
+        icon: <img src={`https://gw.alipayobjects.com/zos/rmsportal/${obj.url}.png`} alt={obj.title} style={{ width: 36 }} />,
+        title: obj.title,
+    }));
+
     //请求执行任务
     accept(v) {
         // console.log(v._id)
@@ -93,6 +105,21 @@ class Published2 extends React.Component {
     componentDidMount() {
         //获取任务的数据
         this.props.getTaskList()
+    }
+    showShareActionSheet = () => {
+        ActionSheet.showShareActionSheetWithOptions({
+            options: this.dataList,
+            // title: 'title',
+            message: 'I am description, description, description',
+        },
+            (buttonIndex) => {
+                this.setState({ clicked1: buttonIndex > -1 ? this.dataList[buttonIndex].title : 'cancel' });
+                // also support Promise
+                return new Promise((resolve) => {
+                    Toast.info('closed after 1000ms');
+                    setTimeout(resolve, 1000);
+                });
+            });
     }
     render() {
         return (
@@ -155,6 +182,9 @@ class Published2 extends React.Component {
                                     </Card.Body>
                                     <Card.Footer
                                         content={v.yongbing ? v.yongbing : "暂无人接受"}
+                                        extra={<img src={require(`../img/${'分享'}.png`)}
+                                            style={{ width: 26, height: 18 }} alt=""
+                                            onClick={this.showShareActionSheet}></img>}
                                     >
                                     </Card.Footer>
                                 </Card>

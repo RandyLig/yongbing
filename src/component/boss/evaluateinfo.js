@@ -86,7 +86,7 @@ class Evaluateinfo extends React.Component {
                 <Card key={'evaluateinfo'} onClick={() => console.log('评价')}>
                     <Card.Header
                         title={this.props.task.bossname}
-                        thumb={<img src={require(`../img/${this.props.user.avatar}.png`)} style={{ width: 25 }} alt="" />}
+                        thumb={<img src={require(`../img/${this.props.task.avatar ? this.props.task.avatar : 'android'}.png`)} style={{ width: 25 }} alt="" />}
                         extra={evaluate[0].praise}
                     />
                     <Card.Body>

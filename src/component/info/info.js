@@ -18,6 +18,7 @@ class Info extends React.Component {
             hasError: false,
             hasErrorAge: false,
             hasErrorSex: false,
+            hasErrorhome: false,
             nickname: this.props.nickname,
             sex: this.props.sex,
             age: this.props.age,
@@ -45,11 +46,30 @@ class Info extends React.Component {
             Toast.info('请输入不超过8位的昵称');
         }
     }
+    handleChangehome(key, val) {
+        if (val.replace(/\s/g, '').length > 16) {
+            this.setState({
+                hasErrorhome: true,
+            });
+        } else {
+            this.setState({
+                hasErrorhome: false,
+            });
+        }
+        this.setState({
+            [key]: val
+        })
+    }
+    onErrorClickhome = () => {
+        if (this.state.hasErrorhome) {
+            Toast.info('请输入不超过16位的地址');
+        }
+    }
     //年龄验证
     handleChangeAge(key, val) {
         var pattern = /\D/g
         console.log(val.replace(/\D/g, ''))
-        if (pattern.test(val) === true || val.replace(/\d/g, '').length > 3) {
+        if (pattern.test(val) === true || val.replace(/\s/g, '').length > 3) {
             this.setState({
                 hasErrorAge: true,
             });
@@ -125,8 +145,10 @@ class Info extends React.Component {
             <TextareaItem
                 rows={1}
                 autoHeight
-                onChange={v => this.handleChange('home', v)}
+                onChange={v => this.handleChangehome('home', v)}
                 defaultValue={this.props.home}
+                error={this.state.hasErrorhome}
+                onErrorClick={this.onErrorClickhome}
                 title='家乡'
                 clear='true'
             ></TextareaItem>

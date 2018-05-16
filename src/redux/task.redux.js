@@ -66,7 +66,7 @@ export function task(state = initstate, action) {
             }
         case EVALUATE_INFO:
             return {
-                ...state, evaluate: action.payload.data, bossname: action.payload.bossname
+                ...state, evaluate: action.payload.data, bossname: action.payload.bossname, avatar: action.payload.avatar
             }
         case EVALUATE_LIST:
             return {
@@ -95,8 +95,8 @@ export function evaluate1(data) {
     return { type: EVALUATE, payload: data }
 }
 //获取评价详情
-export function evaluateListInfo(data, bossname) {
-    return { type: EVALUATE_INFO, payload: { data, bossname } }
+export function evaluateListInfo(data, bossname, avatar) {
+    return { type: EVALUATE_INFO, payload: { data, bossname, avatar } }
 }
 
 function hadDone({ taskid, data }) {
@@ -249,7 +249,7 @@ export function getEvaluateOne(taskid) {
         }).then(
             res => {
                 if (res.data.code === 0) {
-                    dispatch(evaluateListInfo(res.data.data, res.data.bossname))
+                    dispatch(evaluateListInfo(res.data.data, res.data.bossname, res.data.avatar))
                 }
             }
             )
