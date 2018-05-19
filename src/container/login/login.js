@@ -17,13 +17,13 @@ class Login extends React.Component {
             user: '',
             pwd: ''
         }
-        this.register = this.register.bind(this)
+        // this.register = this.register.bind(this)
         this.login = this.login.bind(this)
         this.login1 = this.login1.bind(this)
     }
-    register() {
-        this.props.history.push('/register')
-    }
+    // register() {
+    //     this.props.history.push('/register')
+    // }
     handleChange(key, val) {
         this.setState({
             [key]: val
@@ -63,7 +63,7 @@ class Login extends React.Component {
                 <WingBlank>
                     <Button type="primary" onClick={this.login1}>登录</Button>
                     <WhiteSpace />
-                    <Button type="primary" onClick={this.register}>注册</Button>
+                    <Button type="primary" onClick={() => this.props.history.push('/register')}>注册</Button>
                     <WhiteSpace />
                 </WingBlank>
             </WingBlank>

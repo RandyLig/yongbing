@@ -53,7 +53,10 @@ const models = {
         //是否进行中
         'accept': { 'type': Boolean, default: false },
         //属性表示是否在请求状态
-        'request': { 'type': Boolean, default: false }
+        'request': { 'type': Boolean, default: false },
+        //任务的类型(0=无类型,1=绘画书法,2=舞蹈音乐,,3=语言翻译,4=IT服务,5=兼职家教,6=手绘修图,7=摄影约拍
+        // ,8=旅游服务,9=游戏服务,10=运动私教,11=机器人,12=电影推荐)
+        'type': { 'type': Number, default: 0 }
     },
     //评价
     evaluate: {

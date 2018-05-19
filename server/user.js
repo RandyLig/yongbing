@@ -12,7 +12,7 @@ const _filter = {
     __v: 0
 }
 //清空聊天数据
-// Chat.remove({}, function (e, d) {
+// Chat.remove({}, function (e, d) {})
 // 清空list下所有数据
 // User.remove({}, function (e, d) {})
 // })
@@ -149,6 +149,7 @@ Router.get('/getMsglist', function (req, res) {
             users[v._id] = { name: v.nickname, avatar: v.avatar }
         })
         // { '$or': [{ from: user, to: user }] }
+        //'或'查询
         Chat.find({ '$or': [{ from: user }, { to: user }] }, function (err, doc) {
             if (!err) {
                 return res.json({ code: 0, msgs: doc, users: users })

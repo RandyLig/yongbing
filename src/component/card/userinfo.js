@@ -2,7 +2,7 @@ import React from 'react'
 import QueueAnim from 'rc-queue-anim';
 import { WhiteSpace, Accordion, List, NavBar, Icon } from 'antd-mobile'
 // import PropTypes from 'prop-types'
-import { withRouter } from 'react-router-dom'
+import { withRouter, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 @withRouter
 @connect(
@@ -23,7 +23,7 @@ class Userinfo extends React.Component {
         const user = this.props.chatuser.userlist.filter(v => v._id === this.props.match.params.user)
         // console.log(user)
         return (
-            user.map(v => (<div key={'div' + v._id}>
+            user.map(v => v ? (<div key={'div' + v._id}>
                 <NavBar mode="dark" icon={<Icon type="cross" />}
                     onLeftClick={() => this.props.history.go(-1)}
                     rightContent={<a onClick={() => this.props.history.push(`/chat/${v._id}`)}>去聊天</a>}
@@ -31,7 +31,7 @@ class Userinfo extends React.Component {
                 >资料详情</NavBar>
                 <div key={'body' + v._id}>
                     <QueueAnim key={'ani' + v._id}>
-                        <Accordion defaultActiveKey="0" className="my-accordion" onChange={this.onChange} key={'Acc' + v._id}>
+                        <Accordion defaultActiveKey={"0"} className="my-accordion" onChange={this.onChange} key={'Acc' + v._id}>
                             <Accordion.Panel header="用户名" key={'0'}>
                                 <List className="my-list">
                                     <List.Item thumb={<img src={require(`../img/${v.avatar}.png`)} style={{ width: 25 }} alt="" />}>{v.nickname}</List.Item>
@@ -54,7 +54,7 @@ class Userinfo extends React.Component {
                                 <List.Item thumb={<img src={require(`../img/${'彩色特长'}.png`)} style={{ width: 25, height: 25 }} alt="" />}> {v.specialities}</List.Item>
                             </Accordion.Panel> : ''}
                             <Accordion.Panel header="个人简介" className="pad" key={'resume' + v._id}>
-                                <List.Item thumb={<img src={require(`../img/${'简介'}.png`)} style={{ width: 25, height: 25 }} alt="" />}>{v.resume}</List.Item>
+                                <List.Item multipleLine={true} thumb={<img src={require(`../img/${'简介'}.png`)} style={{ width: 25, height: 25 }} alt="" />}>{v.resume}</List.Item>
                             </Accordion.Panel>
                             <Accordion.Panel header="家乡" className="pad" key={'home' + v._id}>
                                 <List.Item thumb={<img src={require(`../img/${'家'}.png`)} style={{ width: 25, height: 25 }} alt="" />}> {v.home}</List.Item>
@@ -62,7 +62,7 @@ class Userinfo extends React.Component {
                         </Accordion>
                     </QueueAnim>
                 </div>
-            </div>))
+            </div>) : <Redirect to="/msg"></Redirect>)  //重定向功能
         )
     }
 }

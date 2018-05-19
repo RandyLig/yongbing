@@ -4,13 +4,13 @@ import { Card, WingBlank, WhiteSpace, NavBar, Icon, Modal, ActionSheet, Toast } 
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import { haddone, getTaskList, cancelTask } from '../../redux/task.redux'
+import { haddone, getTaskList, cancelTask, titleSearch } from '../../redux/task.redux'
 import { getChatId } from '../../util'
 const prompt = Modal.prompt
 @withRouter
 @connect(
     state => state,
-    { haddone, getTaskList, cancelTask }
+    { haddone, getTaskList, cancelTask, titleSearch }
 )
 
 class Published extends React.Component {
@@ -57,7 +57,7 @@ class Published extends React.Component {
         ActionSheet.showShareActionSheetWithOptions({
             options: this.dataList,
             // title: 'title',
-            message: 'I am description, description, description',
+            message: '分享功能',
         },
             (buttonIndex) => {
                 this.setState({ clicked1: buttonIndex > -1 ? this.dataList[buttonIndex].title : 'cancel' });
@@ -83,7 +83,7 @@ class Published extends React.Component {
                         <Icon key="0" type="search" style={{ marginRight: '16px' }} onClick={
                             () => prompt('请输入查询内容', '', [
                                 { text: 'Cancel' },
-                                { text: 'Submit', onPress: value => console.log(`输入的内容:${value}`) },
+                                { text: 'Submit', onPress: value => this.props.titleSearch(`${value}`) },
                             ], 'default', '')} />
                     ]}
                 >已发布任务</NavBar>

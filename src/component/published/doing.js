@@ -48,7 +48,7 @@ class Doing extends React.Component {
                         return v.done ? '' : (<div key={v._id}>
                             <WhiteSpace />
                             <QueueAnim>
-                                <Card key={v._id}>
+                                <Card key={v._id} onClick={() => this.props.history.push(`/chat/${v.bossid}`)}>
                                     {/* //显示boss */}
                                     <Card.Header
                                         title={v.taskname}

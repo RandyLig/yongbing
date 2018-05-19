@@ -43,7 +43,6 @@ class Register extends React.Component {
         });
     }
     handleChangeUser(key, val) {
-
         this.setState({
             [key]: val
         });
@@ -53,7 +52,11 @@ class Register extends React.Component {
         this.props.register(this.state)
         setTimeout(() => {
             console.log(this.props.errmsg)
-            Toast.info(this.props.errmsg)
+            if (this.props.errmsg) {
+                Toast.info(this.props.errmsg)
+            } else {
+                Toast.info(this.props.msg)
+            }
         }, 500);
     }
     login() {

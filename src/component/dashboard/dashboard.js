@@ -46,8 +46,8 @@ class DashBoard extends React.Component {
             visible: false,
             selected: opt.props.value,
         });
-        // console.log(this.props.user.type)
-        this.props.filterUserList(this.correctType(this.props.user.type), opt.props.value)
+        //按年齡排序
+        // this.props.filterUserList(this.correctType(this.props.user.type), opt.props.value)
     };
     handleVisibleChange = (visible) => {
         this.setState({
@@ -58,7 +58,7 @@ class DashBoard extends React.Component {
         if (!this.props.chat.chatMsg.length) {
             this.props.reciveMsg()
             this.props.getMsgList()
-            
+
         }
 
     }
@@ -111,7 +111,7 @@ class DashBoard extends React.Component {
                     // overlayStyle={{ color: 'currentColor' }}
                     visible={this.state.visible}
                     overlay={[
-                        (<Item key="4" value="age" data-seed="logId">按年龄</Item>),
+                        // (<Item key="4" value="age" data-seed="logId">按年龄</Item>),
                         (<Item key="5" value="man" style={{ whiteSpace: 'nowrap' }}>男性</Item>),
                         (<Item key="6" value="woman" >
                             <span style={{ marginRight: 5 }}>女性</span>

@@ -9,7 +9,10 @@ import { addTask } from '../../redux/task.redux'
     state => state,
     { addTask }
 )
-
+//Tag专用
+// function onChange(selected) {
+//     console.log(`tag selected: ${selected}`);
+// }
 class AddTask extends React.Component {
     constructor(props) {
         super(props)
@@ -37,7 +40,7 @@ class AddTask extends React.Component {
     Submit() {
         const from = this.props.user._id
         this.props.addTask({ ...this.state, from })
-        this.props.history.push('/msg')
+        this.props.history.push('/me')
     }
     render() {
         const { files } = this.state;
@@ -54,12 +57,20 @@ class AddTask extends React.Component {
                 onChange={v => this.handleChange('detail', v)}
                 placeholder='描述一下任务的细节'
             ></TextareaItem>
+            {/* <Tag selected>绘画艺术</Tag> */}
+            {/* <Tag >舞蹈音乐</Tag> */}
+            {/* <Tag >语言翻译</Tag> */}
+            {/* <Tag >IT服务</Tag> */}
+            {/* <Tag >兼职家教</Tag> */}
+            {/* <Tag >手绘修图</Tag> */}
+            {/* <Tag >摄影约拍</Tag> */}
+            {/* <Tag >旅游服务</Tag> */}
             <QueueAnim type='right' className='ImagePicker' >
                 <ImagePicker
                     key={'ImagePicker'}
                     files={files}
                     onChange={this.onChange}
-                    onImageClick={(index, fs) => console.log(index, fs,'111')}
+                    onImageClick={(index, fs) => console.log(index, fs, '111')}
                     selectable={true}
                     multiple={true}
                 />

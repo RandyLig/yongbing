@@ -48,19 +48,19 @@ class Doneyb extends React.Component {
                         return v.done ? (<div key={v._id}>
                             <WhiteSpace />
                             <QueueAnim>
-                                <Card key={v.taskname}>
+                                <Card key={v.taskname} onClick={() => this.props.history.push(`/chat/${v.bossid}`)}>
                                     <Card.Header
                                         title={v.taskname}
                                         thumb={v.files[0].url ? v.files[0].url : '加载出错'}
                                         thumbStyle={{ height: '56px', width: '50px' }}
-                                        extra={<a onClick={() => console.log('评价')} size="small" type="ghost">查看评价</a>}
+                                        extra={<a onClick={() => this.props.history.push('/msg')} size="small" type="ghost">查看评价</a>}
                                     />
                                     <Card.Body>
                                         {v.detail}
                                     </Card.Body>
                                     <Card.Footer
                                         content={v.yongbing ? v.yongbing : "出错了"}
-                                        extra={'完成时间:' + formatDate(new Date(v.create_time))}                                        
+                                        extra={'完成时间:' + formatDate(new Date(v.create_time))}
                                     >
                                     </Card.Footer>
                                 </Card>

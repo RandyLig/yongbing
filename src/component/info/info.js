@@ -65,6 +65,16 @@ class Info extends React.Component {
             Toast.info('请输入不超过16位的地址');
         }
     }
+    handleChangeresume(key, val) {
+        this.setState({
+            [key]: val
+        })
+    }
+    onErrorClickresume = () => {
+        if (this.state.hasErrorhome) {
+            Toast.info('请输入不超过36位的简介');
+        }
+    }
     //年龄验证
     handleChangeAge(key, val) {
         var pattern = /\D/g
@@ -160,7 +170,7 @@ class Info extends React.Component {
             <TextareaItem
                 rows={2}
                 autoHeight
-                onChange={v => this.handleChange('resume', v)}
+                onChange={v => this.handleChangeresume('resume', v)}
                 defaultValue={this.props.resume}
                 title='个人简介'
                 clear='true'

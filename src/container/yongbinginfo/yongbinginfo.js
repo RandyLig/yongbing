@@ -1,5 +1,5 @@
 import React from 'react'
-import { NavBar, InputItem, Button, TextareaItem, WhiteSpace, Picker, List } from 'antd-mobile'
+import { NavBar, InputItem, Button, TextareaItem, WhiteSpace, Picker, List, Toast } from 'antd-mobile'
 import AvatarSelector from '../../component/avatarSelector/avatarSelector.js'
 import { connect } from 'react-redux'
 import { update } from '../../redux/user.redux'
@@ -42,12 +42,50 @@ class YongbingInfo extends React.Component {
             // pickerValue: [],
             asyncValue: [],
             visible: false,
+            hasErrorAge: false,
+            hasError: false,
         }
     }
     handleChange(key, val) {
+        // if (val.replace(/\s/g, '').length > 12) {
+        //     this.setState({
+        //         hasError: true,
+        //     });
+        // } else {
+        //     this.setState({
+        //         hasError: false,
+        //     });
+        // }
         this.setState({
             [key]: val
         })
+    }
+    onErrorClick = () => {
+        if (this.state.hasError) {
+            Toast.info('请输入不超过8位的昵称');
+        }
+    }
+    //年龄验证
+    handleChangeAge(key, val) {
+        var pattern = /\D/g
+        console.log(val.replace(/\D/g, ''))
+        if (pattern.test(val) === true || val.replace(/\s/g, '').length > 3) {
+            this.setState({
+                hasErrorAge: true,
+            });
+        } else {
+            this.setState({
+                hasErrorAge: false,
+            });
+        }
+        this.setState({
+            [key]: val.replace(/\D/g, '')
+        })
+    }
+    onErrorClickAge = () => {
+        if (this.state.hasErrorAge) {
+            Toast.info('请输入正确的年龄');
+        }
     }
     getSel() {
         const value = this.state.home;
@@ -68,7 +106,11 @@ class YongbingInfo extends React.Component {
                     avatar: imgname
                 })
             }}></AvatarSelector>
-            <InputItem onChange={v => this.handleChange('nickname', v)}>昵称</InputItem>
+            <InputItem
+                onChange={v => this.handleChange('nickname', v)}
+                error={this.state.hasError}
+                onErrorClick={this.onErrorClick}
+                onChange={v => this.handleChange('nickname', v)}>昵称</InputItem>
             <Picker
                 data={sex}
                 title="选择性别"
@@ -84,7 +126,10 @@ class YongbingInfo extends React.Component {
             >
                 <List.Item>选择性别</List.Item>
             </Picker>
-            <InputItem onChange={v => this.handleChange('age', v)}>年龄</InputItem>
+            <InputItem
+                error={this.state.hasErrorAge}
+                onErrorClick={this.onErrorClickAge}
+                onChange={v => this.handleChangeAge('age', v)}>年龄</InputItem>
             {/* 选择地区 */}
             <Picker
                 visible={this.state.visible}
